@@ -2,7 +2,9 @@ import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class SpikeballActivityApp extends Application.AppBase {
+using InterfaceComponentsManager as ICM;
+
+class SpikeballApp extends Application.AppBase {
 
     function initialize() {
         AppBase.initialize();
@@ -10,6 +12,8 @@ class SpikeballActivityApp extends Application.AppBase {
 
     // onStart() is called on application start up
     function onStart(state as Dictionary?) as Void {
+        ICM.loadFonts();
+        ICM.computeInterfaceConstants();
     }
 
     // onStop() is called when your application is exiting
@@ -23,6 +27,6 @@ class SpikeballActivityApp extends Application.AppBase {
 
 }
 
-function getApp() as SpikeballActivityApp {
-    return Application.getApp() as SpikeballActivityApp;
+function getApp() as SpikeballApp {
+    return Application.getApp() as SpikeballApp;
 }

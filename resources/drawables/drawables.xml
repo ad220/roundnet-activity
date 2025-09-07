@@ -1,3 +1,16 @@
-<drawables xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
-    <bitmap id="LauncherIcon" filename="launcher_icon.svg" dithering="none" />
+<drawables>
+    <bitmap id="LauncherIcon" filename="ball.png" dithering="none" />
+
+    <bitmap id="Ball" filename="ball.png" scaleY="12%" scaleRelativeTo="screen">
+        <palette>
+            <color>FFAA00</color>
+            <color>000000</color>
+        </palette>
+    </bitmap>
+
+    <bitmap id="Heart" filename="heart.png" scaleX="8%" scaleRelativeTo="screen">
+        <palette>
+            <color>AAAAAA</color>
+        </palette>
+    </bitmap>
 </drawables>

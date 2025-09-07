@@ -1,4 +1,24 @@
-<layout id="MainLayout" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
-    <label x="center" y="5" text="@Strings.prompt" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_CENTER" />
-    <bitmap id="id_monkey" x="center" y="30" filename="../drawables/monkey.png" />
-</layout>
+<resources>
+    <layout id="ScoreLayout">
+        <drawable id="ScoreDrawable"/>
+    </layout>   
+
+    
+    <drawable-list id="ScoreDrawable" background="Gfx.COLOR_TRANSPARENT">
+        <shape type="polygon" points="[[0%,33.3%], [33.3%, 33.3%], [42.6%, 66.6%], [0%, 66.6%]]" color="0x555555"/>
+        <shape type="polygon" points="[[0%,66.6%], [42.6%, 66.6%], [52%, 100%], [0%, 100%]]" color="0xFFAA00"/>
+
+        <bitmap id="ball" x="25%" y="12.5%" filename="../drawables/ball.png" scaleY="12%" scaleRelativeTo="screen">
+            <palette>
+                <color>FFAA00</color>
+                <color>000000</color>
+            </palette>
+        </bitmap>
+
+        <bitmap id="heart" x="53%" y="78%" filename="../drawables/heart.png" scaleX="8%" scaleRelativeTo="screen">
+            <palette>
+                <color>AAAAAA</color>
+            </palette>
+        </bitmap>
+    </drawable-list> 
+</resources>

@@ -8,7 +8,7 @@ class SpikeballActivityDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onMenu() as Boolean {
-        WatchUi.pushView(new Rez.Menus.MainMenu(), new SpikeballActivityMenuDelegate(), WatchUi.SLIDE_UP);
+        // WatchUi.pushView(new Rez.Menus.MainMenu(), new SpikeballActivityMenuDelegate(), WatchUi.SLIDE_UP);
         return true;
     }
 
