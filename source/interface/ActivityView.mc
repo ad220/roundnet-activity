@@ -6,14 +6,16 @@ using InterfaceComponentsManager as ICM;
 class SpikeballActivityView extends WatchUi.View {
 
     private var activity as SpikeballActivity;
+    private var loopField as WatchUi.Drawable;
 
-    function initialize(activity as SpikeballActivity) {
+    function initialize(activity as SpikeballActivity, timer as TimerController) {
         View.initialize();
 
         self.activity = activity;
+        self.loopField = new LoopField(activity);
+        timer.start(loopField.method(:nextField), 10, true);
     }
 
-    // Load your resources here
     function onLayout(dc as Dc) as Void {
         setLayout(Rez.Layouts.ScoreLayout(dc));
     }
@@ -21,15 +23,21 @@ class SpikeballActivityView extends WatchUi.View {
     function onShow() as Void {
     }
 
-    // Update the view*
     function onUpdate(dc as Dc) as Void {
-        // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
+
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(ICM.scaleX(0.219), ICM.scaleY(0.500), ICM.fontLarge, activity.getScore(SpikeballActivity.TEAM_GREY), ICM.JTEXT_MID);
         dc.drawText(ICM.scaleY(0.295), ICM.scaleY(0.816), ICM.fontLarge, activity.getScore(SpikeballActivity.TEAM_YELLOW), ICM.JTEXT_MID);
-        dc.drawText(ICM.scaleX(0.574), ICM.scaleY(0.185), ICM.fontMedium, activity.getFormattedTime(), ICM.JTEXT_MID);
-        dc.drawText(ICM.scaleX(0.718), ICM.scaleY(0.816), ICM.fontMedium, activity.getHR(), ICM.JTEXT_MID);
+        dc.drawText(ICM.scaleX(0.475), ICM.scaleY(0.185), ICM.fontMedium, activity.getFormattedTime(), ICM.JTEXT_LEFT);
+
+        var hr = activity.getHR();
+        dc.drawText(ICM.scaleX(0.650), ICM.scaleY(0.816), ICM.fontMedium, hr!=null ? hr : "- -", ICM.JTEXT_LEFT);
+
+        dc.setClip(ICM.scaleX(0.333), ICM.scaleY(0.333), ICM.scaleX(0.667), ICM.scaleY(0.333));
+        loopField.draw(dc);
+        dc.clearClip();
+
     }
 
     function onHide() as Void {
@@ -40,24 +48,17 @@ class SpikeballActivityView extends WatchUi.View {
 class SpikeballActivityDelegate extends BehaviorDelegate {
 
     private var activity as SpikeballActivity;
-    private var timer as TimerController;
 
-    private var updateTimer as TimerCallback?;
 
     public function initialize(activity as SpikeballActivity, timer as TimerController) {
         BehaviorDelegate.initialize();
 
         self.activity = activity;
-        self.timer = timer;
+        timer.start(method(:updateView), 2, true);
     }
 
     public function onSelect() as $.Toybox.Lang.Boolean {
-        var isStarted = activity.startStop();
-        if (isStarted) {
-            updateTimer = timer.start(method(:updateView), 2, true);
-        } else {
-            timer.stop(updateTimer);
-        }
+        activity.startStop();
         return true;
     }
 

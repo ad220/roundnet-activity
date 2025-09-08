@@ -19,6 +19,7 @@ module InterfaceComponentsManager {
     var fontLarge as FontResource?;
     
     const JTEXT_MID = Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER;
+    const JTEXT_LEFT = Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER;
 
 
     function computeInterfaceConstants() {

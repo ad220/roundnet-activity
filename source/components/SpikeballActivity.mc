@@ -2,6 +2,7 @@ import Toybox.Lang;
 import Toybox.System;
 import Toybox.Activity;
 import Toybox.ActivityRecording;
+import Toybox.ActivityMonitor;
 import Toybox.Sensor;
 
 
@@ -16,12 +17,16 @@ class SpikeballActivity {
     private var scoreYellow as Number;
     private var scoreGrey as Number;
 
+    private var stepsOnStart as Number;
+
     public function initialize() {
         self.scoreYellow = 0;
         self.scoreGrey = 0;
+        self.stepsOnStart = ActivityMonitor.getInfo().steps;
 
         if (Toybox.Sensor has :enableSensorType) { // API level >= 3.2.0
             Sensor.enableSensorType(Sensor.SENSOR_HEARTRATE);
+            Sensor.enableSensorType(Sensor.SENSOR_TEMPERATURE);
             self.session = ActivityRecording.createSession({    // set up recording session
                 :name=>"Spikeball",                             // set session name
                 :sport=>Activity.SPORT_GENERIC,                 // set sport type
@@ -29,7 +34,7 @@ class SpikeballActivity {
             });
         } else {
             System.println("Older device"); // API level < 3.2.0
-            Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE]);
+            Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE, Sensor.SENSOR_TEMPERATURE]);
             self.session = ActivityRecording.createSession({
                 :name=>"Spikeball",
                 :sport=>ActivityRecording.SPORT_GENERIC,
@@ -42,6 +47,7 @@ class SpikeballActivity {
         if (session.isRecording()) {
             return !session.stop();
         } else {
+            stepsOnStart = ActivityMonitor.getInfo().steps;
             return session.start();
         }
     }
@@ -60,8 +66,27 @@ class SpikeballActivity {
     }
 
     public function getHR() as Number {
-        var hr = Sensor.getInfo().heartRate;
-        return hr!=null ? hr : 134;
+        return Sensor.getInfo().heartRate;
+    }
+
+    public function getSteps() as Number {
+        var steps = ActivityMonitor.getInfo().steps - stepsOnStart;
+        return steps!=null ? steps : 6942;
+    }
+
+    public function getDistance() as Number {
+        var distance = Activity.getActivityInfo().elapsedDistance;
+        return distance!=null ? distance.toNumber() : 4269;
+    }
+
+    public function getKcal() as Number {
+        var kcal = Activity.getActivityInfo().calories;
+        return kcal!=null ? kcal : 420;
+    }
+
+    public function getTemperature() as Float {
+        var temp = Sensor.getInfo().temperature;
+        return temp!=null ? temp : 21.6;
     }
 
     public function getFormattedTime() as String{

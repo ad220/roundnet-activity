@@ -29,7 +29,7 @@ class SpikeballApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as [Views] or [Views, InputDelegates] {
-        return [ new SpikeballActivityView(activity), new SpikeballActivityDelegate(activity, timer) ];
+        return [ new SpikeballActivityView(activity, timer), new SpikeballActivityDelegate(activity, timer) ];
     }
 
 }
