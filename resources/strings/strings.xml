@@ -1,8 +1,27 @@
 <strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
     <string id="AppName">Roundnet</string>
 
-    <!-- Field units -->
-    <string id="Kilometers">km</string>
-    <string id="KCalories" translatable="false">kcal</string>
-    <string id="Celsius">°C</string>
+    <!-- Units -->
+    <string id="Kilometers" translatable="false">km</string>
+    <string id="KCalories"  translatable="false">kcal</string>
+    <string id="Celsius"    translatable="false">°C</string>
+    <string id="StepsUnit"  translatable="true">steps</string>
+    <string id="Meters"     translatable="false">m</string>
+    <string id="Seconds"    translatable="false">s</string>
+    <string id="NoUnit"     translatable="false"></string>
+
+    <!-- FIT Contributions -->
+    <string id="Temperature">Temperature</string>
+    <string id="Steps">Steps</string>
+    <string id="ScorePlayer">Points won</string>
+    <string id="ScoreOpponent">Points lost</string>
+    <string id="TimePerPoint">Average time per point</string>
+    <string id="DistancePerPoint">Average distance per point</string>
+    <string id="StepsPerPoint">Average steps per point</string>
+    <string id="GamesPlayer">Games won</string>
+    <string id="GamesOpponent">Games lost</string>
+    <string id="TimePerGame">Average time per game</string>
+    <string id="DistancePerGame">Average distance per game</string>
+    <string id="StepsPerGame">Average steps per game</string>
+
 </strings>

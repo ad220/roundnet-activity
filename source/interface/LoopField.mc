@@ -60,7 +60,8 @@ class LoopField extends WatchUi.Drawable {
         } else if (state == FIELD_CALORIES) {
             label = activity.getKcal() + units[FIELD_CALORIES];
         } else if (state == FIELD_TEMPERATURE) {
-            label = activity.getTemperature().format("%.1f") + units[FIELD_TEMPERATURE];
+            var temp = activity.getTemperature();
+            label = (temp!=null ? temp.format("%.1f") : "- - ") + units[FIELD_TEMPERATURE];
         }
     }
 }

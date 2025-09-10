@@ -1,3 +1,4 @@
+import Toybox.Lang;
 import Toybox.Graphics;
 import Toybox.WatchUi;
 
@@ -27,8 +28,8 @@ class SpikeballActivityView extends WatchUi.View {
         View.onUpdate(dc);
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(ICM.scaleX(0.219), ICM.scaleY(0.500), ICM.fontLarge, activity.getScore(SpikeballActivity.TEAM_GREY), ICM.JTEXT_MID);
-        dc.drawText(ICM.scaleY(0.295), ICM.scaleY(0.816), ICM.fontLarge, activity.getScore(SpikeballActivity.TEAM_YELLOW), ICM.JTEXT_MID);
+        dc.drawText(ICM.scaleX(0.219), ICM.scaleY(0.500), ICM.fontLarge, activity.getScore(SpikeballActivity.TEAM_OPPONENT), ICM.JTEXT_MID);
+        dc.drawText(ICM.scaleY(0.295), ICM.scaleY(0.816), ICM.fontLarge, activity.getScore(SpikeballActivity.TEAM_PLAYER), ICM.JTEXT_MID);
         dc.drawText(ICM.scaleX(0.475), ICM.scaleY(0.185), ICM.fontMedium, activity.getFormattedTime(), ICM.JTEXT_LEFT);
 
         var hr = activity.getHR();
@@ -57,7 +58,7 @@ class SpikeballActivityDelegate extends BehaviorDelegate {
         timer.start(method(:updateView), 2, true);
     }
 
-    public function onSelect() as $.Toybox.Lang.Boolean {
+    public function onSelect() as Boolean {
         activity.startStop();
         return true;
     }
@@ -66,13 +67,27 @@ class SpikeballActivityDelegate extends BehaviorDelegate {
         WatchUi.requestUpdate();
     }
 
-    public function onPreviousPage() as $.Toybox.Lang.Boolean {
-        activity.addScore(SpikeballActivity.TEAM_GREY);
+    public function onPreviousPage() as Boolean {
+        activity.addScore(SpikeballActivity.TEAM_OPPONENT);
         return true;
     }
 
-    public function onNextPage() as $.Toybox.Lang.Boolean {
-        activity.addScore(SpikeballActivity.TEAM_YELLOW);
+    public function onNextPage() as Boolean {
+        activity.addScore(SpikeballActivity.TEAM_PLAYER);
+        return true;
+    }
+
+    public function onBack() as Boolean {
+        if (activity.isRecording()) {
+            activity.lap();
+        } else {
+            WatchUi.popView(SLIDE_LEFT);
+        }
+        return true;
+    }
+
+    public function onMenu() as Boolean {
+        activity.save();
         return true;
     }
 }
