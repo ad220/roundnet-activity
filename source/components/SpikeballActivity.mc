@@ -153,6 +153,8 @@ class SpikeballActivity {
                     lastTemp = temp;
                 }
             }
+
+            WatchUi.requestUpdate();
         }
     }
 

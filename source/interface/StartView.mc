@@ -31,7 +31,7 @@ class StartView extends WatchUi.View {
         dc.fillCircle(ICM.scaleX(0.06), ICM.scaleY(0.535), ICM.scaleX(0.007));
 
         var daytime = Time.Gregorian.info(Time.now(), Time.FORMAT_SHORT);
-        daytime = daytime.hour + ":" + daytime.min;
+        daytime = daytime.hour + ":" + daytime.min.format("%02d");
         dc.drawText(ICM.scaleX(0.5), ICM.scaleY(0.9), ICM.fontMedium, daytime, ICM.JTEXT_MID);
 
         var gpsQuality = Position.getInfo().accuracy;
