@@ -127,6 +127,7 @@ class SpikeballActivity {
             var status = session.stop();
             timer.stop(recordTimer);
             timer.stop(fieldTimer);
+            loopField = null;
             return status;
         }
         return false;
@@ -233,6 +234,10 @@ class SpikeballActivity {
 
     public function getScore(teamId as Team) as Number {
         return teamId ? scoreOpponent : scorePlayer;
+    }
+
+    public function getGames(teamId as Team) as Number {
+        return teamId ? gamesOpponent : gamesPlayer;
     }
 
     public function getHR() as Number {
