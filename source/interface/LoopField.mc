@@ -53,8 +53,7 @@ class LoopField extends WatchUi.Drawable {
     }
 
     private function retrieveFieldSettings() as Void {
-        var fieldSettings = Application.Storage.getValue("datafieldsSettings") as Dictionary;
-        System.println(fieldSettings);
+        var fieldSettings = getApp().fieldsSettings;
         if (fieldSettings.get("distance") as Boolean)       { enabledFields.add(FIELD_DISTANCE); }
         if (fieldSettings.get("calories") as Boolean)       { enabledFields.add(FIELD_CALORIES); }
         if (fieldSettings.get("score") as Boolean)          { enabledFields.add(FIELD_SCORE); }

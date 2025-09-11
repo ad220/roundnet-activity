@@ -29,7 +29,7 @@ class SpikeballActivityView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(ICM.scaleX(0.219), ICM.scaleY(0.500), ICM.fontLarge, activity.getScore(SpikeballActivity.TEAM_OPPONENT), ICM.JTEXT_MID);
         dc.drawText(ICM.scaleY(0.295), ICM.scaleY(0.816), ICM.fontLarge, activity.getScore(SpikeballActivity.TEAM_PLAYER), ICM.JTEXT_MID);
-        dc.drawText(ICM.scaleX(0.475), ICM.scaleY(0.185), ICM.fontMedium, activity.getFormattedTime(), ICM.JTEXT_LEFT);
+        dc.drawText(ICM.scaleX(0.460), ICM.scaleY(0.185), ICM.fontMedium, activity.getFormattedTime(), ICM.JTEXT_LEFT);
 
         var hr = activity.getHR();
         dc.drawText(ICM.scaleX(0.650), ICM.scaleY(0.816), ICM.fontMedium, hr!=null ? hr : "- -", ICM.JTEXT_LEFT);
@@ -47,21 +47,19 @@ class SpikeballActivityView extends WatchUi.View {
 class SpikeballActivityDelegate extends BehaviorDelegate {
 
     private var activity as SpikeballActivity;
-    private var timer as TimerController;
 
 
-    public function initialize(activity as SpikeballActivity, timer as TimerController) {
+    public function initialize(activity as SpikeballActivity) {
         BehaviorDelegate.initialize();
 
         self.activity = activity;
-        self.timer = timer;
     }
 
     public function onSelect() as Boolean {
         activity.stop();
         var menu = new Rez.Menus.StopMenu();
         menu.setTitle(activity.getFormattedTime());
-        WatchUi.switchToView(menu, new StopDelegate(activity, timer), WatchUi.SLIDE_UP);
+        WatchUi.switchToView(menu, new StopDelegate(activity), WatchUi.SLIDE_UP);
         return true;
     }
 

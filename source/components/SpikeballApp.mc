@@ -8,31 +8,48 @@ using InterfaceComponentsManager as ICM;
 
 class SpikeballApp extends Application.AppBase {
 
-    private var timer as TimerController;
+    public var timer as TimerController;
+    public var fieldsSettings as Dictionary;
+    public var sensorsSettings as Dictionary;
 
     function initialize() {
         AppBase.initialize();
 
         self.timer = new TimerController(1000);
+
+        self.fieldsSettings = Storage.getValue("fieldsSettings");
+        if (fieldsSettings == null) {
+            self.fieldsSettings = WatchUi.loadResource(Rez.JsonData.DefaultDatafieldsSettings);
+        }
+
+        self.sensorsSettings = Storage.getValue("sensorsSettings");
+        if (sensorsSettings == null) {
+            self.sensorsSettings = WatchUi.loadResource(Rez.JsonData.DefaultSensorsSettings);
+        }
     }
 
     // onStart() is called on application start up
     function onStart(state as Dictionary?) as Void {
         ICM.loadFonts();
         ICM.computeInterfaceConstants();
-        Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, null);
+        Position.enableLocationEvents(getLocationSetting(), null);
     }
 
     // onStop() is called when your application is exiting
     function onStop(state as Dictionary?) as Void {
         Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
+        Storage.setValue("fieldsSettings", fieldsSettings);
+        Storage.setValue("sensorsSettings", sensorsSettings);
     }
 
     // Return the initial view of your application here
     function getInitialView() as [Views] or [Views, InputDelegates] {
-        return [new StartView(), new StartDelegate(timer)];
+        return [new StartView(), new StartDelegate()];
     }
 
+    public function getLocationSetting() as Position.LocationAcquisitionType {
+        return sensorsSettings.get("location") as Boolean ? Position.LOCATION_CONTINUOUS : Position.LOCATION_DISABLE;
+    }
 }
 
 function getApp() as SpikeballApp {

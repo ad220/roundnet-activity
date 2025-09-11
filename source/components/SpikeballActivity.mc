@@ -38,7 +38,6 @@ class SpikeballActivity {
         RECORD_TEMPERATURE      = 13,
     }
 
-    private var timer as TimerController;
     private var session as ActivityRecording.Session?;
     private var time as Number;
     private var timeOnLap as Number;
@@ -50,8 +49,10 @@ class SpikeballActivity {
     private var stepsOnStart as Number;
     private var stepsOnLap as Number;
 
+    private var locEnabled as Boolean;
+    private var tempEnabled as Boolean;
     private var lastTemp as Number?;
-    private var tempField as FitContributor.Field;
+    private var tempField as FitContributor.Field?;
     private var recordTimer as TimerCallback?;
 
     private var lapFields as Dictionary;
@@ -59,9 +60,8 @@ class SpikeballActivity {
     private var loopField as LoopField?;
     private var fieldTimer as TimerCallback?;
 
-    public function initialize(timer as TimerController) {
+    public function initialize() {
 
-        self.timer = timer;
         self.time = 0;
         self.timeOnLap = 0;
         self.distanceOnLap = 0;
@@ -71,10 +71,13 @@ class SpikeballActivity {
         self.gamesOpponent = 0;
         self.stepsOnStart = ActivityMonitor.getInfo().steps;
         self.stepsOnLap = ActivityMonitor.getInfo().steps;
-
+        
+        self.locEnabled = getApp().sensorsSettings.get("location") as Boolean;
+        self.tempEnabled = getApp().sensorsSettings.get("temperature") as Boolean;
         if (Toybox.Sensor has :enableSensorType) { // API level >= 3.2.0
             Sensor.enableSensorType(Sensor.SENSOR_HEARTRATE);
-            Sensor.enableSensorType(Sensor.SENSOR_TEMPERATURE);
+            if (tempEnabled) { Sensor.enableSensorType(Sensor.SENSOR_TEMPERATURE); }
+
             self.session = ActivityRecording.createSession({    // set up recording session
                 :name=>"Spikeball",                             // set session name
                 :sport=> Activity.SPORT_GENERIC,                 // set sport type
@@ -82,7 +85,10 @@ class SpikeballActivity {
             });
         } else {
             System.println("Older device"); // API level < 3.2.0
+            var sensors = [Sensor.SENSOR_HEARTRATE];
+            if (tempEnabled) { sensors.add(Sensor.SENSOR_TEMPERATURE); }
             Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE, Sensor.SENSOR_TEMPERATURE]);
+
             self.session = ActivityRecording.createSession({
                 :name=>"Spikeball",
                 :sport=>70 as ActivityRecording.Sport1,
@@ -90,14 +96,13 @@ class SpikeballActivity {
             });
         }
 
-        self.tempField = session.createField("temperature", 0, FitContributor.DATA_TYPE_SINT8, {:units=>"°C", :nativeNum=>RECORD_TEMPERATURE});
+        self.tempField = tempEnabled ? session.createField("temperature", 0, FitContributor.DATA_TYPE_SINT8, {:units=>"°C", :nativeNum=>RECORD_TEMPERATURE}) : null;
 
         self.lapFields = {};
         self.lapFields.put(LAP_PLAYER_SCORE,    session.createField("player_score",     1, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP, :nativeNum => LAP_PLAYER_SCORE}));
         self.lapFields.put(LAP_OPPONENT_SCORE,  session.createField("opponent_score",   2, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP, :nativeNum => LAP_OPPONENT_SCORE}));
         self.lapFields.put(LAP_STEPS,           session.createField("steps",            3, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP}));
         self.lapFields.put(LAP_AVG_TIME,        session.createField("avg_time",         4, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP}));
-        self.lapFields.put(LAP_AVG_DISTANCE,    session.createField("avg_distance",     5, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP}));
         self.lapFields.put(LAP_AVG_STEPS,       session.createField("avg_steps",        6, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP}));
         
         self.sessionFields = {};
@@ -105,8 +110,12 @@ class SpikeballActivity {
         self.sessionFields.put(SESSION_OPPONENT_SCORE,  session.createField("opponent_score",   8,  FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION, :nativeNum => SESSION_OPPONENT_SCORE}));
         self.sessionFields.put(SESSION_STEPS,           session.createField("steps",            9,  FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION}));
         self.sessionFields.put(SESSION_AVG_TIME,        session.createField("avg_time",         10, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION}));
-        self.sessionFields.put(SESSION_AVG_DISTANCE,    session.createField("avg_distance",     11, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION}));
         self.sessionFields.put(SESSION_AVG_STEPS,       session.createField("avg_steps",        12, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION}));
+        
+        if (locEnabled) {
+            self.lapFields.put(LAP_AVG_DISTANCE, session.createField("avg_distance", 5, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP}));
+            self.sessionFields.put(SESSION_AVG_DISTANCE, session.createField("avg_distance", 11, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION}));
+        }
 
         // TODO: handle error during session start
         System.println("Session start result: "+resume());
@@ -118,6 +127,7 @@ class SpikeballActivity {
 
     public function registerField(loopField as LoopField) as Void {
         self.loopField = loopField;
+        var timer = getApp().timer;
         timer.stop(fieldTimer);
         fieldTimer = timer.start(loopField.method(:nextField), 5, true);
     }
@@ -125,6 +135,7 @@ class SpikeballActivity {
     public function stop() as Boolean {
         if (session.isRecording()) {
             var status = session.stop();
+            var timer = getApp().timer;
             timer.stop(recordTimer);
             timer.stop(fieldTimer);
             loopField = null;
@@ -136,7 +147,7 @@ class SpikeballActivity {
     public function resume() as Boolean {
         if (!session.isRecording()) {
             var status = session.start();
-            recordTimer = timer.start(method(:updateRecordFields), 1, true);
+            recordTimer = getApp().timer.start(method(:updateRecordFields), 1, true);
             return status;
         }
         return false;
@@ -146,12 +157,14 @@ class SpikeballActivity {
         if (session.isRecording()) {
             time = Activity.getActivityInfo().timerTime / 1000;
 
-            var temp = getTemperature();
-            if (temp!=null) {
-                temp = temp.toNumber();
-                if (temp!=lastTemp) {
-                    tempField.setData(temp);
-                    lastTemp = temp;
+            if (tempEnabled) {
+                var temp = getTemperature();
+                if (temp!=null) {
+                    temp = temp.toNumber();
+                    if (temp!=lastTemp) {
+                        tempField.setData(temp);
+                        lastTemp = temp;
+                    }
                 }
             }
 
@@ -176,14 +189,15 @@ class SpikeballActivity {
         (lapFields.get(LAP_PLAYER_SCORE) as FitContributor.Field).setData(scorePlayer);
         (lapFields.get(LAP_OPPONENT_SCORE) as FitContributor.Field).setData(scoreOpponent);
         (lapFields.get(LAP_STEPS) as FitContributor.Field).setData(steps - stepsOnLap);
-        if (pointsCount>0) {
-            (lapFields.get(LAP_AVG_TIME) as FitContributor.Field).setData((currentTime - timeOnLap)/pointsCount/1000);
-            (lapFields.get(LAP_AVG_DISTANCE) as FitContributor.Field).setData((currentDistance - distanceOnLap)/pointsCount);
-            (lapFields.get(LAP_AVG_STEPS) as FitContributor.Field).setData((steps - stepsOnLap)/pointsCount);
-        } else {
-            (lapFields.get(LAP_AVG_TIME) as FitContributor.Field).setData(0);
-            (lapFields.get(LAP_AVG_DISTANCE) as FitContributor.Field).setData(0);
-            (lapFields.get(LAP_AVG_STEPS) as FitContributor.Field).setData(0);
+        
+        (lapFields.get(LAP_AVG_TIME) as FitContributor.Field)
+            .setData(pointsCount>0 ? (currentTime - timeOnLap)/pointsCount/1000 : 0);
+        (lapFields.get(LAP_AVG_STEPS) as FitContributor.Field)
+            .setData(pointsCount>0 ? (steps - stepsOnLap)/pointsCount : 0);
+        
+        if (locEnabled) {
+            (lapFields.get(LAP_AVG_DISTANCE) as FitContributor.Field)
+                .setData(pointsCount>0 ? (currentDistance - distanceOnLap)/pointsCount : 0);
         }
         stepsOnLap = steps;
         
@@ -202,18 +216,20 @@ class SpikeballActivity {
         var steps = getSteps();
         var gamesCount = gamesPlayer + gamesOpponent;
         updateLapFields();
-        (sessionFields.get(SESSION_PLAYER_SCORE) as FitContributor.Field).setData(gamesPlayer);
-        (sessionFields.get(SESSION_OPPONENT_SCORE) as FitContributor.Field).setData(gamesOpponent);
-        (sessionFields.get(SESSION_STEPS) as FitContributor.Field).setData(steps);
-        if (gamesCount>0) {
-            (sessionFields.get(SESSION_AVG_TIME) as FitContributor.Field).setData(info.timerTime/gamesCount/1000);
-            (sessionFields.get(SESSION_AVG_DISTANCE) as FitContributor.Field).setData(info.elapsedDistance/gamesCount);
-            (sessionFields.get(SESSION_AVG_STEPS) as FitContributor.Field).setData(steps/gamesCount);
-        } else {
-            (sessionFields.get(SESSION_AVG_TIME) as FitContributor.Field).setData(0);
-            (sessionFields.get(SESSION_AVG_DISTANCE) as FitContributor.Field).setData(0);
-            (sessionFields.get(SESSION_AVG_STEPS) as FitContributor.Field).setData(0);
+        (sessionFields.get(SESSION_PLAYER_SCORE)    as FitContributor.Field).setData(gamesPlayer);
+        (sessionFields.get(SESSION_OPPONENT_SCORE)  as FitContributor.Field).setData(gamesOpponent);
+        (sessionFields.get(SESSION_STEPS)           as FitContributor.Field).setData(steps);
+
+        (sessionFields.get(SESSION_AVG_TIME)        as FitContributor.Field)
+            .setData(gamesCount>0 ? info.timerTime/gamesCount/1000 : 0);
+        (sessionFields.get(SESSION_AVG_STEPS)       as FitContributor.Field)
+            .setData(gamesCount>0 ? steps/gamesCount : 0);
+
+        if (locEnabled) {
+            (sessionFields.get(SESSION_AVG_DISTANCE) as FitContributor.Field)
+                .setData(gamesCount>0 ? info.elapsedDistance/gamesCount : 0);
         }
+
         session.save();
         session = null;
     }
