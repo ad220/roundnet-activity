@@ -1,0 +1,35 @@
+<strings>
+    <string id="AppName">Roundnet</string>
+
+    <!-- Menu labels -->
+    <string id="Settings">Paramètres Roundnet</string>
+    <string id="Datafields">Écrans de données</string>
+    <string id="Sensors">Capteurs</string>
+
+    <string id="Distance">Distance</string>
+    <string id="Calories">Calories</string>
+    <string id="Score">Score</string>
+    <string id="Daytime">Heure</string>
+    <string id="Location">Position</string>
+    <string id="Temperature">Température</string>
+
+    <string id="Resume">Reprendre</string>
+    <string id="Save">Enregistrer</string>
+    <string id="Discard">Abandonner</string>
+
+    <!-- Units -->
+    <string id="StepsUnit"  translatable="true">pas</string>
+
+    <!-- FIT Contributions -->
+    <string id="Steps">Pas</string>
+    <string id="ScorePlayer">Points gagnés</string>
+    <string id="ScoreOpponent">Points perdus</string>
+    <string id="TimePerPoint">Temps moyen par point</string>
+    <string id="DistancePerPoint">Distance moyenne par point</string>
+    <string id="StepsPerPoint">Nombre de pas moyen par point</string>
+    <string id="GamesPlayer">Parties gagnées</string>
+    <string id="GamesOpponent">Parties perdues</string>
+    <string id="TimePerGame">Temps moyen par partie</string>
+    <string id="DistancePerGame">Distance moyenne par partie</string>
+    <string id="StepsPerGame">Nombre de pas moyen par partie</string>
+</strings>
