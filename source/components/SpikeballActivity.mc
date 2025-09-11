@@ -119,7 +119,7 @@ class SpikeballActivity {
     public function registerField(loopField as LoopField) as Void {
         self.loopField = loopField;
         timer.stop(fieldTimer);
-        fieldTimer = timer.start(loopField.method(:nextField), 10, true);
+        fieldTimer = timer.start(loopField.method(:nextField), 5, true);
     }
 
     public function stop() as Boolean {
@@ -135,7 +135,7 @@ class SpikeballActivity {
     public function resume() as Boolean {
         if (!session.isRecording()) {
             var status = session.start();
-            recordTimer = timer.start(method(:updateRecordFields), 2, true);
+            recordTimer = timer.start(method(:updateRecordFields), 1, true);
             return status;
         }
         return false;

@@ -56,7 +56,7 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
         BehaviorDelegate.initialize();
 
         self.timer = timer;
-        self.updater = timer.start(method(:update), 20, true);
+        self.updater = timer.start(method(:update), 10, true);
         self.lastGpsAccuracy = Position.getInfo().accuracy;
         Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method(:onPosition));
     }

@@ -7,10 +7,10 @@ class TimerController {
     private var timer as Timer.Timer;
     private var callbackList as Array<TimerCallback>;
 
-    public function initialize() {
+    public function initialize(periodInMs as Number) {
         self.timer = new Timer.Timer();
         self.callbackList = [];
-        self.timer.start(method(:triggerCallbacks), 500, true);
+        self.timer.start(method(:triggerCallbacks), periodInMs, true);
     }
 
     public function triggerCallbacks() as Void {

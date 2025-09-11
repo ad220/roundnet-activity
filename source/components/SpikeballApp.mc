@@ -13,7 +13,7 @@ class SpikeballApp extends Application.AppBase {
     function initialize() {
         AppBase.initialize();
 
-        self.timer = new TimerController();
+        self.timer = new TimerController(1000);
     }
 
     // onStart() is called on application start up
