@@ -1,0 +1,36 @@
+<resources>
+    <menu2 id="SettingsMenu" title="@Strings.Settings">
+        <menu-item id="datafields" label="@Strings.Datafields"/>
+        <menu-item id="sensors" label="@Strings.Sensors"/>
+    </menu2>
+
+    <menu2 id="DatafieldsMenu" title="@Strings.Datafields">
+        <toggle-menu-item id="distance" label="@Strings.Distance"/>
+        <toggle-menu-item id="calories" label="@Strings.Calories"/>
+        <toggle-menu-item id="score" label="@Strings.Score"/>
+        <toggle-menu-item id="temperature" label="@Strings.Temperature"/>
+        <toggle-menu-item id="daytime" label="@Strings.Daytime"/>
+    </menu2>
+    
+    <jsonData id="DefaultDatafieldsSettings">
+    {
+        "distance": true,
+        "calories": true,
+        "score": false,
+        "temperature": true,
+        "daytime": true
+    }
+    </jsonData>
+    
+    <menu2 id="SensorsMenu" title="@Strings.Sensors">
+        <toggle-menu-item id="location" label="@Strings.Location"/>
+        <toggle-menu-item id="temperature" label="@Strings.Temperature"/>
+    </menu2>
+
+    <jsonData id="DefaultSensorsSettings">
+    {
+        "location": true,
+        "temperature": true
+    }
+    </jsonData>
+</resources>

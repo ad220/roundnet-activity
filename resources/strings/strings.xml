@@ -1,5 +1,21 @@
-<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+<strings>
     <string id="AppName">Roundnet</string>
+
+    <!-- Menu labels -->
+    <string id="Settings">Roundnet Settings</string>
+    <string id="Datafields">Datafields</string>
+    <string id="Sensors">Sensors</string>
+
+    <string id="Distance">Distance</string>
+    <string id="Calories">Calories</string>
+    <string id="Score">Score</string>
+    <string id="Daytime">Daytime</string>
+    <string id="Location">Location</string>
+    <string id="Temperature">Temperature</string>
+
+    <string id="Resume">Resume</string>
+    <string id="Save">Save</string>
+    <string id="Discard">Discard</string>
 
     <!-- Units -->
     <string id="Kilometers" translatable="false">km</string>
@@ -8,10 +24,9 @@
     <string id="StepsUnit"  translatable="true">steps</string>
     <string id="Meters"     translatable="false">m</string>
     <string id="Seconds"    translatable="false">s</string>
-    <string id="NoUnit"     translatable="false"></string>
+    <string id="NoUnit"     translatable="false"> </string>
 
     <!-- FIT Contributions -->
-    <string id="Temperature">Temperature</string>
     <string id="Steps">Steps</string>
     <string id="ScorePlayer">Points won</string>
     <string id="ScoreOpponent">Points lost</string>
@@ -23,5 +38,5 @@
     <string id="TimePerGame">Average time per game</string>
     <string id="DistancePerGame">Average distance per game</string>
     <string id="StepsPerGame">Average steps per game</string>
-
+    
 </strings>

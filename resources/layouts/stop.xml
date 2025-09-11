@@ -1,5 +1,5 @@
 <menu2 id="StopMenu">
-    <icon-menu-item id="resume" label="Resume" icon="@Drawables.Start"/>
-    <icon-menu-item id="save" label="Save" icon="@Drawables.Save"/>
-    <icon-menu-item id="discard" label="Discard" icon="@Drawables.Delete"/>
+    <icon-menu-item id="resume" label="@Strings.Resume" icon="@Drawables.Start"/>
+    <icon-menu-item id="save" label="@Strings.Save" icon="@Drawables.Save"/>
+    <icon-menu-item id="discard" label="@Strings.Discard" icon="@Drawables.Delete"/>
 </menu2>

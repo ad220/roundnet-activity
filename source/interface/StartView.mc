@@ -63,9 +63,21 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
 
     public function onSelect() as Boolean {
         timer.stop(updater);
+        Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, null);
         var activity = new SpikeballActivity(timer);
         WatchUi.pushView(new SpikeballActivityView(activity), new SpikeballActivityDelegate(activity, timer), SLIDE_UP);
         return true;
+    }
+
+    public function onMenu() as Boolean {
+        timer.stop(updater);
+        Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, null);
+        WatchUi.pushView(new Rez.Menus.SettingsMenu(), new SettingsDelegate(), SLIDE_LEFT);
+        return true;
+    }
+
+    public function onPreviousPage() as Boolean {
+        return onMenu();
     }
 
     public function onPosition(loc as Position.Info) as Void {
