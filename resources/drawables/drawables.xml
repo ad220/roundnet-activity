@@ -1,13 +1,9 @@
 <drawables>
-    <bitmap id="LauncherIcon" filename="ball.png" dithering="none">
-        <palette>
-            <color>FFAA00</color>
-        </palette>
-    </bitmap>
+    <bitmap id="LauncherIcon" filename="ball.png" dithering="none"/>
     
-    <bitmap id="Steps" filename="steps.png" scaleX="10%" scaleRelativeTo="screen"/>
-    <bitmap id="Calories" filename="calories.png" scaleX="10%" scaleRelativeTo="screen"/>
-    <bitmap id="Temperature" filename="temperature.png" scaleX="10%" scaleRelativeTo="screen"/>
+    <bitmap id="Steps" filename="steps.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
+    <bitmap id="Calories" filename="calories.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
+    <bitmap id="Temperature" filename="temperature.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
 
     <bitmap id="Start" filename="start.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
     <bitmap id="Save" filename="save.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
