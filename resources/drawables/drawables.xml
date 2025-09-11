@@ -5,23 +5,9 @@
         </palette>
     </bitmap>
     
-    <bitmap id="Steps" filename="steps.png" scaleX="10%" scaleRelativeTo="screen">
-        <palette>
-            <color>AAAAAA</color>
-        </palette>
-    </bitmap>
-    
-    <bitmap id="Calories" filename="calories.png" scaleX="10%" scaleRelativeTo="screen">
-        <palette>
-            <color>AAAAAA</color>
-        </palette>
-    </bitmap>
-    
-    <bitmap id="Temperature" filename="temperature.png" scaleX="10%" scaleRelativeTo="screen">
-        <palette>
-            <color>AAAAAA</color>
-        </palette>
-    </bitmap>
+    <bitmap id="Steps" filename="steps.png" scaleX="10%" scaleRelativeTo="screen"/>
+    <bitmap id="Calories" filename="calories.png" scaleX="10%" scaleRelativeTo="screen"/>
+    <bitmap id="Temperature" filename="temperature.png" scaleX="10%" scaleRelativeTo="screen"/>
 
     <bitmap id="Start" filename="start.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
     <bitmap id="Save" filename="save.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
