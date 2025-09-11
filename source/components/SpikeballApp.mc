@@ -8,14 +8,12 @@ using InterfaceComponentsManager as ICM;
 
 class SpikeballApp extends Application.AppBase {
 
-    private var activity as SpikeballActivity;
     private var timer as TimerController;
 
     function initialize() {
         AppBase.initialize();
 
         self.timer = new TimerController();
-        self.activity = new SpikeballActivity(timer);
     }
 
     // onStart() is called on application start up
@@ -28,12 +26,11 @@ class SpikeballApp extends Application.AppBase {
     // onStop() is called when your application is exiting
     function onStop(state as Dictionary?) as Void {
         Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
-        activity.close();
     }
 
     // Return the initial view of your application here
     function getInitialView() as [Views] or [Views, InputDelegates] {
-        return [ new SpikeballActivityView(activity, timer), new SpikeballActivityDelegate(activity, timer) ];
+        return [new StartView(), new StartDelegate(timer)];
     }
 
 }

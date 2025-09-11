@@ -38,6 +38,7 @@ class LoopField extends WatchUi.Drawable {
             WatchUi.loadResource(Rez.Strings.Celsius),
         ];
         nextField();
+        activity.registerField(self);
     }
 
     public function draw(dc as $.Toybox.Graphics.Dc) as Void {

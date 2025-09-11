@@ -9,16 +9,15 @@ class SpikeballActivityView extends WatchUi.View {
     private var activity as SpikeballActivity;
     private var loopField as WatchUi.Drawable;
 
-    function initialize(activity as SpikeballActivity, timer as TimerController) {
+    function initialize(activity as SpikeballActivity) {
         View.initialize();
 
         self.activity = activity;
         self.loopField = new LoopField(activity);
-        timer.start(loopField.method(:nextField), 10, true);
     }
 
     function onLayout(dc as Dc) as Void {
-        setLayout(Rez.Layouts.ScoreLayout(dc));
+        setLayout(Rez.Layouts.ActivityLayout(dc));
     }
 
     function onShow() as Void {
@@ -38,7 +37,6 @@ class SpikeballActivityView extends WatchUi.View {
         dc.setClip(ICM.scaleX(0.333), ICM.scaleY(0.333), ICM.scaleX(0.667), ICM.scaleY(0.333));
         loopField.draw(dc);
         dc.clearClip();
-
     }
 
     function onHide() as Void {
@@ -49,22 +47,22 @@ class SpikeballActivityView extends WatchUi.View {
 class SpikeballActivityDelegate extends BehaviorDelegate {
 
     private var activity as SpikeballActivity;
+    private var timer as TimerController;
 
 
     public function initialize(activity as SpikeballActivity, timer as TimerController) {
         BehaviorDelegate.initialize();
 
         self.activity = activity;
-        timer.start(method(:updateView), 2, true);
+        self.timer = timer;
     }
 
     public function onSelect() as Boolean {
-        activity.startStop();
+        activity.stop();
+        var menu = new Rez.Menus.StopMenu();
+        menu.setTitle(activity.getFormattedTime());
+        WatchUi.switchToView(menu, new StopDelegate(activity, timer), WatchUi.SLIDE_UP);
         return true;
-    }
-
-    public function updateView() as Void {
-        WatchUi.requestUpdate();
     }
 
     public function onPreviousPage() as Boolean {

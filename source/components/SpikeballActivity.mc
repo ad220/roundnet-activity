@@ -56,6 +56,8 @@ class SpikeballActivity {
 
     private var lapFields as Dictionary;
     private var sessionFields as Dictionary;
+    private var loopField as LoopField?;
+    private var fieldTimer as TimerCallback?;
 
     public function initialize(timer as TimerController) {
 
@@ -88,7 +90,7 @@ class SpikeballActivity {
             });
         }
 
-        tempField = session.createField("temperature", 0, FitContributor.DATA_TYPE_SINT8, {:units=>"°C", :nativeNum=>RECORD_TEMPERATURE});
+        self.tempField = session.createField("temperature", 0, FitContributor.DATA_TYPE_SINT8, {:units=>"°C", :nativeNum=>RECORD_TEMPERATURE});
 
         self.lapFields = {};
         self.lapFields.put(LAP_PLAYER_SCORE,    session.createField("player_score",     1, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP, :nativeNum => LAP_PLAYER_SCORE}));
@@ -105,29 +107,52 @@ class SpikeballActivity {
         self.sessionFields.put(SESSION_AVG_TIME,        session.createField("avg_time",         10, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION}));
         self.sessionFields.put(SESSION_AVG_DISTANCE,    session.createField("avg_distance",     11, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION}));
         self.sessionFields.put(SESSION_AVG_STEPS,       session.createField("avg_steps",        12, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION}));
+
+        // TODO: handle error during session start
+        System.println("Session start result: "+resume());
     }
 
     public function isRecording() as Boolean {
         return session.isRecording();
     }
 
-    public function startStop() as Boolean {
+    public function registerField(loopField as LoopField) as Void {
+        self.loopField = loopField;
+        timer.stop(fieldTimer);
+        fieldTimer = timer.start(loopField.method(:nextField), 10, true);
+    }
+
+    public function stop() as Boolean {
         if (session.isRecording()) {
+            var status = session.stop();
             timer.stop(recordTimer);
-            return !session.stop();
-        } else {
-            // TODO: remove var re-init once starting and stoping views added
-            time = 0;
-            timeOnLap = 0;
-            distanceOnLap = 0;
-            scorePlayer = 0;
-            scoreOpponent = 0;
-            gamesPlayer = 0;
-            gamesOpponent = 0;
-            stepsOnStart = ActivityMonitor.getInfo().steps;
-            stepsOnLap = ActivityMonitor.getInfo().steps;
+            timer.stop(fieldTimer);
+            return status;
+        }
+        return false;
+    }
+
+    public function resume() as Boolean {
+        if (!session.isRecording()) {
+            var status = session.start();
             recordTimer = timer.start(method(:updateRecordFields), 2, true);
-            return session.start();
+            return status;
+        }
+        return false;
+    }
+
+    public function updateRecordFields() as Void {
+        if (session.isRecording()) {
+            time = Activity.getActivityInfo().timerTime / 1000;
+
+            var temp = getTemperature();
+            if (temp!=null) {
+                temp = temp.toNumber();
+                if (temp!=lastTemp) {
+                    tempField.setData(temp);
+                    lastTemp = temp;
+                }
+            }
         }
     }
 
@@ -135,8 +160,8 @@ class SpikeballActivity {
         if (session.isRecording()) {
             updateLapFields();
             session.addLap();
+            WatchUi.requestUpdate();
         }
-        WatchUi.requestUpdate();
     }
 
     private function updateLapFields() as Void {
@@ -148,9 +173,15 @@ class SpikeballActivity {
         (lapFields.get(LAP_PLAYER_SCORE) as FitContributor.Field).setData(scorePlayer);
         (lapFields.get(LAP_OPPONENT_SCORE) as FitContributor.Field).setData(scoreOpponent);
         (lapFields.get(LAP_STEPS) as FitContributor.Field).setData(steps - stepsOnLap);
-        (lapFields.get(LAP_AVG_TIME) as FitContributor.Field).setData((currentTime - timeOnLap)/pointsCount/1000);
-        (lapFields.get(LAP_AVG_DISTANCE) as FitContributor.Field).setData((currentDistance - distanceOnLap)/pointsCount);
-        (lapFields.get(LAP_AVG_STEPS) as FitContributor.Field).setData((steps - stepsOnLap)/pointsCount);
+        if (pointsCount>0) {
+            (lapFields.get(LAP_AVG_TIME) as FitContributor.Field).setData((currentTime - timeOnLap)/pointsCount/1000);
+            (lapFields.get(LAP_AVG_DISTANCE) as FitContributor.Field).setData((currentDistance - distanceOnLap)/pointsCount);
+            (lapFields.get(LAP_AVG_STEPS) as FitContributor.Field).setData((steps - stepsOnLap)/pointsCount);
+        } else {
+            (lapFields.get(LAP_AVG_TIME) as FitContributor.Field).setData(0);
+            (lapFields.get(LAP_AVG_DISTANCE) as FitContributor.Field).setData(0);
+            (lapFields.get(LAP_AVG_STEPS) as FitContributor.Field).setData(0);
+        }
         stepsOnLap = steps;
         
         // TODO: handle tie game better
@@ -171,31 +202,22 @@ class SpikeballActivity {
         (sessionFields.get(SESSION_PLAYER_SCORE) as FitContributor.Field).setData(gamesPlayer);
         (sessionFields.get(SESSION_OPPONENT_SCORE) as FitContributor.Field).setData(gamesOpponent);
         (sessionFields.get(SESSION_STEPS) as FitContributor.Field).setData(steps);
-        (sessionFields.get(SESSION_AVG_TIME) as FitContributor.Field).setData(info.timerTime/gamesCount/1000);
-        (sessionFields.get(SESSION_AVG_DISTANCE) as FitContributor.Field).setData(info.elapsedDistance/gamesCount);
-        (sessionFields.get(SESSION_AVG_STEPS) as FitContributor.Field).setData(steps/gamesCount);
+        if (gamesCount>0) {
+            (sessionFields.get(SESSION_AVG_TIME) as FitContributor.Field).setData(info.timerTime/gamesCount/1000);
+            (sessionFields.get(SESSION_AVG_DISTANCE) as FitContributor.Field).setData(info.elapsedDistance/gamesCount);
+            (sessionFields.get(SESSION_AVG_STEPS) as FitContributor.Field).setData(steps/gamesCount);
+        } else {
+            (sessionFields.get(SESSION_AVG_TIME) as FitContributor.Field).setData(0);
+            (sessionFields.get(SESSION_AVG_DISTANCE) as FitContributor.Field).setData(0);
+            (sessionFields.get(SESSION_AVG_STEPS) as FitContributor.Field).setData(0);
+        }
         session.save();
+        session = null;
     }
 
     public function discard() as Void {
         session.discard();
-    }
-
-    public function close() as Void {
         session = null;
-    }
-
-    public function updateRecordFields() as Void {
-        time = Activity.getActivityInfo().timerTime / 1000;
-
-        var temp = getTemperature();
-        if (temp!=null) {
-            temp = temp.toNumber();
-            if (temp!=lastTemp) {
-                tempField.setData(temp);
-                lastTemp = temp;
-            }
-        }
     }
 
     public function addScore(teamId as Team) as Void {
@@ -216,18 +238,17 @@ class SpikeballActivity {
     }
 
     public function getSteps() as Number {
-        var steps = ActivityMonitor.getInfo().steps - stepsOnStart;
-        return steps!=null ? steps : 6942;
+        return ActivityMonitor.getInfo().steps - stepsOnStart;
     }
 
     public function getDistance() as Number {
         var distance = Activity.getActivityInfo().elapsedDistance;
-        return distance!=null ? distance.toNumber() : 4269;
+        return distance!=null ? distance.toNumber() : 0;
     }
 
     public function getKcal() as Number {
         var kcal = Activity.getActivityInfo().calories;
-        return kcal!=null ? kcal : 420;
+        return kcal!=null ? kcal : 0;
     }
 
     public function getTemperature() as Float? {
@@ -235,6 +256,6 @@ class SpikeballActivity {
     }
 
     public function getFormattedTime() as String{
-        return (time/3600).format("%01d") + 146.toChar() + (time%3600/60).format("%02d") + 148.toChar() + (time%60).format("%02d");
+        return (time/3600).format("%01d") + "'" + (time%3600/60).format("%02d") + '"' + (time%60).format("%02d");
     }
 }
