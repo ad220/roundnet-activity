@@ -227,7 +227,7 @@ class RoundnetActivity {
         (sessionFields.get(SESSION_STEPS)           as FitContributor.Field).setData(steps);
 
         (sessionFields.get(SESSION_AVG_TIME)        as FitContributor.Field)
-            .setData(gamesCount>0 ? info.timerTime/gamesCount/1000 : 0);
+            .setData(gamesCount>0 ? info.timerTime/gamesCount/60000 : 0);
         (sessionFields.get(SESSION_AVG_STEPS)       as FitContributor.Field)
             .setData(gamesCount>0 ? steps/gamesCount : 0);
 

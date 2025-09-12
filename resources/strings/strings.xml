@@ -24,6 +24,7 @@
     <string id="StepsUnit"  translatable="true">steps</string>
     <string id="Meters"     translatable="false">m</string>
     <string id="Seconds"    translatable="false">s</string>
+    <string id="Minutes"    translatable="false">min</string>
     <string id="NoUnit"     translatable="false"> </string>
 
     <!-- FIT Contributions -->

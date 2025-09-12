@@ -1,17 +1,17 @@
 <fitContributions>
         <fitField id="0" displayInChart="true" chartTitle="@Strings.Temperature" dataLabel="@Strings.Temperature" unitLabel="@Strings.Celsius" fillColor="#555555" sortOrder="0"/>
         
-        <fitField id="1" displayInActivitySummary="true" unitLabel="@Strings.NoUnit"    sortOrder="1" dataLabel="@Strings.ScorePlayer"/>
-        <fitField id="2" displayInActivitySummary="true" unitLabel="@Strings.NoUnit"    sortOrder="2" dataLabel="@Strings.ScoreOpponent"/>
-        <fitField id="3" displayInActivitySummary="true" unitLabel="@Strings.StepsUnit" sortOrder="3" dataLabel="@Strings.Steps"/>
-        <fitField id="4" displayInActivitySummary="true" unitLabel="@Strings.Seconds"   sortOrder="4" dataLabel="@Strings.TimePerPoint"/>
-        <fitField id="5" displayInActivitySummary="true" unitLabel="@Strings.Meters"    sortOrder="5" dataLabel="@Strings.DistancePerPoint"/>
-        <fitField id="6" displayInActivitySummary="true" unitLabel="@Strings.StepsUnit" sortOrder="6" dataLabel="@Strings.StepsPerPoint"/>
+        <fitField id="1" displayInActivityLaps="true" unitLabel="@Strings.NoUnit"    sortOrder="1" dataLabel="@Strings.ScorePlayer"/>
+        <fitField id="2" displayInActivityLaps="true" unitLabel="@Strings.NoUnit"    sortOrder="2" dataLabel="@Strings.ScoreOpponent"/>
+        <fitField id="3" displayInActivityLaps="true" unitLabel="@Strings.StepsUnit" sortOrder="3" dataLabel="@Strings.Steps"/>
+        <fitField id="4" displayInActivityLaps="true" unitLabel="@Strings.Seconds"   sortOrder="4" dataLabel="@Strings.TimePerPoint"/>
+        <fitField id="5" displayInActivityLaps="true" unitLabel="@Strings.Meters"    sortOrder="5" dataLabel="@Strings.DistancePerPoint"/>
+        <fitField id="6" displayInActivityLaps="true" unitLabel="@Strings.StepsUnit" sortOrder="6" dataLabel="@Strings.StepsPerPoint"/>
 
         <fitField id="7" displayInActivitySummary="true" unitLabel="@Strings.NoUnit"    sortOrder="7" dataLabel="@Strings.GamesPlayer"/>
         <fitField id="8" displayInActivitySummary="true" unitLabel="@Strings.NoUnit"    sortOrder="8" dataLabel="@Strings.GamesOpponent"/>
         <fitField id="9" displayInActivitySummary="true" unitLabel="@Strings.StepsUnit" sortOrder="9" dataLabel="@Strings.Steps"/>
-        <fitField id="10" displayInActivitySummary="true" unitLabel="@Strings.Seconds"  sortOrder="10" dataLabel="@Strings.TimePerGame"/>
+        <fitField id="10" displayInActivitySummary="true" unitLabel="@Strings.Minutes"  sortOrder="10" dataLabel="@Strings.TimePerGame"/>
         <fitField id="11" displayInActivitySummary="true" unitLabel="@Strings.Meters"   sortOrder="11" dataLabel="@Strings.DistancePerGame"/>
         <fitField id="12" displayInActivitySummary="true" unitLabel="@Strings.StepsUnit" sortOrder="12" dataLabel="@Strings.StepsPerGame"/>
 </fitContributions>
