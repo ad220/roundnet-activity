@@ -1,1 +1,37 @@
 project.manifest = manifest.xml
+
+base.resourcePath = resources; resources-sysgt6
+
+# Devices with API support lower than System 6 (v3.4.0)
+d2air.resourcePath = resources; resources-syslt6
+d2delta.resourcePath = resources; resources-syslt6
+d2deltapx.resourcePath = resources; resources-syslt6
+d2deltas.resourcePath = resources; resources-syslt6
+descentmk1.resourcePath = resources; resources-syslt6
+fenix5.resourcePath = resources; resources-syslt6
+fenix5plus.resourcePath = resources; resources-syslt6
+fenix5s.resourcePath = resources; resources-syslt6
+fenix5splus.resourcePath = resources; resources-syslt6
+fenix5x.resourcePath = resources; resources-syslt6
+fenix5xplus.resourcePath = resources; resources-syslt6
+fenixchronos.resourcePath = resources; resources-syslt6
+fr245.resourcePath = resources; resources-syslt6
+fr245m.resourcePath = resources; resources-syslt6
+fr645.resourcePath = resources; resources-syslt6
+fr645m.resourcePath = resources; resources-syslt6
+fr745.resourcePath = resources; resources-syslt6
+fr935.resourcePath = resources; resources-syslt6
+fr945.resourcePath = resources; resources-syslt6
+legacyherocaptainmarvel.resourcePath = resources; resources-syslt6
+legacyherofirstavenger.resourcePath = resources; resources-syslt6
+legacysagadarthvader.resourcePath = resources; resources-syslt6
+legacysagarey.resourcePath = resources; resources-syslt6
+venu.resourcePath = resources; resources-syslt6
+venud.resourcePath = resources; resources-syslt6
+venusq.resourcePath = resources; resources-syslt6
+venusqm.resourcePath = resources; resources-syslt6
+vivoactive3.resourcePath = resources; resources-syslt6
+vivoactive3m.resourcePath = resources; resources-syslt6
+vivoactive3mlte.resourcePath = resources; resources-syslt6
+vivoactive4.resourcePath = resources; resources-syslt6
+vivoactive4s.resourcePath = resources; resources-syslt6
