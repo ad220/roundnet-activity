@@ -99,8 +99,8 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
     public function onSelect() as Boolean {
         getApp().timer.stop(updater);
         Position.enableLocationEvents(locationSetting, null);
-        var activity = new SpikeballActivity();
-        WatchUi.pushView(new SpikeballActivityView(activity), new SpikeballActivityDelegate(activity), SLIDE_UP);
+        var activity = new RoundnetActivity();
+        WatchUi.pushView(new RoundnetActivityView(activity), new RoundnetActivityDelegate(activity), SLIDE_UP);
         return true;
     }
 

@@ -7,7 +7,7 @@ import Toybox.Sensor;
 import Toybox.FitContributor;
 
 
-class SpikeballActivity {
+class RoundnetActivity {
 
     public const MESG_TYPE_LENGTH = 101;
 
@@ -107,7 +107,7 @@ class SpikeballActivity {
         if (tempEnabled) { Sensor.enableSensorType(Sensor.SENSOR_TEMPERATURE); }
 
         self.session = ActivityRecording.createSession({    // set up recording session
-            :name=>"Spikeball",                             // set session name
+            :name=>"Roundnet",                             // set session name
             :sport=> Activity.SPORT_GENERIC,                 // set sport type
             :subSport=> Activity.SUB_SPORT_MATCH           // set sub sport type
         });
@@ -121,7 +121,7 @@ class SpikeballActivity {
         Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE, Sensor.SENSOR_TEMPERATURE]);
 
         self.session = ActivityRecording.createSession({
-            :name=>"Spikeball",
+            :name=>"Roundnet",
             :sport=> ActivityRecording.SPORT_GENERIC,
             :subSport=> ActivityRecording.SUB_SPORT_MATCH,
         });

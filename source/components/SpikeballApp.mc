@@ -6,7 +6,7 @@ import Toybox.Position;
 
 using InterfaceComponentsManager as ICM;
 
-class SpikeballApp extends Application.AppBase {
+class RoundnetApp extends Application.AppBase {
 
     public var timer as TimerController;
     public var fieldsSettings as Dictionary;
@@ -53,6 +53,6 @@ class SpikeballApp extends Application.AppBase {
     }
 }
 
-function getApp() as SpikeballApp {
-    return Application.getApp() as SpikeballApp;
+function getApp() as RoundnetApp {
+    return Application.getApp() as RoundnetApp;
 }

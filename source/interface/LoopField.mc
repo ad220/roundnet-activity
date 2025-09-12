@@ -17,7 +17,7 @@ class LoopField extends WatchUi.Drawable {
         FIELD_COUNT,
     }
 
-    private var activity as SpikeballActivity;
+    private var activity as RoundnetActivity;
     private var stateIndex as Number;
     private var enabledFields as Array<FieldId>;
     private var label as String;
@@ -25,7 +25,7 @@ class LoopField extends WatchUi.Drawable {
     private var units as Array<String?>;
 
 
-    public function initialize(activity as SpikeballActivity) {
+    public function initialize(activity as RoundnetActivity) {
         Drawable.initialize({});
 
         self.activity = activity;
@@ -86,7 +86,7 @@ class LoopField extends WatchUi.Drawable {
                 label = activity.getKcal() + units[FIELD_CALORIES];
                 break;
             case FIELD_SCORE:
-                label = activity.getGames(SpikeballActivity.TEAM_PLAYER)+" - "+activity.getGames(SpikeballActivity.TEAM_OPPONENT);
+                label = activity.getGames(RoundnetActivity.TEAM_PLAYER)+" - "+activity.getGames(RoundnetActivity.TEAM_OPPONENT);
                 break;
             case FIELD_TEMPERATURE:
                 var temp = activity.getTemperature();

@@ -4,12 +4,12 @@ import Toybox.WatchUi;
 
 using InterfaceComponentsManager as ICM;
 
-class SpikeballActivityView extends WatchUi.View {
+class RoundnetActivityView extends WatchUi.View {
 
-    private var activity as SpikeballActivity;
+    private var activity as RoundnetActivity;
     private var loopField as WatchUi.Drawable;
 
-    function initialize(activity as SpikeballActivity) {
+    function initialize(activity as RoundnetActivity) {
         View.initialize();
 
         self.activity = activity;
@@ -27,8 +27,8 @@ class SpikeballActivityView extends WatchUi.View {
         View.onUpdate(dc);
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(ICM.scaleX(0.219), ICM.scaleY(0.500), ICM.fontLarge, activity.getScore(SpikeballActivity.TEAM_OPPONENT), ICM.JTEXT_MID);
-        dc.drawText(ICM.scaleY(0.295), ICM.scaleY(0.816), ICM.fontLarge, activity.getScore(SpikeballActivity.TEAM_PLAYER), ICM.JTEXT_MID);
+        dc.drawText(ICM.scaleX(0.219), ICM.scaleY(0.500), ICM.fontLarge, activity.getScore(RoundnetActivity.TEAM_OPPONENT), ICM.JTEXT_MID);
+        dc.drawText(ICM.scaleY(0.295), ICM.scaleY(0.816), ICM.fontLarge, activity.getScore(RoundnetActivity.TEAM_PLAYER), ICM.JTEXT_MID);
         dc.drawText(ICM.scaleX(0.460), ICM.scaleY(0.185), ICM.fontMedium, activity.getFormattedTime(), ICM.JTEXT_LEFT);
 
         var hr = activity.getHR();
@@ -44,12 +44,12 @@ class SpikeballActivityView extends WatchUi.View {
 
 }
 
-class SpikeballActivityDelegate extends BehaviorDelegate {
+class RoundnetActivityDelegate extends BehaviorDelegate {
 
-    private var activity as SpikeballActivity;
+    private var activity as RoundnetActivity;
 
 
-    public function initialize(activity as SpikeballActivity) {
+    public function initialize(activity as RoundnetActivity) {
         BehaviorDelegate.initialize();
 
         self.activity = activity;
@@ -64,12 +64,12 @@ class SpikeballActivityDelegate extends BehaviorDelegate {
     }
 
     public function onPreviousPage() as Boolean {
-        activity.addScore(SpikeballActivity.TEAM_OPPONENT);
+        activity.addScore(RoundnetActivity.TEAM_OPPONENT);
         return true;
     }
 
     public function onNextPage() as Boolean {
-        activity.addScore(SpikeballActivity.TEAM_PLAYER);
+        activity.addScore(RoundnetActivity.TEAM_PLAYER);
         return true;
     }
 
