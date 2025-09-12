@@ -44,7 +44,8 @@ class SpikeballApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as [Views] or [Views, InputDelegates] {
-        return [new StartView(), new StartDelegate()];
+        var delegate = new StartDelegate(); 
+        return [new StartView(delegate.method(:registerUpdates)), delegate];
     }
 
     public function getLocationSetting() as Position.LocationAcquisitionType {

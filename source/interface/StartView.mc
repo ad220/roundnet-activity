@@ -11,12 +11,14 @@ class StartView extends WatchUi.View {
 
     private var locationEnabled as Boolean;
     private var temperatureEnabled as Boolean;
+    private var onShowCallback as Method() as Void;
 
-    public function initialize() {
+    public function initialize(onShowCallback as Method() as Void) {
         View.initialize();
 
         self.locationEnabled = true;
         self.temperatureEnabled = true;
+        self.onShowCallback = onShowCallback;
     }
 
     public function onLayout(dc as Graphics.Dc) as Void {
@@ -27,11 +29,14 @@ class StartView extends WatchUi.View {
         var sensorsSettings = getApp().sensorsSettings;
         locationEnabled = sensorsSettings.get("location") as Boolean;
         temperatureEnabled = sensorsSettings.get("temperature") as Boolean;
+        onShowCallback.invoke();
     }
 
     public function onUpdate(dc as Graphics.Dc) as Void {
         View.onUpdate(dc);
-        dc.setAntiAlias(true);
+        if (dc has :setAntiAlias) {
+            dc.setAntiAlias(true);
+        }
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.fillCircle(ICM.scaleX(0.06), ICM.scaleY(0.465), ICM.scaleX(0.007));
         dc.fillCircle(ICM.scaleX(0.06), ICM.scaleY(0.5), ICM.scaleX(0.007));
@@ -82,7 +87,7 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
         registerUpdates();
     }
 
-    public function registerUpdates() {
+    public function registerUpdates() as Void {
         self.locationSetting = getApp().getLocationSetting();
         self.updater = getApp().timer.start(method(:update), 10, true);
         Position.enableLocationEvents(locationSetting, method(:onPosition));

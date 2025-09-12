@@ -26,10 +26,6 @@ class StopDelegate extends WatchUi.Menu2InputDelegate {
                 activity.discard();
             }
             WatchUi.popView(SLIDE_DOWN);
-            var delegate = WatchUi.getCurrentView()[1];
-            if (delegate instanceof StartDelegate) {
-                delegate.registerUpdates();
-            }
         }
     }
 }

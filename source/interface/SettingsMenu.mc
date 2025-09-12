@@ -22,15 +22,6 @@ class SettingsDelegate extends WatchUi.Menu2InputDelegate {
             WatchUi.pushView(menu, new SubSensorsDelegate(menu, settings), SLIDE_LEFT);
         }
     }
-
-    public function onBack() as Void {
-        Menu2InputDelegate.onBack();
-
-        var delegate = WatchUi.getCurrentView()[1];
-        if (delegate instanceof StartDelegate) {
-            delegate.registerUpdates();
-        }
-    }
 }
 
 
