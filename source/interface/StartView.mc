@@ -48,24 +48,27 @@ class StartView extends WatchUi.View {
 
         if (locationEnabled) {
             var gpsQuality = Position.getInfo().accuracy;
+            dc.setPenWidth(ICM.scaleX(0.005));
             dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][gpsQuality], Graphics.COLOR_TRANSPARENT);
             dc.fillRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX((gpsQuality+1)*0.015), ICM.scaleY(0.02));
             dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
             dc.drawRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX(0.08), ICM.scaleY(0.02));
         } else {
+            dc.setPenWidth(ICM.scaleX(0.008));
             dc.setColor(0xFF0000, Graphics.COLOR_TRANSPARENT);
-            dc.drawLine(ICM.scaleX(0.52), ICM.scaleY(0.26), ICM.scaleX(0.54), ICM.scaleY(0.28));
-            dc.drawLine(ICM.scaleX(0.52), ICM.scaleY(0.28), ICM.scaleX(0.54), ICM.scaleY(0.26));
+            dc.drawLine(ICM.scaleX(0.515), ICM.scaleY(0.255), ICM.scaleX(0.54), ICM.scaleY(0.28));
+            dc.drawLine(ICM.scaleX(0.515), ICM.scaleY(0.28), ICM.scaleX(0.54), ICM.scaleY(0.255));
         }
 
+        dc.setPenWidth(ICM.scaleX(0.008));
         if (temperatureEnabled) {
             dc.setColor(0x00AA00, Graphics.COLOR_TRANSPARENT);
-            dc.drawLine(ICM.scaleX(0.52), ICM.scaleY(0.17), ICM.scaleX(0.53), ICM.scaleY(0.18));
-            dc.drawLine(ICM.scaleX(0.53), ICM.scaleY(0.18), ICM.scaleX(0.54), ICM.scaleY(0.16));
+            dc.drawLine(ICM.scaleX(0.515), ICM.scaleY(0.1675), ICM.scaleX(0.525), ICM.scaleY(0.18));
+            dc.drawLine(ICM.scaleX(0.525), ICM.scaleY(0.18), ICM.scaleX(0.54), ICM.scaleY(0.155));
         } else {
             dc.setColor(0xFF0000, Graphics.COLOR_TRANSPARENT);
-            dc.drawLine(ICM.scaleX(0.52), ICM.scaleY(0.16), ICM.scaleX(0.54), ICM.scaleY(0.18));
-            dc.drawLine(ICM.scaleX(0.52), ICM.scaleY(0.18), ICM.scaleX(0.54), ICM.scaleY(0.16));
+            dc.drawLine(ICM.scaleX(0.515), ICM.scaleY(0.155), ICM.scaleX(0.54), ICM.scaleY(0.18));
+            dc.drawLine(ICM.scaleX(0.515), ICM.scaleY(0.18), ICM.scaleX(0.54), ICM.scaleY(0.155));
         }
     }
 

@@ -66,6 +66,7 @@ class LoopField extends WatchUi.Drawable {
         dc.drawText(ICM.scaleX(0.65), ICM.scaleY(0.5), ICM.fontSmall, label, ICM.JTEXT_LEFT);
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.setPenWidth(ICM.scaleX(0.005));
         var count = enabledFields.size();
         for (var i=0; i<count; i++) {
             dc.drawCircle(ICM.scaleX(0.69) + ICM.scaleX(0.04)*(i-count/2), ICM.scaleY(0.62), ICM.scaleX(0.01));
