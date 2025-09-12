@@ -1,6 +1,7 @@
 project.manifest = manifest.xml
 
 base.resourcePath = resources; resources-sysgt6
+base.excludeAnnotations = syslt6
 
 # Devices with API support lower than System 6 (v3.4.0)
 d2air.resourcePath = resources; resources-syslt6
@@ -35,3 +36,36 @@ vivoactive3m.resourcePath = resources; resources-syslt6
 vivoactive3mlte.resourcePath = resources; resources-syslt6
 vivoactive4.resourcePath = resources; resources-syslt6
 vivoactive4s.resourcePath = resources; resources-syslt6
+
+d2air.excludeAnnotations = sysgt6
+d2delta.excludeAnnotations = sysgt6
+d2deltapx.excludeAnnotations = sysgt6
+d2deltas.excludeAnnotations = sysgt6
+descentmk1.excludeAnnotations = sysgt6
+fenix5.excludeAnnotations = sysgt6
+fenix5plus.excludeAnnotations = sysgt6
+fenix5s.excludeAnnotations = sysgt6
+fenix5splus.excludeAnnotations = sysgt6
+fenix5x.excludeAnnotations = sysgt6
+fenix5xplus.excludeAnnotations = sysgt6
+fenixchronos.excludeAnnotations = sysgt6
+fr245.excludeAnnotations = sysgt6
+fr245m.excludeAnnotations = sysgt6
+fr645.excludeAnnotations = sysgt6
+fr645m.excludeAnnotations = sysgt6
+fr745.excludeAnnotations = sysgt6
+fr935.excludeAnnotations = sysgt6
+fr945.excludeAnnotations = sysgt6
+legacyherocaptainmarvel.excludeAnnotations = sysgt6
+legacyherofirstavenger.excludeAnnotations = syslt6
+legacysagadarthvader.excludeAnnotations = syslt6
+legacysagarey.excludeAnnotations = syslt6
+venu.excludeAnnotations = syslt6
+venud.excludeAnnotations = syslt6
+venusq.excludeAnnotations = syslt6
+venusqm.excludeAnnotations = syslt6
+vivoactive3.excludeAnnotations = syslt6
+vivoactive3m.excludeAnnotations = syslt6
+vivoactive3mlte.excludeAnnotations = syslt6
+vivoactive4.excludeAnnotations = syslt6
+vivoactive4s.excludeAnnotations = syslt6

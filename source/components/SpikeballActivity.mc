@@ -74,27 +74,7 @@ class SpikeballActivity {
         
         self.locEnabled = getApp().sensorsSettings.get("location") as Boolean;
         self.tempEnabled = getApp().sensorsSettings.get("temperature") as Boolean;
-        if (Toybox.Sensor has :enableSensorType) { // API level >= 3.2.0
-            Sensor.enableSensorType(Sensor.SENSOR_HEARTRATE);
-            if (tempEnabled) { Sensor.enableSensorType(Sensor.SENSOR_TEMPERATURE); }
-
-            self.session = ActivityRecording.createSession({    // set up recording session
-                :name=>"Spikeball",                             // set session name
-                :sport=> Activity.SPORT_GENERIC,                 // set sport type
-                :subSport=> Activity.SUB_SPORT_MATCH           // set sub sport type
-            });
-        } else {
-            System.println("Older device"); // API level < 3.2.0
-            var sensors = [Sensor.SENSOR_HEARTRATE];
-            if (tempEnabled) { sensors.add(Sensor.SENSOR_TEMPERATURE); }
-            Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE, Sensor.SENSOR_TEMPERATURE]);
-
-            self.session = ActivityRecording.createSession({
-                :name=>"Spikeball",
-                :sport=>70 as ActivityRecording.Sport1,
-                :subSport=>22 as ActivityRecording.SubSport,
-            });
-        }
+        createSession();
 
         self.tempField = tempEnabled ? session.createField("temperature", 0, FitContributor.DATA_TYPE_SINT8, {:units=>"°C", :nativeNum=>RECORD_TEMPERATURE}) : null;
 
@@ -119,6 +99,32 @@ class SpikeballActivity {
 
         // TODO: handle error during session start
         System.println("Session start result: "+resume());
+    }
+
+    (:sysgt6)
+    private function createSession() {
+        Sensor.enableSensorType(Sensor.SENSOR_HEARTRATE);
+        if (tempEnabled) { Sensor.enableSensorType(Sensor.SENSOR_TEMPERATURE); }
+
+        self.session = ActivityRecording.createSession({    // set up recording session
+            :name=>"Spikeball",                             // set session name
+            :sport=> Activity.SPORT_GENERIC,                 // set sport type
+            :subSport=> Activity.SUB_SPORT_MATCH           // set sub sport type
+        });
+    }
+
+    (:syslt6)
+    private function createSession() {
+        System.println("API level lower than 3.4.0");
+        var sensors = [Sensor.SENSOR_HEARTRATE];
+        if (tempEnabled) { sensors.add(Sensor.SENSOR_TEMPERATURE); }
+        Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE, Sensor.SENSOR_TEMPERATURE]);
+
+        self.session = ActivityRecording.createSession({
+            :name=>"Spikeball",
+            :sport=> ActivityRecording.SPORT_GENERIC,
+            :subSport=> ActivityRecording.SUB_SPORT_MATCH,
+        });
     }
 
     public function isRecording() as Boolean {
