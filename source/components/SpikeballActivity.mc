@@ -189,7 +189,7 @@ class SpikeballActivity {
         (lapFields.get(LAP_PLAYER_SCORE) as FitContributor.Field).setData(scorePlayer);
         (lapFields.get(LAP_OPPONENT_SCORE) as FitContributor.Field).setData(scoreOpponent);
         (lapFields.get(LAP_STEPS) as FitContributor.Field).setData(steps - stepsOnLap);
-        
+
         (lapFields.get(LAP_AVG_TIME) as FitContributor.Field)
             .setData(pointsCount>0 ? (currentTime - timeOnLap)/pointsCount/1000 : 0);
         (lapFields.get(LAP_AVG_STEPS) as FitContributor.Field)
@@ -231,12 +231,22 @@ class SpikeballActivity {
         }
 
         session.save();
-        session = null;
+        exit();
     }
 
     public function discard() as Void {
         session.discard();
+        exit();
+    }
+
+    private function exit() as Void {
         session = null;
+        if (Sensor has :disableSensorType) {
+            Sensor.disableSensorType(Sensor.SENSOR_HEARTRATE);
+            Sensor.disableSensorType(Sensor.SENSOR_TEMPERATURE);
+        } else {
+            Sensor.setEnabledSensors([]);
+        }
     }
 
     public function addScore(teamId as Team) as Void {
