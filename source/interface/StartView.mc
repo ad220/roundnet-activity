@@ -97,11 +97,18 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
     }
     
     public function onSelect() as Boolean {
-        getApp().timer.stop(updater);
-        Position.enableLocationEvents(locationSetting, null);
-        var activity = new RoundnetActivity();
-        WatchUi.pushView(new RoundnetActivityView(activity), new RoundnetActivityDelegate(activity), SLIDE_UP);
-        return true;
+        return false;
+    }
+
+    public function onKey(keyEvent as KeyEvent) as Boolean {
+        if (keyEvent.getKey()==KEY_ENTER and keyEvent.getType()==PRESS_TYPE_ACTION) {
+            getApp().timer.stop(updater);
+            Position.enableLocationEvents(locationSetting, null);
+            var activity = new RoundnetActivity();
+            WatchUi.pushView(new RoundnetActivityView(activity), new RoundnetActivityDelegate(activity), SLIDE_UP);
+            return true;
+        }
+        return false;
     }
 
     public function onMenu() as Boolean {

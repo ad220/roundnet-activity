@@ -56,34 +56,59 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     }
 
     public function onSelect() as Boolean {
-        activity.stop();
-        var menu = new Rez.Menus.StopMenu();
-        menu.setTitle(activity.getFormattedTime());
-        WatchUi.switchToView(menu, new StopDelegate(activity), WatchUi.SLIDE_UP);
-        return true;
+        return false;
     }
 
-    public function onPreviousPage() as Boolean {
-        activity.addScore(RoundnetActivity.TEAM_OPPONENT);
-        return true;
+    public function onKey(keyEvent as KeyEvent) as Boolean {
+        if (keyEvent.getKey()==KEY_ENTER and keyEvent.getType()==PRESS_TYPE_ACTION) {
+            activity.stop();
+            var menu = new Rez.Menus.StopMenu();
+            menu.setTitle(activity.getFormattedTime());
+            WatchUi.switchToView(menu, new StopDelegate(activity), WatchUi.SLIDE_UP);
+            return true;
+        }
+        return false;
     }
 
+    (:buttons)
+    public function onTap(clickEvent as ClickEvent) as Boolean {
+        return false;
+    }
+    
+    (:buttons)
     public function onNextPage() as Boolean {
         activity.addScore(RoundnetActivity.TEAM_PLAYER);
         return true;
     }
 
-    public function onBack() as Boolean {
-        if (activity.isRecording()) {
-            activity.lap();
-        } else {
-            WatchUi.popView(SLIDE_LEFT);
-        }
+    (:buttons)
+    public function onPreviousPage() as Boolean {
+        activity.addScore(RoundnetActivity.TEAM_OPPONENT);
         return true;
     }
 
+    (:touch)
+    public function onTap(tap as ClickEvent) as Boolean {
+        var coord = tap.getCoordinates();
+        if (coord[0]<ICM.scaleX(0.5) and coord[1]<ICM.scaleY(0.66) and coord[1]>ICM.scaleY(0.33)) {
+            activity.addScore(RoundnetActivity.TEAM_OPPONENT);
+            return true;
+        } else if (coord[0]<ICM.scaleX(0.5) and coord[1]>ICM.scaleY(0.66)) {
+            activity.addScore(RoundnetActivity.TEAM_PLAYER);
+            return true;
+        } 
+        return false;
+    }
+
+    (:notva3)
+    public function onBack() as Boolean {
+        activity.lap();
+        return true;
+    }
+
+    (:va3)
     public function onMenu() as Boolean {
-        activity.save();
+        activity.lap();
         return true;
     }
 }
