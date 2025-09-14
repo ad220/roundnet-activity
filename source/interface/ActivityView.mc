@@ -47,12 +47,17 @@ class RoundnetActivityView extends WatchUi.View {
 class RoundnetActivityDelegate extends BehaviorDelegate {
 
     private var activity as RoundnetActivity;
+    private var uiTimer as TimerController;
+    private var currentTimer as TimerCallback?;
+    private var lastInput as WatchUi.Key?;
+
 
 
     public function initialize(activity as RoundnetActivity) {
         BehaviorDelegate.initialize();
 
         self.activity = activity;
+        self.uiTimer = new TimerController(100);
     }
 
     public function onSelect() as Boolean {
@@ -77,13 +82,13 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     
     (:buttons)
     public function onNextPage() as Boolean {
-        activity.addScore(RoundnetActivity.TEAM_PLAYER);
+        scorePlayer();
         return true;
     }
 
     (:buttons)
     public function onPreviousPage() as Boolean {
-        activity.addScore(RoundnetActivity.TEAM_OPPONENT);
+        scoreOpponent();
         return true;
     }
 
@@ -91,10 +96,10 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     public function onTap(tap as ClickEvent) as Boolean {
         var coord = tap.getCoordinates();
         if (coord[0]<ICM.scaleX(0.5) and coord[1]<ICM.scaleY(0.66) and coord[1]>ICM.scaleY(0.33)) {
-            activity.addScore(RoundnetActivity.TEAM_OPPONENT);
+            scoreOpponent();
             return true;
         } else if (coord[0]<ICM.scaleX(0.5) and coord[1]>ICM.scaleY(0.66)) {
-            activity.addScore(RoundnetActivity.TEAM_PLAYER);
+            scorePlayer();
             return true;
         } 
         return false;
@@ -110,5 +115,35 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     public function onMenu() as Boolean {
         activity.lap();
         return true;
+    }
+
+    public function onTimer() as Void {
+        lastInput = null;
+    }
+
+    public function scorePlayer() as Void {
+        if (lastInput==WatchUi.KEY_DOWN) {
+            lastInput = null;
+            uiTimer.stop(currentTimer);
+            activity.decrPlayerScore();
+        } else {
+            lastInput = WatchUi.KEY_DOWN;
+            uiTimer.stop(currentTimer);
+            uiTimer.start(method(:onTimer), 3, false);
+            currentTimer = uiTimer.start(activity.method(:incrPlayerScore), 3, false);
+        }
+    }
+
+    public function scoreOpponent() as Void {
+        if (lastInput==WatchUi.KEY_UP) {
+            lastInput = null;
+            uiTimer.stop(currentTimer);
+            activity.decrOpponentScore();
+        } else {
+            lastInput = WatchUi.KEY_UP;
+            uiTimer.stop(currentTimer);
+            uiTimer.start(method(:onTimer), 3, false);
+            currentTimer = uiTimer.start(activity.method(:incrOpponentScore), 3, false);
+        }
     }
 }

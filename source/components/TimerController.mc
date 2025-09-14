@@ -5,12 +5,15 @@ import Toybox.Timer;
 class TimerController {
 
     private var timer as Timer.Timer;
+    private var period as Number;
+    private var isRunning as Boolean;
     private var callbackList as Array<TimerCallback>;
 
     public function initialize(periodInMs as Number) {
         self.timer = new Timer.Timer();
+        self.period = periodInMs;
         self.callbackList = [];
-        self.timer.start(method(:triggerCallbacks), periodInMs, true);
+        self.isRunning = false;
     }
 
     public function triggerCallbacks() as Void {
@@ -22,15 +25,24 @@ class TimerController {
     public function start(callback as Method() as Void, periodInTicks as Number, repeat as Boolean) as TimerCallback{
         var timerCallback = new TimerCallback(callback, periodInTicks, repeat, self);
         callbackList.add(timerCallback);
+        if (!isRunning) {
+            timer.start(method(:triggerCallbacks), period, true);
+            isRunning = true;
+        }
         return timerCallback;
     }
 
     public function stop(callback as TimerCallback?) {
         callbackList.remove(callback);
+        if (callbackList.size()==0) {
+            stopAll();
+        }
     }
 
     public function stopAll() {
         callbackList = [];
+        timer.stop();
+        isRunning = false;
     }
 }
 
@@ -58,6 +70,7 @@ class TimerCallback {
             callback.invoke();
             if (!repeat) {
                 stop();
+                controller.stop(self);
             }
         }
     }

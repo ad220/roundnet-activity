@@ -255,11 +255,26 @@ class RoundnetActivity {
         }
     }
 
-    public function addScore(teamId as Team) as Void {
-        if (teamId) {
-            scoreOpponent++;
-        } else {
-            scorePlayer++;
+    public function incrPlayerScore() as Void {
+        scorePlayer++;
+        WatchUi.requestUpdate();
+    }
+    
+    public function incrOpponentScore() as Void {
+        scoreOpponent++;
+        WatchUi.requestUpdate();
+    }
+
+    public function decrPlayerScore() as Void {
+        if (scorePlayer>0) {
+            scorePlayer--;
+        }
+        WatchUi.requestUpdate();
+    }
+
+    public function decrOpponentScore() as Void {
+        if (scoreOpponent>0) {
+            scoreOpponent--;
         }
         WatchUi.requestUpdate();
     }
