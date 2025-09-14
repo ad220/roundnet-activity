@@ -33,5 +33,10 @@ On the activity view, from top to bottom you have the timer, the dynamic field a
 
 ## Changelog
 
+### v0.2:
+- improve ui behaviour for touchscreen devices
+- fix game (lap) stats not showing up in Garmin Connect
+- remove compatibility for 2-color screen devices
+
 ### v0.1
 - first version of the app
