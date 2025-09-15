@@ -105,7 +105,8 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
             getApp().timer.stop(updater);
             Position.enableLocationEvents(locationSetting, null);
             var activity = new RoundnetActivity();
-            WatchUi.pushView(new RoundnetActivityView(activity), new RoundnetActivityDelegate(activity), SLIDE_UP);
+            var view = new RoundnetActivityView(activity);
+            WatchUi.pushView(view, new RoundnetActivityDelegate(view, activity), SLIDE_UP);
             return true;
         }
         return false;

@@ -57,7 +57,6 @@ class RoundnetActivity {
 
     private var lapFields as Dictionary;
     private var sessionFields as Dictionary;
-    private var loopField as LoopField?;
     private var fieldTimer as TimerCallback?;
 
     public function initialize() {
@@ -131,20 +130,11 @@ class RoundnetActivity {
         return session.isRecording();
     }
 
-    public function registerField(loopField as LoopField) as Void {
-        self.loopField = loopField;
-        var timer = getApp().timer;
-        timer.stop(fieldTimer);
-        fieldTimer = timer.start(loopField.method(:nextField), 5, true);
-    }
-
     public function stop() as Boolean {
         if (session.isRecording()) {
             var status = session.stop();
             var timer = getApp().timer;
             timer.stop(recordTimer);
-            timer.stop(fieldTimer);
-            loopField = null;
             return status;
         }
         return false;

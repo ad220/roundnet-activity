@@ -17,7 +17,8 @@ class StopDelegate extends WatchUi.Menu2InputDelegate {
         var id = item.getId();
         if (id==:resume) {
             activity.resume();
-            WatchUi.switchToView(new RoundnetActivityView(activity), new RoundnetActivityDelegate(activity), SLIDE_DOWN);
+            var view = new RoundnetActivityView(activity);
+            WatchUi.switchToView(view, new RoundnetActivityDelegate(view, activity), SLIDE_DOWN);
         } else {
             if (id==:save) {
                 activity.save();

@@ -23,6 +23,7 @@ class LoopField extends WatchUi.Drawable {
     private var label as String;
     private var icons as Array<WatchUi.BitmapResource>;
     private var units as Array<String?>;
+    private var currentTimer as TimerCallback?;
 
 
     public function initialize(activity as RoundnetActivity) {
@@ -49,7 +50,6 @@ class LoopField extends WatchUi.Drawable {
 
         retrieveFieldSettings();
         nextField();
-        activity.registerField(self);
     }
 
     private function retrieveFieldSettings() as Void {
@@ -78,6 +78,16 @@ class LoopField extends WatchUi.Drawable {
 
     public function nextField() as Void {
         stateIndex = (stateIndex+1) % enabledFields.size();
+        refreshField();
+    }
+
+    public function previousField() as Void {
+        stateIndex = (stateIndex-1 + enabledFields.size()) % enabledFields.size();
+        refreshField();
+    }
+
+    public function refreshField() as Void {
+        System.println(stateIndex);
         switch (enabledFields[stateIndex]) {
             case FIELD_DISTANCE:
                 label = activity.getSteps() + "\n" + (activity.getDistance()/1000.0).format("%.2f") + units[FIELD_DISTANCE];
@@ -95,9 +105,13 @@ class LoopField extends WatchUi.Drawable {
             case FIELD_DAYTIME:
                 var daytime = Time.Gregorian.info(Time.now(), Time.FORMAT_SHORT);
                 label = daytime.hour + ":" + daytime.min.format("%02d");
+                break;
             default:
                 System.println("Unknown field id");
                 break;
         }
+        WatchUi.requestUpdate();
+        getApp().timer.stop(currentTimer);
+        currentTimer = getApp().timer.start(method(:nextField), 5, false);
     }
 }

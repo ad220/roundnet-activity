@@ -7,7 +7,8 @@ using InterfaceComponentsManager as ICM;
 class RoundnetActivityView extends WatchUi.View {
 
     private var activity as RoundnetActivity;
-    private var loopField as WatchUi.Drawable;
+
+    public var loopField as LoopField;
 
     function initialize(activity as RoundnetActivity) {
         View.initialize();
@@ -46,16 +47,16 @@ class RoundnetActivityView extends WatchUi.View {
 
 class RoundnetActivityDelegate extends BehaviorDelegate {
 
+    private var view as RoundnetActivityView;
     private var activity as RoundnetActivity;
     private var uiTimer as TimerController;
     private var currentTimer as TimerCallback?;
     private var lastInput as WatchUi.Key?;
 
-
-
-    public function initialize(activity as RoundnetActivity) {
+    public function initialize(view as RoundnetActivityView, activity as RoundnetActivity) {
         BehaviorDelegate.initialize();
 
+        self.view = view;
         self.activity = activity;
         self.uiTimer = new TimerController(100);
     }
@@ -70,6 +71,30 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
             var menu = new Rez.Menus.StopMenu();
             menu.setTitle(activity.getFormattedTime());
             WatchUi.switchToView(menu, new StopDelegate(activity), WatchUi.SLIDE_UP);
+            return true;
+        } else if (keyEvent.getKey()==KEY_ESC and keyEvent.getType()==PRESS_TYPE_ACTION) {
+            warnLap();
+            return true;
+        }
+        return false;
+    }
+
+    (:va3)
+    public function onMenu() as Boolean {
+        warnLap();
+        return true;
+    }
+
+    public function onBack() as Boolean {
+        return false;
+    }
+
+    public function onSwipe(swipeEvent as SwipeEvent) as Boolean {
+        if (swipeEvent.getDirection()==SWIPE_LEFT) {
+            view.loopField.nextField();
+            return true;
+        } else if (swipeEvent.getDirection()==SWIPE_RIGHT) {
+            view.loopField.previousField();
             return true;
         }
         return false;
@@ -103,23 +128,6 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
             return true;
         } 
         return false;
-    }
-
-    (:notva3)
-    public function onBack() as Boolean {
-        warnLap();
-        return true;
-    }
-
-    (:va3)
-    public function onBack() as Boolean {
-        return true;
-    }
-
-    (:va3)
-    public function onMenu() as Boolean {
-        warnLap();
-        return true;
     }
 
     public function onTimer() as Void {
