@@ -44,6 +44,10 @@ class TimerController {
         timer.stop();
         isRunning = false;
     }
+
+    public function getPeriod() as Number {
+        return period;
+    }
 }
 
 

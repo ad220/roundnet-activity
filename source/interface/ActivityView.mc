@@ -107,13 +107,18 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
 
     (:notva3)
     public function onBack() as Boolean {
-        activity.lap();
+        warnLap();
+        return true;
+    }
+
+    (:va3)
+    public function onBack() as Boolean {
         return true;
     }
 
     (:va3)
     public function onMenu() as Boolean {
-        activity.lap();
+        warnLap();
         return true;
     }
 
@@ -122,12 +127,12 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     }
 
     public function scorePlayer() as Void {
-        if (lastInput==WatchUi.KEY_DOWN) {
+        if (lastInput==KEY_DOWN) {
             lastInput = null;
             uiTimer.stop(currentTimer);
             activity.decrPlayerScore();
         } else {
-            lastInput = WatchUi.KEY_DOWN;
+            lastInput = KEY_DOWN;
             uiTimer.stop(currentTimer);
             uiTimer.start(method(:onTimer), 3, false);
             currentTimer = uiTimer.start(activity.method(:incrPlayerScore), 3, false);
@@ -135,15 +140,20 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     }
 
     public function scoreOpponent() as Void {
-        if (lastInput==WatchUi.KEY_UP) {
+        if (lastInput==KEY_UP) {
             lastInput = null;
             uiTimer.stop(currentTimer);
             activity.decrOpponentScore();
         } else {
-            lastInput = WatchUi.KEY_UP;
+            lastInput = KEY_UP;
             uiTimer.stop(currentTimer);
             uiTimer.start(method(:onTimer), 3, false);
             currentTimer = uiTimer.start(activity.method(:incrOpponentScore), 3, false);
         }
+    }
+
+    public function warnLap() as Void {
+        var view = new LapView(activity, uiTimer);
+        WatchUi.pushView(view, new LapDelegate(view), SLIDE_IMMEDIATE);
     }
 }
