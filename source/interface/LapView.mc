@@ -42,8 +42,8 @@ class LapView extends WatchUi.View {
         setLayout(Rez.Layouts.LapLayoutTouch(dc));
         (findDrawableById("timer_lap") as Text).setText(activity.getFormattedTime());
         (findDrawableById("score_lap") as Text).setText(activity.getScore(RoundnetActivity.TEAM_PLAYER) + " - " + activity.getScore(RoundnetActivity.TEAM_OPPONENT));
-        (findDrawableById("confirmicon_lap_touch") as Bitmap).setBitmap(null);
-        (findDrawableById("reverticon_lap_touch") as Bitmap).setBitmap(null);
+        (findDrawableById("confirmicon_lap_touch") as Bitmap).setLocation(0,0);
+        (findDrawableById("reverticon_lap_touch") as Bitmap).setLocation(0,0);
     }
 
     public function onShow() as Void {
