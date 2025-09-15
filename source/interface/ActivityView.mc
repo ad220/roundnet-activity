@@ -1,6 +1,7 @@
 import Toybox.Lang;
 import Toybox.Graphics;
 import Toybox.WatchUi;
+import Toybox.Attention;
 
 using InterfaceComponentsManager as ICM;
 
@@ -162,6 +163,7 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
 
     public function warnLap() as Void {
         var view = new LapView(activity, uiTimer);
+        Attention.vibrate([new Attention.VibeProfile(80, 300)]);
         WatchUi.pushView(view, new LapDelegate(view), SLIDE_IMMEDIATE);
     }
 }

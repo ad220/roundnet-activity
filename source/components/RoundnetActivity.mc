@@ -5,6 +5,7 @@ import Toybox.ActivityRecording;
 import Toybox.ActivityMonitor;
 import Toybox.Sensor;
 import Toybox.FitContributor;
+import Toybox.Attention;
 
 
 class RoundnetActivity {
@@ -57,7 +58,6 @@ class RoundnetActivity {
 
     private var lapFields as Dictionary;
     private var sessionFields as Dictionary;
-    private var fieldTimer as TimerCallback?;
 
     public function initialize() {
 
@@ -247,17 +247,20 @@ class RoundnetActivity {
 
     public function incrPlayerScore() as Void {
         scorePlayer++;
+        Attention.vibrate([new Attention.VibeProfile(50, 80)]);
         WatchUi.requestUpdate();
     }
     
     public function incrOpponentScore() as Void {
         scoreOpponent++;
+        Attention.vibrate([new Attention.VibeProfile(50, 80)]);
         WatchUi.requestUpdate();
     }
 
     public function decrPlayerScore() as Void {
         if (scorePlayer>0) {
             scorePlayer--;
+            Attention.vibrate([new Attention.VibeProfile(50, 80)]);
         }
         WatchUi.requestUpdate();
     }
@@ -265,6 +268,7 @@ class RoundnetActivity {
     public function decrOpponentScore() as Void {
         if (scoreOpponent>0) {
             scoreOpponent--;
+            Attention.vibrate([new Attention.VibeProfile(50, 80)]);
         }
         WatchUi.requestUpdate();
     }
