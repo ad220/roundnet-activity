@@ -4,15 +4,11 @@ Roundnet activity tracker for Garmin smartwatches. Allows you to keep score so y
 ## Features
 - records heartrate, calories, steps, distance, temperatures and score
 - customizable dynamic datafield
-- custom datafields per point / per game
-- shows up as roundnet activity in ConnectIQ
+- shows up as roundnet activity in Garmin Connect
+- custom datafields per point and per game in activity summary / details
 
 ## Planned features
 - switching side alarm
-- cancel add point
-- cancel new game
-- interactive loop field
-- better touchscreen support
 - better large screen support (scale fonts)
 
 ## Installation
@@ -32,6 +28,13 @@ On the activity view, from top to bottom you have the timer, the dynamic field a
 ![](doc/activity_view.png)
 
 ## Changelog
+
+### v0.3:
+- add confirmation screen when restarting a new game
+- add dynamic field interaction on swipe for touchscreen devices
+- add vibrating feedback on input
+- enable decrementing score with double press
+- fix touchscreen behaviour for venu and vivoactive series
 
 ### v0.2:
 - improve ui behaviour for touchscreen devices
