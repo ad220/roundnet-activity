@@ -22,6 +22,8 @@ class LoopField extends WatchUi.Drawable {
     private var enabledFields as Array<FieldId>;
     private var label as String;
     private var icons as Array<WatchUi.BitmapResource>;
+    private var autoScroll as Boolean;
+    private var scrollSpeed as Number;
     private var units as Array<String?>;
     private var currentTimer as TimerCallback?;
 
@@ -47,18 +49,20 @@ class LoopField extends WatchUi.Drawable {
             WatchUi.loadResource(Rez.Strings.Celsius),
             null
         ];
+        self.autoScroll = getApp().settings.get("autoscroll") as Boolean;
+        self.scrollSpeed = (2*(getApp().settings.get("scrollspeed") as Number - 1.5)).toNumber();
 
         retrieveFieldSettings();
         nextField();
     }
 
     private function retrieveFieldSettings() as Void {
-        var fieldSettings = getApp().fieldsSettings;
-        if (fieldSettings.get("distance") as Boolean)       { enabledFields.add(FIELD_DISTANCE); }
-        if (fieldSettings.get("calories") as Boolean)       { enabledFields.add(FIELD_CALORIES); }
-        if (fieldSettings.get("score") as Boolean)          { enabledFields.add(FIELD_SCORE); }
-        if (fieldSettings.get("temperature") as Boolean)    { enabledFields.add(FIELD_TEMPERATURE); }
-        if (fieldSettings.get("daytime") as Boolean)        { enabledFields.add(FIELD_DAYTIME); }
+        var settings = getApp().settings;
+        if (settings.get("field_distance") as Boolean)      { enabledFields.add(FIELD_DISTANCE); }
+        if (settings.get("field_calories") as Boolean)      { enabledFields.add(FIELD_CALORIES); }
+        if (settings.get("field_score") as Boolean)         { enabledFields.add(FIELD_SCORE); }
+        if (settings.get("field_temperature") as Boolean)   { enabledFields.add(FIELD_TEMPERATURE); }
+        if (settings.get("field_daytime") as Boolean)       { enabledFields.add(FIELD_DAYTIME); }
     }
 
     public function draw(dc as $.Toybox.Graphics.Dc) as Void {
@@ -87,7 +91,6 @@ class LoopField extends WatchUi.Drawable {
     }
 
     public function refreshField() as Void {
-        System.println(stateIndex);
         switch (enabledFields[stateIndex]) {
             case FIELD_DISTANCE:
                 label = activity.getSteps() + "\n" + (activity.getDistance()/1000.0).format("%.2f") + units[FIELD_DISTANCE];
@@ -111,7 +114,9 @@ class LoopField extends WatchUi.Drawable {
                 break;
         }
         WatchUi.requestUpdate();
-        getApp().timer.stop(currentTimer);
-        currentTimer = getApp().timer.start(method(:nextField), 5, false);
+        if (autoScroll) {
+            getApp().timer.stop(currentTimer);
+            currentTimer = getApp().timer.start(method(:nextField), scrollSpeed, false);
+        }
     }
 }

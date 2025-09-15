@@ -26,9 +26,8 @@ class StartView extends WatchUi.View {
     }
 
     public function onShow() as Void {
-        var sensorsSettings = getApp().sensorsSettings;
-        locationEnabled = sensorsSettings.get("location") as Boolean;
-        temperatureEnabled = sensorsSettings.get("temperature") as Boolean;
+        locationEnabled = getApp().settings.get("sensor_location") as Boolean;
+        temperatureEnabled = getApp().settings.get("sensor_temperature") as Boolean;
         onShowCallback.invoke();
     }
 

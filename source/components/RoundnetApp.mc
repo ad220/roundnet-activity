@@ -9,22 +9,25 @@ using InterfaceComponentsManager as ICM;
 class RoundnetApp extends Application.AppBase {
 
     public var timer as TimerController;
-    public var fieldsSettings as Dictionary;
-    public var sensorsSettings as Dictionary;
+    public var settings as Dictionary;
 
     function initialize() {
         AppBase.initialize();
 
         self.timer = new TimerController(1000);
 
-        self.fieldsSettings = Storage.getValue("fieldsSettings");
-        if (fieldsSettings == null) {
-            self.fieldsSettings = WatchUi.loadResource(Rez.JsonData.DefaultDatafieldsSettings);
-        }
-
-        self.sensorsSettings = Storage.getValue("sensorsSettings");
-        if (sensorsSettings == null) {
-            self.sensorsSettings = WatchUi.loadResource(Rez.JsonData.DefaultSensorsSettings);
+        self.settings = Storage.getValue("settings");
+        var defaults = WatchUi.loadResource(Rez.JsonData.DefaultSettings) as Dictionary;
+        if (settings == null or settings.get("version")==null) {
+            Storage.clearValues();
+            settings = defaults;
+        } else if (settings.get("version") as Number < defaults.get("version") as Number) {
+            var keys = defaults.keys();
+            for (var i=0; i<keys.size(); i++) {
+                if (settings.get(keys[i])==null) {
+                    settings.put(keys[i], defaults.get(keys[i]));
+                }
+            }
         }
     }
 
@@ -38,8 +41,7 @@ class RoundnetApp extends Application.AppBase {
     // onStop() is called when your application is exiting
     function onStop(state as Dictionary?) as Void {
         Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
-        Storage.setValue("fieldsSettings", fieldsSettings);
-        Storage.setValue("sensorsSettings", sensorsSettings);
+        Storage.setValue("settings", settings);
     }
 
     // Return the initial view of your application here
@@ -49,7 +51,7 @@ class RoundnetApp extends Application.AppBase {
     }
 
     public function getLocationSetting() as Position.LocationAcquisitionType {
-        return sensorsSettings.get("location") as Boolean ? Position.LOCATION_CONTINUOUS : Position.LOCATION_DISABLE;
+        return settings.get("sensor_location") as Boolean ? Position.LOCATION_CONTINUOUS : Position.LOCATION_DISABLE;
     }
 }
 

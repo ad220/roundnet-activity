@@ -1,36 +1,56 @@
 <resources>
     <menu2 id="SettingsMenu" title="@Strings.Settings">
-        <menu-item id="datafields" label="@Strings.Datafields"/>
         <menu-item id="sensors" label="@Strings.Sensors"/>
+        <menu-item id="datafield" label="@Strings.Datafield"/>
+        <menu-item id="doubleclick" label="@Strings.DoubleClick"/>
     </menu2>
 
-    <menu2 id="DatafieldsMenu" title="@Strings.Datafields">
+    <menu2 id="SensorsMenu" title="@Strings.Sensors">
+        <toggle-menu-item id="location" label="@Strings.Location"/>
+        <toggle-menu-item id="temperature" label="@Strings.Temperature"/>
+    </menu2>
+
+    <menu2 id="DatafieldMenu" title="@Strings.Datafield">
+        <menu-item id="fields" label="@Strings.Fields"/>
+        <menu-item id="scrolling" label="@Strings.Scrolling"/>
+    </menu2>
+
+    <menu2 id="FieldsMenu" title="@Strings.Fields">
         <toggle-menu-item id="distance" label="@Strings.Distance"/>
         <toggle-menu-item id="calories" label="@Strings.Calories"/>
         <toggle-menu-item id="score" label="@Strings.Score"/>
         <toggle-menu-item id="temperature" label="@Strings.Temperature"/>
         <toggle-menu-item id="daytime" label="@Strings.Daytime"/>
     </menu2>
+
+    <menu2 id="ScrollingMenu" title="@Strings.Scrolling">
+        <toggle-menu-item id="autoscroll" label="@Strings.AutoScroll"/>
+        <menu-item id="scrollspeed" label="@Strings.ScrollSpeed"/>
+        <toggle-menu-item id="swipescroll" label="@Strings.SwipeScroll"/>
+    </menu2>
     
-    <jsonData id="DefaultDatafieldsSettings">
-    {
-        "distance": true,
-        "calories": true,
-        "score": false,
-        "temperature": true,
-        "daytime": true
-    }
-    </jsonData>
-    
-    <menu2 id="SensorsMenu" title="@Strings.Sensors">
-        <toggle-menu-item id="location" label="@Strings.Location"/>
-        <toggle-menu-item id="temperature" label="@Strings.Temperature"/>
+    <menu2 id="SpeedMenu" title="">
+        <menu-item id="vfast" label="@Strings.VeryFast"/>
+        <menu-item id="fast" label="@Strings.Fast"/>
+        <menu-item id="normal" label="@Strings.Normal"/>
+        <menu-item id="slow" label="@Strings.Slow"/>
+        <menu-item id="vslow" label="@Strings.VerySlow"/>
     </menu2>
 
-    <jsonData id="DefaultSensorsSettings">
+    <jsonData id="DefaultSettings">
     {
-        "location": true,
-        "temperature": true
+        "version": 1,
+        "sensor_location": true,
+        "sensor_temperature": true,
+        "field_distance": true,
+        "field_calories": true,
+        "field_score": true,
+        "field_temperature": true,
+        "field_daytime": true,
+        "autoscroll": true,
+        "swipescroll": true,
+        "scrollspeed": 4,
+        "doubleclickspeed": 3
     }
     </jsonData>
 </resources>

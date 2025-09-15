@@ -3,15 +3,28 @@
 
     <!-- Menu labels -->
     <string id="Settings">Paramètres Roundnet</string>
-    <string id="Datafields">Écrans de données</string>
+    <string id="Datafield">Écran de données</string>
     <string id="Sensors">Capteurs</string>
+    <string id="DoubleClick">Vitesse de double clic</string>
 
+    <string id="Fields">Données</string> 
     <string id="Distance">Distance</string>
     <string id="Calories">Calories</string>
     <string id="Score">Score</string>
     <string id="Daytime">Heure</string>
     <string id="Location">Position</string>
     <string id="Temperature">Température</string>
+    
+    <string id="Scrolling">Défilement</string>
+    <string id="AutoScroll">Défilement auto</string>
+    <string id="ScrollSpeed">Vitesse de défilement</string>
+    <string id="SwipeScroll">Défilement tactile</string>
+
+    <string id="VeryFast">Très rapide</string>
+    <string id="Fast">Rapide</string>
+    <string id="Normal">Normal</string>
+    <string id="Slow">Lent</string>
+    <string id="VerySlow">Très lent</string>
 
     <string id="Resume">Reprendre</string>
     <string id="Save">Enregistrer</string>

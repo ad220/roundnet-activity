@@ -3,15 +3,28 @@
 
     <!-- Menu labels -->
     <string id="Settings">Roundnet Settings</string>
-    <string id="Datafields">Datafields</string>
+    <string id="Datafield">Datafield</string>
     <string id="Sensors">Sensors</string>
+    <string id="DoubleClick">Double click speed</string>
 
+    <string id="Fields">Fields</string>
     <string id="Distance">Distance</string>
     <string id="Calories">Calories</string>
     <string id="Score">Score</string>
     <string id="Daytime">Daytime</string>
     <string id="Location">Location</string>
     <string id="Temperature">Temperature</string>
+
+    <string id="Scrolling">Scrolling</string>
+    <string id="AutoScroll">Auto scroll</string>
+    <string id="ScrollSpeed">Auto scroll speed</string>
+    <string id="SwipeScroll">Swipe scroll</string>
+
+    <string id="VeryFast">Very Fast</string>
+    <string id="Fast">Fast</string>
+    <string id="Normal">Normal</string>
+    <string id="Slow">Slow</string>
+    <string id="VerySlow">Very Slow</string>
 
     <string id="Resume">Resume</string>
     <string id="Save">Save</string>

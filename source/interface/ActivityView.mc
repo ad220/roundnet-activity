@@ -51,6 +51,8 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     private var view as RoundnetActivityView;
     private var activity as RoundnetActivity;
     private var uiTimer as TimerController;
+    private var doubleClickSpeed as Number;
+    private var swipeScroll as Boolean;
     private var currentTimer as TimerCallback?;
     private var lastInput as WatchUi.Key?;
 
@@ -59,7 +61,9 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
 
         self.view = view;
         self.activity = activity;
-        self.uiTimer = new TimerController(100);
+        self.uiTimer = new TimerController(80);
+        self.doubleClickSpeed = getApp().settings.get("doubleclickspeed") as Number;
+        self.swipeScroll = getApp().settings.get("scrollswipe") as Boolean;
     }
 
     public function onSelect() as Boolean {
@@ -91,14 +95,14 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     }
 
     public function onSwipe(swipeEvent as SwipeEvent) as Boolean {
-        if (swipeEvent.getDirection()==SWIPE_LEFT) {
-            view.loopField.nextField();
-            return true;
-        } else if (swipeEvent.getDirection()==SWIPE_RIGHT) {
-            view.loopField.previousField();
-            return true;
+        if (swipeScroll) {
+            if (swipeEvent.getDirection()==SWIPE_LEFT) {
+                view.loopField.nextField();
+            } else if (swipeEvent.getDirection()==SWIPE_RIGHT) {
+                view.loopField.previousField();
+            }
         }
-        return false;
+        return true;
     }
 
     (:buttons)
@@ -143,8 +147,8 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
         } else {
             lastInput = KEY_DOWN;
             uiTimer.stop(currentTimer);
-            uiTimer.start(method(:onTimer), 3, false);
-            currentTimer = uiTimer.start(activity.method(:incrPlayerScore), 3, false);
+            uiTimer.start(method(:onTimer), doubleClickSpeed, false);
+            currentTimer = uiTimer.start(activity.method(:incrPlayerScore), doubleClickSpeed, false);
         }
     }
 
@@ -156,8 +160,8 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
         } else {
             lastInput = KEY_UP;
             uiTimer.stop(currentTimer);
-            uiTimer.start(method(:onTimer), 3, false);
-            currentTimer = uiTimer.start(activity.method(:incrOpponentScore), 3, false);
+            uiTimer.start(method(:onTimer), doubleClickSpeed, false);
+            currentTimer = uiTimer.start(activity.method(:incrOpponentScore), doubleClickSpeed, false);
         }
     }
 

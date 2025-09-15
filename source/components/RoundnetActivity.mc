@@ -71,8 +71,8 @@ class RoundnetActivity {
         self.stepsOnStart = ActivityMonitor.getInfo().steps;
         self.stepsOnLap = ActivityMonitor.getInfo().steps;
         
-        self.locEnabled = getApp().sensorsSettings.get("location") as Boolean;
-        self.tempEnabled = getApp().sensorsSettings.get("temperature") as Boolean;
+        self.locEnabled = getApp().settings.get("sensor_location") as Boolean;
+        self.tempEnabled = getApp().settings.get("sensor_temperature") as Boolean;
         createSession();
 
         self.tempField = tempEnabled ? session.createField("temperature", 0, FitContributor.DATA_TYPE_SINT8, {:units=>"°C", :nativeNum=>RECORD_TEMPERATURE}) : null;
