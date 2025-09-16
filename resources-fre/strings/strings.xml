@@ -20,6 +20,13 @@
     <string id="ScrollSpeed">Vitesse de défilement</string>
     <string id="SwipeScroll">Défilement tactile</string>
 
+    <string id="GameRules">Règles du match</string>
+    <string id="AutoWin">Fin de partie auto</string>
+    <string id="TwoPoint">Deux points d'avance</string>
+    <string id="WinPoints">Points pour gagner</string>
+    <string id="SwitchAlarm">Rappel du changement de position</string>
+    <string id="SwitchPoints">Points pour changer de position</string>
+
     <string id="VeryFast">Très rapide</string>
     <string id="Fast">Rapide</string>
     <string id="Normal">Normal</string>
