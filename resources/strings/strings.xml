@@ -20,6 +20,13 @@
     <string id="ScrollSpeed">Auto scroll speed</string>
     <string id="SwipeScroll">Swipe scroll</string>
 
+    <string id="GameRules">Game rules</string>
+    <string id="AutoWin">Auto win / loose</string>
+    <string id="TwoPoint">Two points difference</string>
+    <string id="WinPoints">Points to win</string>
+    <string id="SwitchAlarm">Rotate start positions alarm</string>
+    <string id="SwitchPoints">Points to rotate positions</string>
+
     <string id="VeryFast">Very Fast</string>
     <string id="Fast">Fast</string>
     <string id="Normal">Normal</string>

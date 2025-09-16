@@ -2,6 +2,7 @@
     <menu2 id="SettingsMenu" title="@Strings.Settings">
         <menu-item id="sensors" label="@Strings.Sensors"/>
         <menu-item id="datafield" label="@Strings.Datafield"/>
+        <menu-item id="game" label="@Strings.GameRules"/>
         <menu-item id="doubleclick" label="@Strings.DoubleClick"/>
     </menu2>
 
@@ -29,6 +30,14 @@
         <toggle-menu-item id="swipescroll" label="@Strings.SwipeScroll"/>
     </menu2>
     
+    <menu2 id="GameMenu" title="@Strings.GameRules">
+        <toggle-menu-item id="game_win_auto" label="@Strings.AutoWin"/>
+        <toggle-menu-item id="game_win_two_pt_diff" label="@Strings.TwoPoint"/>
+        <menu-item id="game_win_points" label="@Strings.WinPoints"/>
+        <toggle-menu-item id="game_switch_alarm" label="@Strings.SwitchAlarm"/>
+        <menu-item id="game_switch_points" label="@Strings.SwitchPoints"/>
+    </menu2>
+
     <menu2 id="SpeedMenu" title="">
         <menu-item id="vfast" label="@Strings.VeryFast"/>
         <menu-item id="fast" label="@Strings.Fast"/>
@@ -39,7 +48,7 @@
 
     <jsonData id="DefaultSettings">
     {
-        "version": 1,
+        "version": 2,
         "sensor_location": true,
         "sensor_temperature": true,
         "field_distance": true,
@@ -50,7 +59,12 @@
         "autoscroll": true,
         "swipescroll": true,
         "scrollspeed": 4,
-        "doubleclickspeed": 3
+        "doubleclickspeed": 3,
+        "game_win_auto": false,
+        "game_win_two_pt_diff": true,
+        "game_win_points": 21,
+        "game_switch_alarm": true,
+        "game_switch_points": 5
     }
     </jsonData>
 </resources>
