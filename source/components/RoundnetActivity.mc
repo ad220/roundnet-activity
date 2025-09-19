@@ -50,6 +50,9 @@ class RoundnetActivity {
     private var stepsOnStart as Number;
     private var stepsOnLap as Number;
 
+    private var pointsToSwitch as Number;
+    private var pointsToWin as Number;
+    private var twoPointsDiff as Boolean;
     private var locEnabled as Boolean;
     private var tempEnabled as Boolean;
     private var lastTemp as Number?;
@@ -58,6 +61,7 @@ class RoundnetActivity {
 
     private var lapFields as Dictionary;
     private var sessionFields as Dictionary;
+    private var delegate as RoundnetActivityDelegate?;
 
     public function initialize() {
 
@@ -71,6 +75,9 @@ class RoundnetActivity {
         self.stepsOnStart = ActivityMonitor.getInfo().steps;
         self.stepsOnLap = ActivityMonitor.getInfo().steps;
         
+        self.pointsToSwitch = getApp().settings.get("game_switch_alarm") as Boolean ? getApp().settings.get("game_switch_points") : 0;
+        self.pointsToWin = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
+        self.twoPointsDiff = getApp().settings.get("game_win_two_pt_diff") as Boolean;
         self.locEnabled = getApp().settings.get("sensor_location") as Boolean;
         self.tempEnabled = getApp().settings.get("sensor_temperature") as Boolean;
         createSession();
@@ -124,6 +131,10 @@ class RoundnetActivity {
             :sport=> ActivityRecording.SPORT_GENERIC,
             :subSport=> ActivityRecording.SUB_SPORT_MATCH,
         });
+    }
+
+    public function registerDelegate(delegate as RoundnetActivityDelegate) {
+        self.delegate = delegate;
     }
 
     public function isRecording() as Boolean {
@@ -237,6 +248,8 @@ class RoundnetActivity {
 
     private function exit() as Void {
         session = null;
+        delegate = null;
+        
         if (Sensor has :disableSensorType) {
             Sensor.disableSensorType(Sensor.SENSOR_HEARTRATE);
             Sensor.disableSensorType(Sensor.SENSOR_TEMPERATURE);
@@ -247,14 +260,20 @@ class RoundnetActivity {
 
     public function incrPlayerScore() as Void {
         scorePlayer++;
-        Attention.vibrate([new Attention.VibeProfile(50, 80)]);
-        WatchUi.requestUpdate();
+        if (pointsToWin>0 and scorePlayer>=pointsToWin and (!twoPointsDiff or scorePlayer>=scoreOpponent+2)) {
+            delegate.warnLap();
+        } else {
+            checkSwitch();
+        }
     }
     
     public function incrOpponentScore() as Void {
         scoreOpponent++;
-        Attention.vibrate([new Attention.VibeProfile(50, 80)]);
-        WatchUi.requestUpdate();
+        if (pointsToWin>0 and scoreOpponent>=pointsToWin and (!twoPointsDiff or scoreOpponent>=scorePlayer+2)) {
+            delegate.warnLap();
+        } else {
+            checkSwitch();
+        }
     }
 
     public function decrPlayerScore() as Void {
@@ -268,6 +287,17 @@ class RoundnetActivity {
     public function decrOpponentScore() as Void {
         if (scoreOpponent>0) {
             scoreOpponent--;
+            Attention.vibrate([new Attention.VibeProfile(50, 80)]);
+        }
+        WatchUi.requestUpdate();
+    }
+
+    private function checkSwitch() as Void {
+        if (pointsToSwitch!=0 and (scorePlayer+scoreOpponent)%pointsToSwitch==0) {
+            Attention.vibrate([new Attention.VibeProfile(80, 600)]);
+            Attention.playTone({:toneProfile => [new Attention.ToneProfile(690, 600)]});
+            delegate.triggerSwitchAlarm();
+        } else {
             Attention.vibrate([new Attention.VibeProfile(50, 80)]);
         }
         WatchUi.requestUpdate();

@@ -37,6 +37,9 @@
     <string id="Save">Save</string>
     <string id="Discard">Discard</string>
 
+    <!-- Fields text -->
+    <string id="Switch">Rotate \npositions</string>
+
     <!-- Units -->
     <string id="Kilometers" translatable="false">km</string>
     <string id="KCalories"  translatable="false">kcal</string>

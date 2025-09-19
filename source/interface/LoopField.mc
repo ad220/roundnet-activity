@@ -13,6 +13,7 @@ class LoopField extends WatchUi.Drawable {
         FIELD_SCORE,
         FIELD_TEMPERATURE,
         FIELD_DAYTIME,
+        FIELD_SWITCH,
 
         FIELD_COUNT,
     }
@@ -20,6 +21,7 @@ class LoopField extends WatchUi.Drawable {
     private var activity as RoundnetActivity;
     private var stateIndex as Number;
     private var enabledFields as Array<FieldId>;
+    private var currentIcon as BitmapResource?;
     private var label as String;
     private var icons as Array<WatchUi.BitmapResource>;
     private var autoScroll as Boolean;
@@ -34,6 +36,7 @@ class LoopField extends WatchUi.Drawable {
         self.activity = activity;
         self.enabledFields = [];
         self.stateIndex = -1;
+        self.currentIcon = null;
         self.label = "";
         self.icons = [
             WatchUi.loadResource(Rez.Drawables.Steps),
@@ -41,13 +44,14 @@ class LoopField extends WatchUi.Drawable {
             WatchUi.loadResource(Rez.Drawables.Score),
             WatchUi.loadResource(Rez.Drawables.Temperature),
             WatchUi.loadResource(Rez.Drawables.Daytime),
+            WatchUi.loadResource(Rez.Drawables.Switch)
         ];
         self.units = [
             WatchUi.loadResource(Rez.Strings.Kilometers),
             WatchUi.loadResource(Rez.Strings.KCalories),
             null,
             WatchUi.loadResource(Rez.Strings.Celsius),
-            null
+            null,
         ];
         self.autoScroll = getApp().settings.get("autoscroll") as Boolean;
         self.scrollSpeed = (2*(getApp().settings.get("scrollspeed") as Number - 1.5)).toNumber();
@@ -66,7 +70,7 @@ class LoopField extends WatchUi.Drawable {
     }
 
     public function draw(dc as $.Toybox.Graphics.Dc) as Void {
-        dc.drawBitmap(ICM.scaleX(0.52), ICM.scaleY(0.45), icons[enabledFields[stateIndex]]);
+        dc.drawBitmap(ICM.scaleX(0.52), ICM.scaleY(0.45), currentIcon);
         dc.drawText(ICM.scaleX(0.65), ICM.scaleY(0.5), ICM.fontSmall, label, ICM.JTEXT_LEFT);
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
@@ -91,6 +95,7 @@ class LoopField extends WatchUi.Drawable {
     }
 
     public function refreshField() as Void {
+        currentIcon = icons[enabledFields[stateIndex]];
         switch (enabledFields[stateIndex]) {
             case FIELD_DISTANCE:
                 label = activity.getSteps() + "\n" + (activity.getDistance()/1000.0).format("%.2f") + units[FIELD_DISTANCE];
@@ -118,5 +123,13 @@ class LoopField extends WatchUi.Drawable {
             getApp().timer.stop(currentTimer);
             currentTimer = getApp().timer.start(method(:nextField), scrollSpeed, false);
         }
+    }
+
+    public function showSwitchAlarm() as Void {
+        currentIcon = icons[FIELD_SWITCH];
+        label = WatchUi.loadResource(Rez.Strings.Switch);
+        WatchUi.requestUpdate();
+        getApp().timer.stop(currentTimer);
+        currentTimer = getApp().timer.start(method(:refreshField), 8, false);
     }
 }

@@ -36,6 +36,9 @@
     <string id="Resume">Reprendre</string>
     <string id="Save">Enregistrer</string>
     <string id="Discard">Abandonner</string>
+    
+    <!-- Fields text -->
+    <string id="Switch">Changez de\npositions</string>
 
     <!-- Units -->
     <string id="StepsUnit"  translatable="true">pas</string>

@@ -63,7 +63,7 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
         self.activity = activity;
         self.uiTimer = new TimerController(80);
         self.doubleClickSpeed = getApp().settings.get("doubleclickspeed") as Number;
-        self.swipeScroll = getApp().settings.get("scrollswipe") as Boolean;
+        self.swipeScroll = getApp().settings.get("swipescroll") as Boolean;
     }
 
     public function onSelect() as Boolean {
@@ -165,9 +165,14 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
         }
     }
 
+    public function triggerSwitchAlarm() as Void {
+        view.loopField.showSwitchAlarm();
+    } 
+
     public function warnLap() as Void {
         var view = new LapView(activity, uiTimer);
-        Attention.vibrate([new Attention.VibeProfile(80, 300)]);
+        Attention.vibrate([new Attention.VibeProfile(80, 600)]);
+        Attention.playTone({:toneProfile => [new Attention.ToneProfile(690, 600)]});
         WatchUi.pushView(view, new LapDelegate(view), SLIDE_IMMEDIATE);
     }
 }

@@ -6,6 +6,7 @@
     <bitmap id="Score" filename="trophy.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
     <bitmap id="Temperature" filename="temperature.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
     <bitmap id="Daytime" filename="clock.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
+    <bitmap id="Switch" filename="switch.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
 
     <bitmap id="Start" filename="start.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
     <bitmap id="Save" filename="save.png" scaleX="10%" scaleRelativeTo="screen" dithering="none"/>
