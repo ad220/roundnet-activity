@@ -1,15 +1,15 @@
 # <p align="center"> <br/> <img src="doc/roundnetapp.png" alt="roundnet icon" width="128"/> <br/> <br/> Roundnet Activity <br/> </p>
-Roundnet activity tracker for Garmin smartwatches. Allows you to keep score so you don't forget the game's progress. Comes with customizable data records and fields, plus an alarm to remind you to switch sides every X rounds (soonTM).
+Roundnet activity tracker for Garmin smartwatches. Allows you to keep score so you don't forget the game's progress. Comes with customizable data records and fields, plus an alarm to remind you to switch sides every X rounds.
 
 ## Features
-- records heartrate, calories, steps, distance, temperatures and score
+- records score, heartrate, calories, steps, distance and temperature
 - customizable dynamic datafield
 - shows up as roundnet activity in Garmin Connect
 - custom datafields per point and per game in activity summary / details
+- alarm to rotate starting positions every X rounds
 
 ## Planned features
-- switching side alarm
-- better large screen support (scale fonts)
+- better large screen support (scalable fonts)
 
 ## Installation
 The app is available on the [Garmin Connect IQ Store](https://apps.garmin.com/fr-FR/apps/25832203-f7ed-40a7-977d-0a9172b68ee4).
@@ -28,6 +28,10 @@ On the activity view, from top to bottom you have the timer, the dynamic field a
 ![](doc/activity_view.png)
 
 ## Changelog
+
+### v0.5:
+- add configurable rotate starting positons alarm
+- add configurable auto win/loose
 
 ### v0.4:
 - add configurable double click speed, datafield auto scrolling, swipe scrolling and scrolling speed
