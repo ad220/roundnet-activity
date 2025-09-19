@@ -24,6 +24,7 @@
     <string id="AutoWin">Auto win / loose</string>
     <string id="TwoPoint">Two points difference</string>
     <string id="WinPoints">Points to win</string>
+    <string id="RetryAutoWin">Retry auto-win if cancelled?</string>
     <string id="SwitchAlarm">Rotate start positions alarm</string>
     <string id="SwitchPoints">Points to rotate positions</string>
 

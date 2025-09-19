@@ -53,6 +53,7 @@ class RoundnetActivity {
     private var pointsToSwitch as Number;
     private var pointsToWin as Number;
     private var twoPointsDiff as Boolean;
+    private var retryAutoWin as Boolean;
     private var locEnabled as Boolean;
     private var tempEnabled as Boolean;
     private var lastTemp as Number?;
@@ -78,6 +79,7 @@ class RoundnetActivity {
         self.pointsToSwitch = getApp().settings.get("game_switch_alarm") as Boolean ? getApp().settings.get("game_switch_points") : 0;
         self.pointsToWin = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
         self.twoPointsDiff = getApp().settings.get("game_win_two_pt_diff") as Boolean;
+        self.retryAutoWin = getApp().settings.get("game_win_retry") as Boolean;
         self.locEnabled = getApp().settings.get("sensor_location") as Boolean;
         self.tempEnabled = getApp().settings.get("sensor_temperature") as Boolean;
         createSession();
@@ -183,6 +185,7 @@ class RoundnetActivity {
         if (session.isRecording()) {
             updateLapFields();
             session.addLap();
+            pointsToWin = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
             WatchUi.requestUpdate();
         }
     }
@@ -261,6 +264,9 @@ class RoundnetActivity {
     public function incrPlayerScore() as Void {
         scorePlayer++;
         if (pointsToWin>0 and scorePlayer>=pointsToWin and (!twoPointsDiff or scorePlayer>=scoreOpponent+2)) {
+            if (!retryAutoWin) {
+                pointsToWin = 0;
+            }
             delegate.warnLap();
         } else {
             checkSwitch();
@@ -270,6 +276,9 @@ class RoundnetActivity {
     public function incrOpponentScore() as Void {
         scoreOpponent++;
         if (pointsToWin>0 and scoreOpponent>=pointsToWin and (!twoPointsDiff or scoreOpponent>=scorePlayer+2)) {
+            if (!retryAutoWin) {
+                pointsToWin = 0;
+            }
             delegate.warnLap();
         } else {
             checkSwitch();

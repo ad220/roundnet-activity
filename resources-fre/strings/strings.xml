@@ -24,6 +24,7 @@
     <string id="AutoWin">Fin de partie auto</string>
     <string id="TwoPoint">Deux points d'avance</string>
     <string id="WinPoints">Points pour gagner</string>
+    <string id="RetryAutoWin">Réessayer fin de partie auto si annulée ?</string>
     <string id="SwitchAlarm">Rappel du changement de position</string>
     <string id="SwitchPoints">Points pour changer de position</string>
 
@@ -38,7 +39,7 @@
     <string id="Discard">Abandonner</string>
     
     <!-- Fields text -->
-    <string id="Switch">Changez de\npositions</string>
+    <string id="Switch">Changez de\nposition</string>
 
     <!-- Units -->
     <string id="StepsUnit"  translatable="true">pas</string>

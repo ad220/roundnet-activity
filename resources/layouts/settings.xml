@@ -32,8 +32,9 @@
     
     <menu2 id="GameMenu" title="@Strings.GameRules">
         <toggle-menu-item id="game_win_auto" label="@Strings.AutoWin"/>
-        <toggle-menu-item id="game_win_two_pt_diff" label="@Strings.TwoPoint"/>
         <menu-item id="game_win_points" label="@Strings.WinPoints"/>
+        <toggle-menu-item id="game_win_two_pt_diff" label="@Strings.TwoPoint"/>
+        <toggle-menu-item id="game_win_retry" label="@Strings.RetryAutoWin"/>
         <toggle-menu-item id="game_switch_alarm" label="@Strings.SwitchAlarm"/>
         <menu-item id="game_switch_points" label="@Strings.SwitchPoints"/>
     </menu2>
@@ -60,9 +61,10 @@
         "swipescroll": true,
         "scrollspeed": 4,
         "doubleclickspeed": 3,
-        "game_win_auto": false,
+        "game_win_auto": true,
         "game_win_two_pt_diff": true,
         "game_win_points": 21,
+        "game_win_retry": false,
         "game_switch_alarm": true,
         "game_switch_points": 5
     }

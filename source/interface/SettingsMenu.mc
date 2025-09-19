@@ -136,6 +136,7 @@ class SubGameDelegate extends SubSettingsDelegate {
         :game_win_auto          => "game_win_auto",
         :game_win_two_pt_diff   => "game_win_two_pt_diff",
         :game_win_points        => ["game_win_points", method(:createWinPointsMenu)],
+        :game_win_retry         => "game_win_retry",
         :game_switch_alarm      => "game_switch_alarm",
         :game_switch_points     => ["game_switch_points", method(:createSwitchPointsMenu)],
     };
