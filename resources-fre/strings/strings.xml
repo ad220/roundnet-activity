@@ -26,9 +26,9 @@
     <string id="AutoWin">Fin de partie auto</string>
     <string id="TwoPoint">Deux points d'avance</string>
     <string id="WinPoints">Points pour gagner</string>
-    <string id="RetryAutoWin">Réessayer fin de partie auto si annulée ?</string>
-    <string id="SwitchAlarm">Rappel du changement de position</string>
-    <string id="SwitchPoints">Points pour changer de position</string>
+    <string id="RetryAutoWin">Fin de partie auto persistant</string>
+    <string id="SwitchAlarm">Rappel rotation positions</string>
+    <string id="SwitchPoints">Points pour tourner</string>
 
     <string id="VeryFast">Très rapide</string>
     <string id="Fast">Rapide</string>
