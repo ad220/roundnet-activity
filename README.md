@@ -10,6 +10,8 @@ Roundnet activity tracker for Garmin smartwatches. Allows you to keep score so y
 
 ## Planned features
 - better large screen support (scalable fonts)
+- custom activity summary
+- service position helper
 
 ## Installation
 The app is available on the [Garmin Connect IQ Store](https://apps.garmin.com/fr-FR/apps/25832203-f7ed-40a7-977d-0a9172b68ee4).
@@ -28,6 +30,11 @@ On the activity view, from top to bottom you have the timer, the dynamic field a
 ![](doc/activity_view.png)
 
 ## Changelog
+
+### v0.6:
+- fix menu labels overflow
+- fix battery drain
+- handle session not starting
 
 ### v0.5:
 - add configurable rotate starting positons alarm
