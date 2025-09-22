@@ -40,14 +40,15 @@ class RoundnetApp extends Application.AppBase {
 
     // onStop() is called when your application is exiting
     function onStop(state as Dictionary?) as Void {
+        timer.stopAll();
+        ICM.unloadFonts();
         Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
         Storage.setValue("settings", settings);
     }
 
     // Return the initial view of your application here
     function getInitialView() as [Views] or [Views, InputDelegates] {
-        var delegate = new StartDelegate(); 
-        return [new StartView(delegate.method(:registerUpdates)), delegate];
+        return [new StartView(), new StartDelegate()];
     }
 
     public function getLocationSetting() as Position.LocationAcquisitionType {

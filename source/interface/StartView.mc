@@ -11,14 +11,18 @@ class StartView extends WatchUi.View {
 
     private var locationEnabled as Boolean;
     private var temperatureEnabled as Boolean;
-    private var onShowCallback as Method() as Void;
 
-    public function initialize(onShowCallback as Method() as Void) {
+    private var lastGpsAccuracy as Position.Quality or Number;
+    private var locationSetting as Position.LocationAcquisitionType;
+    private var updater as TimerCallback?;
+
+    public function initialize() {
         View.initialize();
 
         self.locationEnabled = true;
         self.temperatureEnabled = true;
-        self.onShowCallback = onShowCallback;
+        self.lastGpsAccuracy = Position.QUALITY_NOT_AVAILABLE;
+        self.locationSetting = Position.LOCATION_CONTINUOUS;
     }
 
     public function onLayout(dc as Graphics.Dc) as Void {
@@ -28,7 +32,21 @@ class StartView extends WatchUi.View {
     public function onShow() as Void {
         locationEnabled = getApp().settings.get("sensor_location") as Boolean;
         temperatureEnabled = getApp().settings.get("sensor_temperature") as Boolean;
-        onShowCallback.invoke();
+        lastGpsAccuracy = Position.getInfo().accuracy;
+        locationSetting = getApp().getLocationSetting();
+        updater = getApp().timer.start(method(:update), 10, true);
+        Position.enableLocationEvents(locationSetting, method(:onPosition));
+    }
+
+    public function onPosition(loc as Position.Info) as Void {
+        if (lastGpsAccuracy != loc.accuracy) {
+            lastGpsAccuracy = loc.accuracy;
+            requestUpdate();
+        }
+    }
+
+    public function update() as Void {
+        requestUpdate();
     }
 
     public function onUpdate(dc as Graphics.Dc) as Void {
@@ -46,10 +64,9 @@ class StartView extends WatchUi.View {
         dc.drawText(ICM.scaleX(0.5), ICM.scaleY(0.9), ICM.fontMedium, daytime, ICM.JTEXT_MID);
 
         if (locationEnabled) {
-            var gpsQuality = Position.getInfo().accuracy;
             dc.setPenWidth(ICM.scaleX(0.005));
-            dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][gpsQuality], Graphics.COLOR_TRANSPARENT);
-            dc.fillRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX((gpsQuality+1)*0.015), ICM.scaleY(0.02));
+            dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][lastGpsAccuracy], Graphics.COLOR_TRANSPARENT);
+            dc.fillRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX((lastGpsAccuracy+1)*0.015), ICM.scaleY(0.02));
             dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
             dc.drawRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX(0.08), ICM.scaleY(0.02));
         } else {
@@ -72,27 +89,16 @@ class StartView extends WatchUi.View {
     }
 
     public function onHide() as Void {
-        
+        Position.enableLocationEvents(locationSetting, null);
+        updater.stop();
+        updater = null;
     }
 }
 
 class StartDelegate extends WatchUi.BehaviorDelegate {
 
-    private var lastGpsAccuracy as Number;
-    private var locationSetting as Position.LocationAcquisitionType?;
-    private var updater as TimerCallback?;
-
     public function initialize() {
         BehaviorDelegate.initialize();
-
-        self.lastGpsAccuracy = Position.getInfo().accuracy;
-        registerUpdates();
-    }
-
-    public function registerUpdates() as Void {
-        self.locationSetting = getApp().getLocationSetting();
-        self.updater = getApp().timer.start(method(:update), 10, true);
-        Position.enableLocationEvents(locationSetting, method(:onPosition));
     }
     
     public function onSelect() as Boolean {
@@ -101,8 +107,6 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
 
     public function onKey(keyEvent as KeyEvent) as Boolean {
         if (keyEvent.getKey()==KEY_ENTER and keyEvent.getType()==PRESS_TYPE_ACTION) {
-            getApp().timer.stop(updater);
-            Position.enableLocationEvents(locationSetting, null);
             var activity = new RoundnetActivity();
             var view = new RoundnetActivityView(activity);
             var delegate = new RoundnetActivityDelegate(view, activity);
@@ -114,25 +118,11 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
     }
 
     public function onMenu() as Boolean {
-        getApp().timer.stop(updater);
-        Position.enableLocationEvents(locationSetting, null);
         WatchUi.pushView(new Rez.Menus.SettingsMenu(), new SettingsDelegate(), SLIDE_LEFT);
         return true;
     }
 
     public function onPreviousPage() as Boolean {
         return onMenu();
-    }
-
-
-    public function onPosition(loc as Position.Info) as Void {
-        if (lastGpsAccuracy != loc.accuracy) {
-            lastGpsAccuracy = loc.accuracy;
-            WatchUi.requestUpdate();
-        }
-    }
-
-    public function update() as Void {
-        WatchUi.requestUpdate();
     }
 }

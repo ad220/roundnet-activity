@@ -73,6 +73,8 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     public function onKey(keyEvent as KeyEvent) as Boolean {
         if (keyEvent.getKey()==KEY_ENTER and keyEvent.getType()==PRESS_TYPE_ACTION) {
             activity.stop();
+            uiTimer.stopAll();
+            view.loopField.stop();
             var menu = new Rez.Menus.StopMenu();
             menu.setTitle(activity.getFormattedTime());
             WatchUi.switchToView(menu, new StopDelegate(activity), WatchUi.SLIDE_UP);

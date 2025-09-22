@@ -47,6 +47,13 @@ module InterfaceComponentsManager {
         fontMedium = WatchUi.loadResource(Rez.Fonts.Medium);
         fontLarge = WatchUi.loadResource(Rez.Fonts.Large);
     }
+
+    function unloadFonts() as Void {
+        fontTiny = null;
+        fontSmall = null;
+        fontMedium = null;
+        fontLarge = null;
+    }
     
     // TODO: replace with font resource override by screen size
     function adaptFontSmall() as FontResource {

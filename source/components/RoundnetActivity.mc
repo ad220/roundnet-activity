@@ -115,9 +115,9 @@ class RoundnetActivity {
         if (tempEnabled) { Sensor.enableSensorType(Sensor.SENSOR_TEMPERATURE); }
 
         self.session = ActivityRecording.createSession({    // set up recording session
-            :name=>"Roundnet",                             // set session name
-            :sport=> Activity.SPORT_GENERIC,                 // set sport type
-            :subSport=> Activity.SUB_SPORT_MATCH           // set sub sport type
+            :name=>"Roundnet",                              // set session name
+            :sport=> Activity.SPORT_GENERIC,                // set sport type
+            :subSport=> Activity.SUB_SPORT_MATCH            // set sub sport type
         });
     }
 
@@ -146,8 +146,8 @@ class RoundnetActivity {
     public function stop() as Boolean {
         if (session.isRecording()) {
             var status = session.stop();
-            var timer = getApp().timer;
-            timer.stop(recordTimer);
+            recordTimer.stop();
+            delegate = null;
             return status;
         }
         return false;

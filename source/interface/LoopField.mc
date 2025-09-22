@@ -132,4 +132,8 @@ class LoopField extends WatchUi.Drawable {
         getApp().timer.stop(currentTimer);
         currentTimer = getApp().timer.start(method(:refreshField), 8, false);
     }
+
+    public function stop() as Void {
+        getApp().timer.stop(currentTimer);
+    }
 }
