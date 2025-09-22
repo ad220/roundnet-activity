@@ -106,7 +106,11 @@ class RoundnetActivity {
         }
 
         // TODO: handle error during session start
-        System.println("Session start result: "+resume());
+        var status = resume();
+        System.println("Session started: "+status);
+        if (!status) {
+            exit();
+        }
     }
 
     (:sysgt6)
@@ -140,7 +144,7 @@ class RoundnetActivity {
     }
 
     public function isRecording() as Boolean {
-        return session.isRecording();
+        return session!=null and session.isRecording();
     }
 
     public function stop() as Boolean {
@@ -156,7 +160,9 @@ class RoundnetActivity {
     public function resume() as Boolean {
         if (!session.isRecording()) {
             var status = session.start();
-            recordTimer = getApp().timer.start(method(:updateRecordFields), 1, true);
+            if (status) {
+                recordTimer = getApp().timer.start(method(:updateRecordFields), 1, true);
+            }
             return status;
         }
         return false;

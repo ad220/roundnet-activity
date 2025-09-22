@@ -30,6 +30,7 @@ class StartView extends WatchUi.View {
     }
 
     public function onShow() as Void {
+        (findDrawableById("title") as Text).setText(Rez.Strings.AppName);
         locationEnabled = getApp().settings.get("sensor_location") as Boolean;
         temperatureEnabled = getApp().settings.get("sensor_temperature") as Boolean;
         lastGpsAccuracy = Position.getInfo().accuracy;
@@ -97,8 +98,12 @@ class StartView extends WatchUi.View {
 
 class StartDelegate extends WatchUi.BehaviorDelegate {
 
-    public function initialize() {
+    private var view as StartView;
+
+    public function initialize(view as StartView) {
         BehaviorDelegate.initialize();
+
+        self.view = view;
     }
     
     public function onSelect() as Boolean {
@@ -108,17 +113,22 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
     public function onKey(keyEvent as KeyEvent) as Boolean {
         if (keyEvent.getKey()==KEY_ENTER and keyEvent.getType()==PRESS_TYPE_ACTION) {
             var activity = new RoundnetActivity();
-            var view = new RoundnetActivityView(activity);
-            var delegate = new RoundnetActivityDelegate(view, activity);
-            activity.registerDelegate(delegate);
-            WatchUi.pushView(view, new RoundnetActivityDelegate(view, activity), SLIDE_UP);
+            if (activity.isRecording()) {
+                var view = new RoundnetActivityView(activity);
+                var delegate = new RoundnetActivityDelegate(view, activity);
+                activity.registerDelegate(delegate);
+                WatchUi.pushView(view, new RoundnetActivityDelegate(view, activity), SLIDE_UP);
+            } else {
+                (view.findDrawableById("title") as Text).setText(Rez.Strings.StartFailed);
+                requestUpdate();
+            }
             return true;
         }
         return false;
     }
 
     public function onMenu() as Boolean {
-        WatchUi.pushView(new Rez.Menus.SettingsMenu(), new SettingsDelegate(), SLIDE_LEFT);
+        pushView(new Rez.Menus.SettingsMenu(), new SettingsDelegate(), SLIDE_LEFT);
         return true;
     }
 

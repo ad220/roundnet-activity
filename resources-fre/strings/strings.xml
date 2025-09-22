@@ -1,6 +1,8 @@
 <strings>
     <string id="AppName">Roundnet</string>
 
+    <string id="StartFailed">Erreur, veuillez\nréessayer...</string>
+
     <!-- Menu labels -->
     <string id="Settings">Paramètres Roundnet</string>
     <string id="Datafield">Écran de données</string>
