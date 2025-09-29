@@ -1,11 +1,12 @@
 import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
+import Toybox.Graphics;
 import Toybox.Application;
 
 using InterfaceComponentsManager as ICM;
 
-class LoopField extends WatchUi.Drawable {
+class LoopField extends Drawable {
 
     public enum FieldId {
         FIELD_DISTANCE,
@@ -23,7 +24,7 @@ class LoopField extends WatchUi.Drawable {
     private var enabledFields as Array<FieldId>;
     private var currentIcon as BitmapResource?;
     private var label as String;
-    private var icons as Array<WatchUi.BitmapResource>;
+    private var icons as Array<ResourceId>;
     private var autoScroll as Boolean;
     private var scrollSpeed as Number;
     private var units as Array<String?>;
@@ -39,18 +40,18 @@ class LoopField extends WatchUi.Drawable {
         self.currentIcon = null;
         self.label = "";
         self.icons = [
-            WatchUi.loadResource(Rez.Drawables.Steps),
-            WatchUi.loadResource(Rez.Drawables.Calories),
-            WatchUi.loadResource(Rez.Drawables.Score),
-            WatchUi.loadResource(Rez.Drawables.Temperature),
-            WatchUi.loadResource(Rez.Drawables.Daytime),
-            WatchUi.loadResource(Rez.Drawables.Switch)
+            Rez.Drawables.Steps,
+            Rez.Drawables.Calories,
+            Rez.Drawables.Score,
+            Rez.Drawables.Temperature,
+            Rez.Drawables.Daytime,
+            Rez.Drawables.Switch
         ];
         self.units = [
-            WatchUi.loadResource(Rez.Strings.Kilometers),
-            WatchUi.loadResource(Rez.Strings.KCalories),
+            loadResource(Rez.Strings.Kilometers),
+            loadResource(Rez.Strings.KCalories),
             null,
-            WatchUi.loadResource(Rez.Strings.Celsius),
+            loadResource(Rez.Strings.Celsius),
             null,
         ];
         self.autoScroll = getApp().settings.get("autoscroll") as Boolean;
@@ -69,7 +70,7 @@ class LoopField extends WatchUi.Drawable {
         if (settings.get("field_daytime") as Boolean)       { enabledFields.add(FIELD_DAYTIME); }
     }
 
-    public function draw(dc as $.Toybox.Graphics.Dc) as Void {
+    public function draw(dc as Dc) as Void {
         dc.drawBitmap(ICM.scaleX(0.52), ICM.scaleY(0.45), currentIcon);
         dc.drawText(ICM.scaleX(0.65), ICM.scaleY(0.5), ICM.fontSmall, label, ICM.JTEXT_LEFT);
 
@@ -95,7 +96,7 @@ class LoopField extends WatchUi.Drawable {
     }
 
     public function refreshField() as Void {
-        currentIcon = icons[enabledFields[stateIndex]];
+        currentIcon = loadResource(icons[enabledFields[stateIndex]]);
         switch (enabledFields[stateIndex]) {
             case FIELD_DISTANCE:
                 label = activity.getSteps() + "\n" + (activity.getDistance()/1000.0).format("%.2f") + units[FIELD_DISTANCE];
@@ -118,7 +119,6 @@ class LoopField extends WatchUi.Drawable {
                 System.println("Unknown field id");
                 break;
         }
-        WatchUi.requestUpdate();
         if (autoScroll) {
             getApp().timer.stop(currentTimer);
             currentTimer = getApp().timer.start(method(:nextField), scrollSpeed, false);
@@ -126,9 +126,9 @@ class LoopField extends WatchUi.Drawable {
     }
 
     public function showSwitchAlarm() as Void {
-        currentIcon = icons[FIELD_SWITCH];
-        label = WatchUi.loadResource(Rez.Strings.Switch);
-        WatchUi.requestUpdate();
+        currentIcon = loadResource(icons[FIELD_SWITCH]);
+        label = loadResource(Rez.Strings.Switch);
+        requestUpdate();
         getApp().timer.stop(currentTimer);
         currentTimer = getApp().timer.start(method(:refreshField), 8, false);
     }
