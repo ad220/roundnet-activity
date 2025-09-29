@@ -1,7 +1,7 @@
 <resources>
     <layout id="LapLayoutButtons">
-        <bitmap id="confirmicon_lap_buttons" x="79%" y="27%" filename="../resources/drawables/check.png" scaleY="8%" scaleRelativeTo="screen" dithering="none"/>
-        <bitmap id="reverticon_lap_buttons" x="12%" y="66%" filename="../resources/drawables/undo.png" scaleY="8%" scaleRelativeTo="screen" dithering="none"/>
+        <bitmap id="confirmicon_lap_buttons" x="79%" y="27%" filename="../resources/drawables/check.png" scaleY="8%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+        <bitmap id="reverticon_lap_buttons" x="12%" y="66%" filename="../resources/drawables/undo.png" scaleY="8%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
 
         <drawable id="LapCommonDrawables"/>
         <label id="timer_lap" x="46%" y="18.5%" text="" justification="Gfx.TEXT_JUSTIFY_LEFT | Gfx.TEXT_JUSTIFY_VCENTER" font="@Fonts.Medium"/>
@@ -9,8 +9,8 @@
     </layout>
     
     <layout id="LapLayoutTouch">
-        <bitmap id="confirmicon_lap_touch" x="79%" y="27%" filename="../resources/drawables/check.png" scaleY="8%" scaleRelativeTo="screen" dithering="none"/>
-        <bitmap id="reverticon_lap_touch" x="79%" y="65%" filename="../resources/drawables/undo.png" scaleY="8%" scaleRelativeTo="screen" dithering="none"/>
+        <bitmap id="confirmicon_lap_touch" x="79%" y="27%" filename="../resources/drawables/check.png" scaleY="8%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+        <bitmap id="reverticon_lap_touch" x="79%" y="65%" filename="../resources/drawables/undo.png" scaleY="8%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
         
         <drawable id="LapCommonDrawables"/>
         <label id="timer_lap" x="46%" y="18.5%" text="" justification="Gfx.TEXT_JUSTIFY_LEFT | Gfx.TEXT_JUSTIFY_VCENTER" font="@Fonts.Medium"/>
@@ -20,7 +20,7 @@
     <drawable-list id="LapCommonDrawables">
         <shape type="circle" x="center" y="center" radius="50%" color="Gfx.COLOR_TRANSPARENT" border_color="0xFFAA00" border_width="5"/>
 
-        <bitmap id="ball_lap" x="26%" y="11.8%" filename="../resources/drawables/ball.png" scaleY="13.5%" scaleRelativeTo="screen" dithering="none"/>
-        <bitmap id="trophy_lap" x="center" y="center" filename="../resources/drawables/trophy.png" scaleY="12%" scaleRelativeTo="screen" dithering="none"/>
+        <bitmap id="ball_lap" x="26%" y="11.8%" filename="../resources/drawables/ball.png" scaleY="13.5%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+        <bitmap id="trophy_lap" x="center" y="center" filename="../resources/drawables/trophy.png" scaleY="12%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
     </drawable-list>
 </resources>
