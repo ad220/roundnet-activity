@@ -309,8 +309,12 @@ class RoundnetActivity {
 
     private function checkSwitch() as Void {
         if (pointsToSwitch!=0 and (scorePlayer+scoreOpponent)%pointsToSwitch==0) {
-            Attention.vibrate([new Attention.VibeProfile(80, 600)]);
-            Attention.playTone({:toneProfile => [new Attention.ToneProfile(690, 600)]});
+            if (Attention has :vibrate) {
+                Attention.vibrate([new Attention.VibeProfile(80, 600)]);
+            }
+            if (Attention has :playTone) {
+                Attention.playTone({:toneProfile => [new Attention.ToneProfile(690, 600)]});
+            }
             delegate.triggerSwitchAlarm();
         } else {
             Attention.vibrate([new Attention.VibeProfile(50, 80)]);

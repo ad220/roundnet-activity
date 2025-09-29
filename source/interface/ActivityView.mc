@@ -173,8 +173,12 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
 
     public function warnLap() as Void {
         var view = new LapView(activity, uiTimer);
-        Attention.vibrate([new Attention.VibeProfile(80, 600)]);
-        Attention.playTone({:toneProfile => [new Attention.ToneProfile(690, 600)]});
+        if (Attention has :vibrate) {
+            Attention.vibrate([new Attention.VibeProfile(80, 600)]);
+        }
+        if (Attention has :playTone) {
+            Attention.playTone({:toneProfile => [new Attention.ToneProfile(690, 600)]});
+        }
         WatchUi.pushView(view, new LapDelegate(view), SLIDE_IMMEDIATE);
     }
 }
