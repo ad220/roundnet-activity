@@ -13,6 +13,10 @@ Roundnet activity tracker for Garmin smartwatches. Allows you to keep score so y
 - custom activity summary
 - service position helper
 
+## Screenshots
+![](doc/start_menu.png)
+![](doc/activity_view.png)
+
 ## Installation
 The app is available on the [Garmin Connect IQ Store](https://apps.garmin.com/fr-FR/apps/25832203-f7ed-40a7-977d-0a9172b68ee4).
 
@@ -21,15 +25,48 @@ You can also build it from source for your specific device with the VSCode exten
 ## Getting started
 When starting the app, you get a menu similar to Garmin's native activity starting screen. Pressing the start button will start the activity, pressing the "menu" button will open the settings (on touchscreen devices, it's usually a long press or a down swipe).
 
-The settings menu lets you configure which data you want to see in the app's dynamic field and which sensor you wish to enable for the activity.
+### Settings
+The app allows you to customize a few things:
 
-On the activity view, from top to bottom you have the timer, the dynamic field and the heartrate field. Pressing the up button will increase your opponent's score in grey and pressing the down button will increase yours in yellow. Pressing the lap button will save the game state to the activity file and start a new one. 
+- Sensors -- enable sensors for the activity recording
+    * Toggle location (GPS)
+    * Toggle temperature
 
-## Screenshots
-![](doc/start_menu.png)
-![](doc/activity_view.png)
+- Datafield -- settings for the dynamic datafield
+    - Fields -- enable or disable distance, calories, score, daytime and temperature datafields
+
+    - Scrolling -- define dynamic field scrolling behavior
+        * Toggle Auto Scroll
+            + enables the datafield to automatically skip to the next data regularly
+        * Set auto scroll speed
+            + very fast: 1s, fast: 3s, normal: 5s, slow: 7s, very slow: 11s ; defaults to normal
+        * Toggle Swipe Scroll
+            + allows the dynamic field to be scrolled using a left or right swipe on touchscreen devices.
+
+- Game Settings -- settings for score based app-behaviour
+    * Toggle auto win / loose
+        + enables the app to automatically ends a game when the target score is reached by one of the two teams.
+    * Toggle two points difference
+        + checks if a team is 2 points ahead of its opponents to win
+    * Set points to win game
+        + set the target score to a number between 5 and 51, defaults to 21
+    * Toggle rotate start positions alarm
+        + enables an alarm reminding you to rotate starting positions every X points
+    * Set points to rotate
+        + set the number of points to play between each start position rotation, between 3 and 10, defaults to 5
+
+* Set double click speed
+    + very fast: 160ms, fast: 240ms, normal: 320ms, slow: 400ms, very slow: 560ms 
+
+### Activity
+
+On the activity view, you have the timer, the score, the dynamic field and the heartrate field. Pressing the up button will increase your opponent's score in grey and pressing the down button will increase yours in yellow. If enabled in the settings, swipping left or right on touchscreen devices will skip to the next or previous data in the dynamic field.Pressing the lap button will save the game state to the activity file and start a new one. Press the start button to stop the activity and save or discard it.
 
 ## Changelog
+
+### v0.7:
+- fix crash on older devices and on watches that can't vibrate or play a sound
+- performance fixes
 
 ### v0.6:
 - fix menu labels overflow
