@@ -42,7 +42,7 @@ class RoundnetActivity {
     private var session as ActivityRecording.Session?;
     private var time as Number;
     private var timeOnLap as Number;
-    private var distanceOnLap as Number;
+    private var distanceOnLap as Numeric;
     private var scorePlayer as Number;
     private var scoreOpponent as Number;
     private var gamesPlayer as Number;
@@ -210,17 +210,18 @@ class RoundnetActivity {
             .setData(pointsCount>0 ? (currentTime - timeOnLap)/pointsCount/1000 : 0);
         (lapFields.get(LAP_AVG_STEPS) as FitContributor.Field)
             .setData(pointsCount>0 ? (steps - stepsOnLap)/pointsCount : 0);
+        timeOnLap = currentTime;
+        stepsOnLap = steps;
         
         if (locEnabled) {
             (lapFields.get(LAP_AVG_DISTANCE) as FitContributor.Field)
                 .setData(pointsCount>0 ? (currentDistance - distanceOnLap)/pointsCount : 0);
+            distanceOnLap = currentDistance;
         }
-        stepsOnLap = steps;
         
-        // TODO: handle tie game better
-        if (scorePlayer >= scoreOpponent) {
+        if (scorePlayer > scoreOpponent) {
             gamesPlayer++;
-        } if (scoreOpponent >= scorePlayer) {
+        } if (scoreOpponent > scorePlayer) {
             gamesOpponent++;
         }
         scorePlayer = 0;
