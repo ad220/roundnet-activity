@@ -64,6 +64,10 @@ On the activity view, you have the timer, the score, the dynamic field and the h
 
 ## Changelog
 
+### v0.8:
+- fix adding game won/lost on draw
+- fix mean time and distance per point data
+
 ### v0.7:
 - fix crash on older devices and on watches that can't vibrate or play a sound
 - performance fixes

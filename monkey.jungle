@@ -74,6 +74,7 @@ vivoactive3mlte.excludeAnnotations = sysgt6; buttons; notva3
 vivoactive4.excludeAnnotations = sysgt6; buttons; va3
 vivoactive4s.excludeAnnotations = sysgt6; buttons; va3
 
+# Devices with 2 buttons layout
 approachs50.excludeAnnotations = syslt6; buttons; va3
 approachs7042mm.excludeAnnotations = syslt6; buttons; va3
 approachs7047mm.excludeAnnotations = syslt6; buttons; va3
