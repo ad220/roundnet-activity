@@ -2,11 +2,34 @@
     <layout id="StartLayout">
         <bitmap id="MenuHint" personality="system_icon_dark__hint_button_left_middle system_loc__hint_button_left_middle"/>
         <bitmap id="StartHint" personality="system_icon_positive__hint_button_right_top system_loc__hint_button_right_top"/>
-        
+        <drawable id="StartDots" />
+
         <bitmap id="ball_start" x="42.5%" y="42.5%" filename="../resources/drawables/ball.png" scaleY="15%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
         <bitmap id="temp_start" x="46%" y="10%" filename="../resources/drawables/temperature.png" scaleY="8%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
         <bitmap id="gps_start" x="46%" y="20%" filename="../resources/drawables/gps.png" scaleY="8%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+        <drawable id="TempEnabled" />
+        <drawable id="TempDisabled" />
+        <drawable id="GpsDisabled" />
 
         <label id="title" text="@Strings.AppName" x="50%" y="60%" font="@Fonts.Medium" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_CENTER"/>
-    </layout>   
+        <label id="daytime" text="" x="50%" y="90%" font="@Fonts.Medium" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_CENTER | Gfx.TEXT_JUSTIFY_VCENTER" />
+    </layout>
+
+    <drawable-list id="StartDots">
+        <shape type="circle" radius="0.7%" color="Gfx.COLOR_WHITE" x="6%" y="46.5%"/>
+        <shape type="circle" radius="0.7%" color="Gfx.COLOR_WHITE" x="6%" y="50%"/>
+        <shape type="circle" radius="0.7%" color="Gfx.COLOR_WHITE" x="6%" y="53.5%"/>
+    </drawable-list> 
+
+    <drawable-list id="TempEnabled">
+        <shape type="circle" radius="1%" color="0x00AA00" x="52.5%" y="17%"/>
+    </drawable-list> 
+    
+    <drawable-list id="TempDisabled">
+        <shape type="circle" radius="1%" color="0xFF0000" x="52.5%" y="17%"/>
+    </drawable-list> 
+    
+    <drawable-list id="GpsDisabled">
+        <shape type="circle" radius="1%" color="0xFF0000" x="52.5%" y="27%"/>
+    </drawable-list> 
 </resources>

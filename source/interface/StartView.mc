@@ -51,42 +51,26 @@ class StartView extends WatchUi.View {
     }
 
     public function onUpdate(dc as Graphics.Dc) as Void {
-        View.onUpdate(dc);
         if (dc has :setAntiAlias) {
             dc.setAntiAlias(true);
         }
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.fillCircle(ICM.scaleX(0.06), ICM.scaleY(0.465), ICM.scaleX(0.007));
-        dc.fillCircle(ICM.scaleX(0.06), ICM.scaleY(0.5), ICM.scaleX(0.007));
-        dc.fillCircle(ICM.scaleX(0.06), ICM.scaleY(0.535), ICM.scaleX(0.007));
+        View.onUpdate(dc);
 
         var daytime = Time.Gregorian.info(Time.now(), Time.FORMAT_SHORT);
         daytime = daytime.hour + ":" + daytime.min.format("%02d");
-        dc.drawText(ICM.scaleX(0.5), ICM.scaleY(0.9), ICM.fontMedium, daytime, ICM.JTEXT_MID);
-
+        (findDrawableById("daytime") as Text).setText(daytime);
+        
         if (locationEnabled) {
             dc.setPenWidth(ICM.scaleX(0.005));
             dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][lastGpsAccuracy], Graphics.COLOR_TRANSPARENT);
             dc.fillRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX((lastGpsAccuracy+1)*0.015), ICM.scaleY(0.02));
             dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
             dc.drawRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX(0.08), ICM.scaleY(0.02));
-        } else {
-            dc.setPenWidth(ICM.scaleX(0.008));
-            dc.setColor(0xFF0000, Graphics.COLOR_TRANSPARENT);
-            dc.drawLine(ICM.scaleX(0.515), ICM.scaleY(0.255), ICM.scaleX(0.54), ICM.scaleY(0.28));
-            dc.drawLine(ICM.scaleX(0.515), ICM.scaleY(0.28), ICM.scaleX(0.54), ICM.scaleY(0.255));
         }
+        findDrawableById("GpsDisabled").setVisible(!locationEnabled);
 
-        dc.setPenWidth(ICM.scaleX(0.008));
-        if (temperatureEnabled) {
-            dc.setColor(0x00AA00, Graphics.COLOR_TRANSPARENT);
-            dc.drawLine(ICM.scaleX(0.515), ICM.scaleY(0.1675), ICM.scaleX(0.525), ICM.scaleY(0.18));
-            dc.drawLine(ICM.scaleX(0.525), ICM.scaleY(0.18), ICM.scaleX(0.54), ICM.scaleY(0.155));
-        } else {
-            dc.setColor(0xFF0000, Graphics.COLOR_TRANSPARENT);
-            dc.drawLine(ICM.scaleX(0.515), ICM.scaleY(0.155), ICM.scaleX(0.54), ICM.scaleY(0.18));
-            dc.drawLine(ICM.scaleX(0.515), ICM.scaleY(0.18), ICM.scaleX(0.54), ICM.scaleY(0.155));
-        }
+        findDrawableById("TempEnabled").setVisible(temperatureEnabled);
+        findDrawableById("TempDisabled").setVisible(!temperatureEnabled);
     }
 
     public function onHide() as Void {
