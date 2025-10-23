@@ -50,16 +50,22 @@ class StartView extends WatchUi.View {
         requestUpdate();
     }
 
+    (:sysgt6)
     public function onUpdate(dc as Graphics.Dc) as Void {
         if (dc has :setAntiAlias) {
             dc.setAntiAlias(true);
         }
-        View.onUpdate(dc);
-
         var daytime = Time.Gregorian.info(Time.now(), Time.FORMAT_SHORT);
         daytime = daytime.hour + ":" + daytime.min.format("%02d");
         (findDrawableById("daytime") as Text).setText(daytime);
         
+        findDrawableById("GpsDisabled").setVisible(!locationEnabled);
+
+        findDrawableById("TempEnabled").setVisible(temperatureEnabled);
+        findDrawableById("TempDisabled").setVisible(!temperatureEnabled);
+
+        View.onUpdate(dc);
+
         if (locationEnabled) {
             dc.setPenWidth(ICM.scaleX(0.005));
             dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][lastGpsAccuracy], Graphics.COLOR_TRANSPARENT);
@@ -67,10 +73,32 @@ class StartView extends WatchUi.View {
             dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
             dc.drawRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX(0.08), ICM.scaleY(0.02));
         }
-        findDrawableById("GpsDisabled").setVisible(!locationEnabled);
+    }
 
-        findDrawableById("TempEnabled").setVisible(temperatureEnabled);
-        findDrawableById("TempDisabled").setVisible(!temperatureEnabled);
+    (:syslt6)
+    public function onUpdate(dc as Graphics.Dc) as Void {
+        if (dc has :setAntiAlias) {
+            dc.setAntiAlias(true);
+        }
+        var daytime = Time.Gregorian.info(Time.now(), Time.FORMAT_SHORT);
+        daytime = daytime.hour + ":" + daytime.min.format("%02d");
+        (findDrawableById("daytime") as Text).setText(daytime);
+
+        View.onUpdate(dc);
+        
+        if (locationEnabled) {
+            dc.setPenWidth(ICM.scaleX(0.005));
+            dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][lastGpsAccuracy], Graphics.COLOR_TRANSPARENT);
+            dc.fillRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX((lastGpsAccuracy+1)*0.015), ICM.scaleY(0.02));
+            dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
+            dc.drawRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX(0.08), ICM.scaleY(0.02));
+        } else {
+            dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+        dc.fillCircle(ICM.scaleX(0.525), ICM.scaleY(0.27), ICM.scaleX(0.015));
+        }
+
+        dc.setColor(temperatureEnabled ? 0x00AA00 : 0xFF0000, Graphics.COLOR_TRANSPARENT);
+        dc.fillCircle(ICM.scaleX(0.525), ICM.scaleY(0.17), ICM.scaleX(0.015));
     }
 
     public function onHide() as Void {
