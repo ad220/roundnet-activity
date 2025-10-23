@@ -30,4 +30,7 @@ class StopDelegate extends WatchUi.Menu2InputDelegate {
             WatchUi.popView(SLIDE_DOWN);
         }
     }
+
+    public function onBack() as Void {
+    }
 }
