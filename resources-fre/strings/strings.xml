@@ -1,9 +1,11 @@
 <strings>
+    <!-- $$$ Medium -->
     <string id="AppName">Roundnet</string>
 
     <string id="StartFailed">Erreur, veuillez\nréessayer...</string>
 
     <!-- Menu labels -->
+    <!-- $$$ Garmin fonts -->
     <string id="Settings">Paramètres Roundnet</string>
     <string id="Datafield">Écran de données</string>
     <string id="Sensors">Capteurs</string>
@@ -41,9 +43,11 @@
     <string id="Discard">Abandonner</string>
     
     <!-- Fields text -->
+    <!-- $$$ Small -->
     <string id="Switch">Changez de\nposition</string>
 
     <!-- Units -->
+    <!-- $$$ ConnectIQ labels -->
     <string id="StepsUnit"  translatable="true">pas</string>
 
     <!-- FIT Contributions -->

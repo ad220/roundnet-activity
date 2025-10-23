@@ -3,41 +3,57 @@ project.manifest = manifest.xml
 base.resourcePath = resources; resources-sysgt6
 base.excludeAnnotations = syslt6; touch; va3
 
+round-218x218.resourcePath = $(base.resourcePath); resources-scalable/round-218x218
+round-240x240.resourcePath = $(base.resourcePath); resources-scalable/round-240x240
+round-260x260.resourcePath = $(base.resourcePath); resources-scalable/round-260x260
+round-280x280.resourcePath = $(base.resourcePath); resources-scalable/round-280x280
+round-360x360.resourcePath = $(base.resourcePath); resources-scalable/round-360x360
+round-390x390.resourcePath = $(base.resourcePath); resources-scalable/round-390x390
+round-416x416.resourcePath = $(base.resourcePath); resources-scalable/round-416x416
+round-454x454.resourcePath = $(base.resourcePath); resources-scalable/round-454x454
+
+rectangle-320x360.resourcePath = $(round-360x360.resourcePath)
+
+
+# Devices with unique resolution
+fr55.resourcePath = $(round-218x218.resourcePath)
+venux1.resourcePath = $(round-454x454.resourcePath)
+
 # Devices with API support lower than System 6 (v3.4.0)
-d2air.resourcePath = resources; resources-syslt6
-d2delta.resourcePath = resources; resources-syslt6
-d2deltapx.resourcePath = resources; resources-syslt6
-d2deltas.resourcePath = resources; resources-syslt6
-descentmk1.resourcePath = resources; resources-syslt6
-descentmk2.resourcePath = resources; resources-syslt6
-descentmk2s.resourcePath = resources; resources-syslt6
-fenix5.resourcePath = resources; resources-syslt6
-fenix5plus.resourcePath = resources; resources-syslt6
-fenix5s.resourcePath = resources; resources-syslt6
-fenix5splus.resourcePath = resources; resources-syslt6
-fenix5x.resourcePath = resources; resources-syslt6
-fenix5xplus.resourcePath = resources; resources-syslt6
-fenixchronos.resourcePath = resources; resources-syslt6
-fr245.resourcePath = resources; resources-syslt6
-fr245m.resourcePath = resources; resources-syslt6
-fr645.resourcePath = resources; resources-syslt6
-fr645m.resourcePath = resources; resources-syslt6
-fr745.resourcePath = resources; resources-syslt6
-fr935.resourcePath = resources; resources-syslt6
-fr945.resourcePath = resources; resources-syslt6
-legacyherocaptainmarvel.resourcePath = resources; resources-syslt6
-legacyherofirstavenger.resourcePath = resources; resources-syslt6
-legacysagadarthvader.resourcePath = resources; resources-syslt6
-legacysagarey.resourcePath = resources; resources-syslt6
-venu.resourcePath = resources; resources-syslt6
-venud.resourcePath = resources; resources-syslt6
-venusq.resourcePath = resources; resources-syslt6
-venusqm.resourcePath = resources; resources-syslt6
-vivoactive3.resourcePath = resources; resources-syslt6
-vivoactive3m.resourcePath = resources; resources-syslt6
-vivoactive3mlte.resourcePath = resources; resources-syslt6
-vivoactive4.resourcePath = resources; resources-syslt6
-vivoactive4s.resourcePath = resources; resources-syslt6
+d2air.resourcePath = resources; resources-syslt6; resources-scalable/round-390x390
+d2delta.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+d2deltapx.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+d2deltas.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+descentmk1.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+descentmk2.resourcePath = resources; resources-syslt6; resources-scalable/round-280x280
+descentmk2s.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+fenix5.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+fenix5plus.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+fenix5s.resourcePath = resources; resources-syslt6; resources-scalable/round-218x218
+fenix5splus.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+fenix5x.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+fenix5xplus.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+fenixchronos.resourcePath = resources; resources-syslt6; resources-scalable/round-218x218
+fr245.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+fr245m.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+fr645.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+fr645m.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+fr745.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+fr935.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+fr945.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+legacyherocaptainmarvel.resourcePath = resources; resources-syslt6; resources-scalable/round-218x218
+legacyherofirstavenger.resourcePath = resources; resources-syslt6; resources-scalable/round-260x260
+legacysagadarthvader.resourcePath = resources; resources-syslt6; resources-scalable/round-260x260
+legacysagarey.resourcePath = resources; resources-syslt6; resources-scalable/round-218x218
+venu.resourcePath = resources; resources-syslt6; resources-scalable/round-390x390
+venud.resourcePath = resources; resources-syslt6; resources-scalable/round-390x390
+venusq.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+venusqm.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+vivoactive3.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+vivoactive3m.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+vivoactive3mlte.resourcePath = resources; resources-syslt6; resources-scalable/round-240x240
+vivoactive4.resourcePath = resources; resources-syslt6; resources-scalable/round-260x260
+vivoactive4s.resourcePath = resources; resources-syslt6; resources-scalable/round-218x218
 
 d2air.excludeAnnotations = sysgt6; buttons; va3
 d2delta.excludeAnnotations = sysgt6; touch; va3
@@ -89,3 +105,5 @@ venu3s.excludeAnnotations = syslt6; buttons; va3
 venux1.excludeAnnotations = syslt6; buttons; va3
 vivoactive5.excludeAnnotations = syslt6; buttons; va3
 vivoactive6.excludeAnnotations = syslt6; buttons; va3
+
+# specific for forerunner55

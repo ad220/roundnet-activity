@@ -1,9 +1,11 @@
 <strings>
+    <!-- $$$ Medium -->
     <string id="AppName">Roundnet</string>
 
     <string id="StartFailed">Error,\nplease retry...</string>
 
     <!-- Menu labels -->
+    <!-- $$$ Garmin fonts -->
     <string id="Settings">Roundnet Settings</string>
     <string id="Datafield">Datafield</string>
     <string id="Sensors">Sensors</string>
@@ -41,9 +43,11 @@
     <string id="Discard">Discard</string>
 
     <!-- Fields text -->
+    <!-- $$$ Small -->
     <string id="Switch">Rotate \npositions</string>
 
     <!-- Units -->
+    <!-- $$$ Small -->
     <string id="Kilometers" translatable="false">km</string>
     <string id="KCalories"  translatable="false">kcal</string>
     <string id="Celsius"    translatable="false">°C</string>
@@ -54,6 +58,7 @@
     <string id="NoUnit"     translatable="false"> </string>
 
     <!-- FIT Contributions -->
+    <!-- $$$ ConnectIQ labels -->
     <string id="Steps">Steps</string>
     <string id="ScorePlayer">Points won</string>
     <string id="ScoreOpponent">Points lost</string>

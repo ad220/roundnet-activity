@@ -1,0 +1,5 @@
+<fonts>
+    <font id="Small" filename="../fonts/bold/bold_22.fnt" antialias="true" filter=" -.0123456789CRacdeghiklmnopstz°:"/>
+    <font id="Medium" filename="../fonts/heavy/heavy_27.fnt" antialias="true" filter=" ,-.0123456789ERadeilnoprstuvyzé:'&#34;&quot;"/>
+    <font id="Large" filename="../fonts/heavy/heavy_35.fnt" antialias="true" filter=" -.0123456789"/>
+</fonts>
