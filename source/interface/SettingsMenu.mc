@@ -36,6 +36,10 @@ class SettingsDelegate extends WatchUi.Menu2InputDelegate {
             pushView(menu, new SubScrollingDelegate(menu), SLIDE_LEFT);
         }
     }
+
+    public function onBack() as Void {
+        popView(SLIDE_RIGHT);
+    }
 }
 
 
@@ -82,6 +86,10 @@ class SubSettingsDelegate extends WatchUi.Menu2InputDelegate {
                 System.println("Unknown menu item");
             }
         }
+    }
+
+    public function onBack() as Void {
+        popView(SLIDE_RIGHT);
     }
 }
 
@@ -186,6 +194,10 @@ class SettingPickerDelegate extends Menu2InputDelegate {
             selectCallback.invoke(item.getLabel());
             popView(SLIDE_RIGHT);
         }
+    }
+
+    public function onBack() as Void {
+        popView(SLIDE_RIGHT);
     }
 }
 
