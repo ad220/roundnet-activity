@@ -16,7 +16,7 @@ class RoundnetApp extends Application.AppBase {
 
         self.timer = new TimerController(1000);
 
-        self.settings = Storage.getValue("settings");
+        self.settings = Storage.getValue("settings") as Dictionary;
         var defaults = WatchUi.loadResource(Rez.JsonData.DefaultSettings) as Dictionary;
         if (settings == null or settings.get("version")==null) {
             Storage.clearValues();
