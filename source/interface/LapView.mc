@@ -91,9 +91,12 @@ class LapDelegate extends BehaviorDelegate {
         self.view = view;
     }
 
-    public function onSelect() as Boolean {
-        view.confirm();
-        return true;
+    public function onKey(keyEvent as KeyEvent) as Boolean {
+        if (keyEvent.getKey() == KEY_ENTER and keyEvent.getType() == PRESS_TYPE_ACTION) {
+            view.confirm();
+            return true;
+        }
+        return false;
     }
 
     (:touch)
