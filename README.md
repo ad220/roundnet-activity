@@ -9,7 +9,6 @@ Roundnet activity tracker for Garmin smartwatches. Allows you to keep score so y
 - alarm to rotate starting positions every X rounds
 
 ## Planned features
-- better large screen support (scalable fonts)
 - custom activity summary
 - service position helper
 
@@ -63,6 +62,10 @@ The app allows you to customize a few things:
 On the activity view, you have the timer, the score, the dynamic field and the heartrate field. Pressing the up button will increase your opponent's score in grey and pressing the down button will increase yours in yellow. If enabled in the settings, swipping left or right on touchscreen devices will skip to the next or previous data in the dynamic field.Pressing the lap button will save the game state to the activity file and start a new one. Press the start button to stop the activity and save or discard it.
 
 ## Changelog
+
+### v0.9:
+- add a font that scale with every display size
+- fix various issues
 
 ### v0.8:
 - fix adding game won/lost on draw
