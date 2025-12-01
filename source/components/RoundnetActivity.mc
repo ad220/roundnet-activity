@@ -49,7 +49,9 @@ class RoundnetActivity {
     private var gamesOpponent as Number;
     private var stepsOnStart as Number;
     private var stepsOnLap as Number;
+    private var serviceState as Number;
 
+    private var equalServing as Boolean;
     private var pointsToSwitch as Number;
     private var pointsToWin as Number;
     private var twoPointsDiff as Boolean;
@@ -76,6 +78,9 @@ class RoundnetActivity {
         self.stepsOnStart = ActivityMonitor.getInfo().steps;
         self.stepsOnLap = ActivityMonitor.getInfo().steps;
         
+        self.serviceState = getApp().settings.get("game_service_helper") as Boolean ? 0x61 : -1;
+        self.equalServing = getApp().settings.get("game_equal_serving") as Boolean;
+        self.equalServing = false;
         self.pointsToSwitch = getApp().settings.get("game_switch_alarm") as Boolean ? getApp().settings.get("game_switch_points") : 0;
         self.pointsToWin = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
         self.twoPointsDiff = getApp().settings.get("game_win_two_pt_diff") as Boolean;
@@ -270,26 +275,12 @@ class RoundnetActivity {
 
     public function incrPlayerScore() as Void {
         scorePlayer++;
-        if (pointsToWin>0 and scorePlayer>=pointsToWin and (!twoPointsDiff or scorePlayer>=scoreOpponent+2)) {
-            if (!retryAutoWin) {
-                pointsToWin = 0;
-            }
-            delegate.warnLap();
-        } else {
-            checkSwitch();
-        }
+        onPoint(scorePlayer>=pointsToWin and (!twoPointsDiff or scorePlayer>=scoreOpponent+2), TEAM_PLAYER);
     }
     
     public function incrOpponentScore() as Void {
         scoreOpponent++;
-        if (pointsToWin>0 and scoreOpponent>=pointsToWin and (!twoPointsDiff or scoreOpponent>=scorePlayer+2)) {
-            if (!retryAutoWin) {
-                pointsToWin = 0;
-            }
-            delegate.warnLap();
-        } else {
-            checkSwitch();
-        }
+        onPoint(scoreOpponent>=pointsToWin and (!twoPointsDiff or scoreOpponent>=scorePlayer+2), TEAM_OPPONENT);
     }
 
     public function decrPlayerScore() as Void {
@@ -308,19 +299,73 @@ class RoundnetActivity {
         WatchUi.requestUpdate();
     }
 
-    private function checkSwitch() as Void {
-        if (pointsToSwitch!=0 and (scorePlayer+scoreOpponent)%pointsToSwitch==0) {
-            if (Attention has :vibrate) {
-                Attention.vibrate([new Attention.VibeProfile(80, 600)]);
+    private function onPoint(winCond as Boolean, winner as Team) as Void {
+        if (pointsToWin>0 and winCond) {
+            if (!retryAutoWin) {
+                pointsToWin = 0;
             }
-            if (Attention has :playTone) {
-                Attention.playTone({:toneProfile => [new Attention.ToneProfile(690, 600)]});
-            }
-            delegate.triggerSwitchAlarm();
+            delegate.warnLap();
         } else {
-            Attention.vibrate([new Attention.VibeProfile(50, 80)]);
+            // check if rotating positions
+            var points = scorePlayer + scoreOpponent;
+            var checkSwitch = (equalServing ? (points+1)%4 : points%pointsToSwitch) == 0 and points>2;
+            if (pointsToSwitch!=0 and checkSwitch) {
+                if (Attention has :vibrate) {
+                    Attention.vibrate([new Attention.VibeProfile(80, 600)]);
+                }
+                if (Attention has :playTone) {
+                    Attention.playTone({:toneProfile => [new Attention.ToneProfile(690, 600)]});
+                }
+                delegate.triggerSwitchAlarm();
+            } else {
+                Attention.vibrate([new Attention.VibeProfile(50, 80)]);
+            }
+
+            // serving helper update
+            if (serviceState != -1) {
+                if (equalServing) {
+                    updateEqualServing();
+                } else {
+                    updateLegacyServing(winner);
+                }
+            }
+
+            WatchUi.requestUpdate();
         }
-        WatchUi.requestUpdate();
+    }
+
+    private function updateEqualServing() as Void {
+        var server = serviceState & 0x0F;
+        if ((scorePlayer + scoreOpponent) & 1 == 1 or server&9 == 0) {
+            // changing server counter clockwise
+            var mask = server ^ (server & 7 << 1 + server >> 3);
+            serviceState ^= mask;
+        } else {
+            // swapping positions with team mate
+            serviceState ^= 0xA0;  // switch team of left and right players
+            if (server != 1) {
+                serviceState ^= 0x0A;  // swap service
+            }
+        }
+    }
+
+    private function updateLegacyServing(winner as Team) as Void {
+        var server = serviceState & 0x0F;
+        var servingTeam = serviceState & (server << 4) ? TEAM_OPPONENT : TEAM_PLAYER;
+
+        if (winner == servingTeam) {
+            if (servingTeam == TEAM_OPPONENT) {
+                serviceState ^= serviceState >> 4;
+            } else {
+                serviceState ^= 0xA0;
+                serviceState = serviceState & 0xF0 + (server << ((server & 0x0E) << 1)) % 2046 & 0x0F;
+            }
+        } else {
+            var oddScore = (winner ? scoreOpponent : scorePlayer) & 1;
+            var mask = (serviceState >> 7) ^ oddScore ? 0x0A : 0x05;
+            mask &= (serviceState >> 4);
+            serviceState ^= mask ^ server; 
+        }
     }
 
     public function getScore(teamId as Team) as Number {
