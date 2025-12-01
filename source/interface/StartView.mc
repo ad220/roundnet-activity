@@ -9,20 +9,18 @@ using InterfaceComponentsManager as ICM;
 
 class StartView extends WatchUi.View {
 
-    private var locationEnabled as Boolean;
     private var temperatureEnabled as Boolean;
+    private var locationSetting as Position.LocationAcquisitionType;
 
     private var lastGpsAccuracy as Position.Quality or Number;
-    private var locationSetting as Position.LocationAcquisitionType;
     private var updater as TimerCallback?;
 
     public function initialize() {
         View.initialize();
 
-        self.locationEnabled = true;
         self.temperatureEnabled = true;
-        self.lastGpsAccuracy = Position.QUALITY_NOT_AVAILABLE;
         self.locationSetting = Position.LOCATION_CONTINUOUS;
+        self.lastGpsAccuracy = Position.QUALITY_NOT_AVAILABLE;
     }
 
     public function onLayout(dc as Graphics.Dc) as Void {
@@ -31,10 +29,13 @@ class StartView extends WatchUi.View {
 
     public function onShow() as Void {
         (findDrawableById("title") as Text).setText(Rez.Strings.AppName);
-        locationEnabled = getApp().settings.get("sensor_location") as Boolean;
-        temperatureEnabled = getApp().settings.get("sensor_temperature") as Boolean;
-        lastGpsAccuracy = Position.getInfo().accuracy;
         locationSetting = getApp().getLocationSetting();
+        temperatureEnabled = getApp().settings.get("sensor_temperature") as Boolean;
+
+        if (locationSetting == Position.LOCATION_CONTINUOUS) {
+            lastGpsAccuracy = Position.getInfo().accuracy;
+        }
+
         updater = getApp().timer.start(method(:update), 10, true);
         Position.enableLocationEvents(locationSetting, method(:onPosition));
     }
@@ -59,14 +60,14 @@ class StartView extends WatchUi.View {
         daytime = daytime.hour + ":" + daytime.min.format("%02d");
         (findDrawableById("daytime") as Text).setText(daytime);
         
-        findDrawableById("GpsDisabled").setVisible(!locationEnabled);
+        findDrawableById("GpsDisabled").setVisible(locationSetting == Position.LOCATION_DISABLE);
 
         findDrawableById("TempEnabled").setVisible(temperatureEnabled);
         findDrawableById("TempDisabled").setVisible(!temperatureEnabled);
 
         View.onUpdate(dc);
 
-        if (locationEnabled) {
+        if (locationSetting == Position.LOCATION_CONTINUOUS) {
             dc.setPenWidth(ICM.scaleX(0.005));
             dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][lastGpsAccuracy], Graphics.COLOR_TRANSPARENT);
             dc.fillRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX((lastGpsAccuracy+1)*0.015), ICM.scaleY(0.02));
@@ -86,7 +87,7 @@ class StartView extends WatchUi.View {
 
         View.onUpdate(dc);
         
-        if (locationEnabled) {
+        if (locationSetting == Position.LOCATION_CONTINUOUS) {
             dc.setPenWidth(ICM.scaleX(0.005));
             dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][lastGpsAccuracy], Graphics.COLOR_TRANSPARENT);
             dc.fillRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX((lastGpsAccuracy+1)*0.015), ICM.scaleY(0.02));
@@ -94,7 +95,7 @@ class StartView extends WatchUi.View {
             dc.drawRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX(0.08), ICM.scaleY(0.02));
         } else {
             dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
-        dc.fillCircle(ICM.scaleX(0.525), ICM.scaleY(0.27), ICM.scaleX(0.015));
+            dc.fillCircle(ICM.scaleX(0.525), ICM.scaleY(0.27), ICM.scaleX(0.015));
         }
 
         dc.setColor(temperatureEnabled ? 0x00AA00 : 0xFF0000, Graphics.COLOR_TRANSPARENT);
