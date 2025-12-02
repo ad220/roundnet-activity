@@ -9,7 +9,7 @@ using InterfaceComponentsManager as ICM;
 class RoundnetApp extends Application.AppBase {
 
     public var timer as TimerController;
-    public var settings as Dictionary;
+    public var settings as Dictionary<String, Object>;
 
     function initialize() {
         AppBase.initialize();
@@ -22,6 +22,8 @@ class RoundnetApp extends Application.AppBase {
             Storage.clearValues();
             settings = defaults;
         } else if (settings.get("version") as Number < defaults.get("version") as Number) {
+            settings.put("version", defaults.get("version"));
+            
             var keys = defaults.keys();
             for (var i=0; i<keys.size(); i++) {
                 if (settings.get(keys[i])==null) {
