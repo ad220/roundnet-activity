@@ -80,7 +80,6 @@ class RoundnetActivity {
         
         self.serviceState = getApp().settings.get("game_service_helper") as Boolean ? 0x61 : -1;
         self.equalServing = getApp().settings.get("game_equal_serving") as Boolean;
-        self.equalServing = false;
         self.pointsToSwitch = getApp().settings.get("game_switch_alarm") as Boolean ? getApp().settings.get("game_switch_points") : 0;
         self.pointsToWin = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
         self.twoPointsDiff = getApp().settings.get("game_win_two_pt_diff") as Boolean;
@@ -338,14 +337,11 @@ class RoundnetActivity {
         var server = serviceState & 0x0F;
         if ((scorePlayer + scoreOpponent) & 1 == 1 or server&9 == 0) {
             // changing server counter clockwise
-            var mask = server ^ (server & 7 << 1 + server >> 3);
+            var mask = server ^ (server << 1 + server >> 3) & 0x0F;
             serviceState ^= mask;
         } else {
             // swapping positions with team mate
-            serviceState ^= 0xA0;  // switch team of left and right players
-            if (server != 1) {
-                serviceState ^= 0x0A;  // swap service
-            }
+            serviceState ^= server==1 ? 0xA0 : 0xAA;
         }
     }
 
@@ -357,13 +353,13 @@ class RoundnetActivity {
             if (servingTeam == TEAM_OPPONENT) {
                 serviceState ^= serviceState >> 4;
             } else {
-                serviceState ^= 0xA0;
-                serviceState = serviceState & 0xF0 + (server << ((server & 0x0E) << 1)) % 2046 & 0x0F;
+                serviceState ^= server==1 ? 0xA0 : 0xAA;
             }
         } else {
             var oddScore = (winner ? scoreOpponent : scorePlayer) & 1;
             var mask = (serviceState >> 7) ^ oddScore ? 0x0A : 0x05;
-            mask &= (serviceState >> 4);
+            var team = (serviceState >> 4);
+            mask &= winner ? team : ~team;
             serviceState ^= mask ^ server; 
         }
     }
@@ -398,7 +394,11 @@ class RoundnetActivity {
         return Sensor.getInfo().temperature;
     }
 
-    public function getFormattedTime() as String{
+    public function getFormattedTime() as String {
         return (time/3600).format("%01d") + "'" + (time%3600/60).format("%02d") + '"' + (time%60).format("%02d");
+    }
+
+    public function getServiceState() as Number {
+        return serviceState;
     }
 }

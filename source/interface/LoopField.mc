@@ -3,6 +3,7 @@ import Toybox.System;
 import Toybox.WatchUi;
 import Toybox.Graphics;
 import Toybox.Application;
+import Toybox.Math;
 
 using InterfaceComponentsManager as ICM;
 
@@ -15,6 +16,7 @@ class LoopField extends Drawable {
         FIELD_TEMPERATURE,
         FIELD_DAYTIME,
         FIELD_SWITCH,
+        FIELD_SERVICE,
 
         FIELD_COUNT,
     }
@@ -24,7 +26,7 @@ class LoopField extends Drawable {
     private var enabledFields as Array<FieldId>;
     private var currentIcon as BitmapResource?;
     private var label as String;
-    private var icons as Array<ResourceId>;
+    private var icons as Array<ResourceId?>;
     private var autoScroll as Boolean;
     private var scrollSpeed as Number;
     private var units as Array<String?>;
@@ -45,7 +47,8 @@ class LoopField extends Drawable {
             Rez.Drawables.Score,
             Rez.Drawables.Temperature,
             Rez.Drawables.Daytime,
-            Rez.Drawables.Switch
+            Rez.Drawables.Switch,
+            null
         ];
         self.units = [
             loadResource(Rez.Strings.Kilometers),
@@ -53,6 +56,7 @@ class LoopField extends Drawable {
             null,
             loadResource(Rez.Strings.Celsius),
             null,
+            null
         ];
         self.autoScroll = getApp().settings.get("autoscroll") as Boolean;
         self.scrollSpeed = (2*(getApp().settings.get("scrollspeed") as Number - 1.5)).toNumber();
@@ -68,9 +72,15 @@ class LoopField extends Drawable {
         if (settings.get("field_score") as Boolean)         { enabledFields.add(FIELD_SCORE); }
         if (settings.get("field_temperature") as Boolean)   { enabledFields.add(FIELD_TEMPERATURE); }
         if (settings.get("field_daytime") as Boolean)       { enabledFields.add(FIELD_DAYTIME); }
+        if (settings.get("field_service") as Boolean)       { enabledFields.add(FIELD_SERVICE); }
     }
 
     public function draw(dc as Dc) as Void {
+        if (currentIcon == null) {
+            drawService(dc);
+            return;
+        }
+
         dc.drawBitmap(ICM.scaleX(0.52), ICM.scaleY(0.45), currentIcon);
         dc.drawText(ICM.scaleX(0.65), ICM.scaleY(0.5), ICM.fontSmall, label, ICM.JTEXT_LEFT);
 
@@ -85,6 +95,29 @@ class LoopField extends Drawable {
         }
     }
 
+    private function drawService(dc as Dc) as Void {
+        var state = activity.getServiceState();
+        var radius = ICM.scaleX(0.085);
+        var dotRadius = ICM.scaleX(0.032);
+        
+        dc.setPenWidth(ICM.scaleX(0.012));
+        ICM.toggleAA(dc, true);
+
+        for (var i=0; i<4; i++) {
+            dc.setColor(state >> (i+4) & 1 ? Graphics.COLOR_DK_GRAY : 0xFFAA00, Graphics.COLOR_BLACK);
+            var x = ICM.scaleX(0.69) + radius*Math.sin(i*Math.PI/2);
+            var y = ICM.scaleY(0.5) + radius*Math.cos(i*Math.PI/2);
+
+            if (state >> i & 1) {
+                dc.drawCircle(x, y, dotRadius);
+            } else {
+                dc.fillCircle(x, y, dotRadius);
+            }
+        }
+
+        ICM.toggleAA(dc, false);
+    }
+
     public function nextField() as Void {
         stateIndex = (stateIndex+1) % enabledFields.size();
         refreshField();
@@ -96,7 +129,14 @@ class LoopField extends Drawable {
     }
 
     public function refreshField() as Void {
-        currentIcon = loadResource(icons[enabledFields[stateIndex]]);
+        // refresh icon
+        if (enabledFields[stateIndex] != FIELD_SERVICE) {
+            currentIcon = loadResource(icons[enabledFields[stateIndex]]);
+        } else {
+            currentIcon = null;
+        }
+
+        // refresh label
         switch (enabledFields[stateIndex]) {
             case FIELD_DISTANCE:
                 label = activity.getSteps() + "\n" + (activity.getDistance()/1000.0).format("%.2f") + units[FIELD_DISTANCE];
@@ -119,6 +159,8 @@ class LoopField extends Drawable {
                 System.println("Unknown field id");
                 break;
         }
+
+        // setup next automatic refresh
         if (autoScroll) {
             getApp().timer.stop(currentTimer);
             currentTimer = getApp().timer.start(method(:nextField), scrollSpeed, false);
@@ -130,7 +172,7 @@ class LoopField extends Drawable {
         label = loadResource(Rez.Strings.Switch);
         requestUpdate();
         getApp().timer.stop(currentTimer);
-        currentTimer = getApp().timer.start(method(:refreshField), 8, false);
+        currentTimer = getApp().timer.start(method(:refreshField), scrollSpeed, false);
     }
 
     public function stop() as Void {

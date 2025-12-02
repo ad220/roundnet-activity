@@ -44,4 +44,10 @@ module InterfaceComponentsManager {
         fontMedium = null;
         fontLarge = null;
     }
+
+    function toggleAA(dc as Dc, state as Boolean) {
+        if (dc has :setAntiAlias) {
+            dc.setAntiAlias(state);
+        }
+    }
 }
