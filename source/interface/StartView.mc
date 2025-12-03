@@ -141,7 +141,8 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
     }
 
     public function onMenu() as Boolean {
-        pushView(new Rez.Menus.SettingsMenu(), new SettingsDelegate(), SLIDE_LEFT);
+        var menu = new Rez.Menus.SettingsMenu();
+        pushView(menu, new SettingsDelegate(menu, null, null), SLIDE_LEFT);
         return true;
     }
 

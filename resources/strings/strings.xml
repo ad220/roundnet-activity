@@ -16,6 +16,7 @@
     <string id="Calories">Calories</string>
     <string id="Score">Score</string>
     <string id="Daytime">Daytime</string>
+    <string id="ServicePos">Service position</string>
     <string id="Location">Location</string>
     <string id="Temperature">Temperature</string>
 
@@ -29,6 +30,8 @@
     <string id="TwoPoint">Two points difference</string>
     <string id="WinPoints">Points to win</string>
     <string id="RetryAutoWin">Persist auto win</string>
+    <string id="ServiceHelper">Service pos. helper</string>
+    <string id="EqualServing">Equal serving system</string>
     <string id="SwitchAlarm">Rotate start positions alarm</string>
     <string id="SwitchPoints">Points to rotate</string>
 

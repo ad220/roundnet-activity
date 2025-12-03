@@ -1,50 +1,53 @@
 <resources>
     <menu2 id="SettingsMenu" title="@Strings.Settings">
-        <menu-item id="sensors" label="@Strings.Sensors"/>
-        <menu-item id="datafield" label="@Strings.Datafield"/>
-        <menu-item id="game" label="@Strings.GameRules"/>
-        <menu-item id="doubleclick" label="@Strings.DoubleClick"/>
+        <menu-item          id="createSensorsMenu"          label="@Strings.Sensors"/>
+        <menu-item          id="createDatafieldMenu"        label="@Strings.Datafield"/>
+        <menu-item          id="createGameMenu"             label="@Strings.GameRules"/>
+        <menu-item          id="createSpeedMenu"            label="@Strings.DoubleClick"        subLabel="doubleclickspeed"/>
     </menu2>
 
     <menu2 id="SensorsMenu" title="@Strings.Sensors">
-        <toggle-menu-item id="location" label="@Strings.Location"/>
-        <toggle-menu-item id="temperature" label="@Strings.Temperature"/>
+        <toggle-menu-item   id="_"                          label="@Strings.Location"           subLabel="sensor_location"/>
+        <toggle-menu-item   id="_"                          label="@Strings.Temperature"        subLabel="sensor_temperature"/>
     </menu2>
 
     <menu2 id="DatafieldMenu" title="@Strings.Datafield">
-        <menu-item id="fields" label="@Strings.Fields"/>
-        <menu-item id="scrolling" label="@Strings.Scrolling"/>
+        <menu-item          id="createFieldsMenu"           label="@Strings.Fields"/>
+        <menu-item          id="createScrollingMenu"        label="@Strings.Scrolling"/>
     </menu2>
 
     <menu2 id="FieldsMenu" title="@Strings.Fields">
-        <toggle-menu-item id="distance" label="@Strings.Distance"/>
-        <toggle-menu-item id="calories" label="@Strings.Calories"/>
-        <toggle-menu-item id="score" label="@Strings.Score"/>
-        <toggle-menu-item id="temperature" label="@Strings.Temperature"/>
-        <toggle-menu-item id="daytime" label="@Strings.Daytime"/>
+        <toggle-menu-item   id="_"                          label="@Strings.Distance"           subLabel="field_distance"/>
+        <toggle-menu-item   id="_"                          label="@Strings.Calories"           subLabel="field_calories"/>
+        <toggle-menu-item   id="_"                          label="@Strings.Score"              subLabel="field_score"/>
+        <toggle-menu-item   id="_"                          label="@Strings.Temperature"        subLabel="field_temperature"/>
+        <toggle-menu-item   id="_"                          label="@Strings.Daytime"            subLabel="field_daytime"/>
+        <toggle-menu-item   id="_"                          label="@Strings.ServicePos"         subLabel="field_service"/>
     </menu2>
 
     <menu2 id="ScrollingMenu" title="@Strings.Scrolling">
-        <toggle-menu-item id="autoscroll" label="@Strings.AutoScroll"/>
-        <menu-item id="scrollspeed" label="@Strings.ScrollSpeed"/>
-        <toggle-menu-item id="swipescroll" label="@Strings.SwipeScroll"/>
+        <toggle-menu-item   id="_"                          label="@Strings.AutoScroll"         subLabel="autoscroll"/>
+        <menu-item          id="createSpeedMenu"            label="@Strings.ScrollSpeed"        subLabel="scrollspeed"/>
+        <toggle-menu-item   id="_"                          label="@Strings.SwipeScroll"        subLabel="swipescroll"/>
     </menu2>
     
     <menu2 id="GameMenu" title="@Strings.GameRules">
-        <toggle-menu-item id="game_win_auto" label="@Strings.AutoWin"/>
-        <menu-item id="game_win_points" label="@Strings.WinPoints"/>
-        <toggle-menu-item id="game_win_two_pt_diff" label="@Strings.TwoPoint"/>
-        <toggle-menu-item id="game_win_retry" label="@Strings.RetryAutoWin"/>
-        <toggle-menu-item id="game_switch_alarm" label="@Strings.SwitchAlarm"/>
-        <menu-item id="game_switch_points" label="@Strings.SwitchPoints"/>
+        <toggle-menu-item   id="_"                          label="@Strings.AutoWin"            subLabel="game_win_auto"/>
+        <menu-item          id="createWinPointsMenu"        label="@Strings.WinPoints"          subLabel="game_win_points"/>
+        <toggle-menu-item   id="_"                          label="@Strings.TwoPoint"           subLabel="game_win_two_pt_diff"/>
+        <toggle-menu-item   id="_"                          label="@Strings.RetryAutoWin"       subLabel="game_win_retry"/>
+        <toggle-menu-item   id="_"                          label="@Strings.ServiceHelper"      subLabel="game_service_helper"/>
+        <toggle-menu-item   id="_"                          label="@Strings.EqualServing"       subLabel="game_equal_serving"/>
+        <toggle-menu-item   id="_"                          label="@Strings.SwitchAlarm"        subLabel="game_switch_alarm"/>
+        <menu-item          id="createSwitchPointsMenu"     label="@Strings.SwitchPoints"/>
     </menu2>
 
     <menu2 id="SpeedMenu" title="">
-        <menu-item id="vfast" label="@Strings.VeryFast"/>
-        <menu-item id="fast" label="@Strings.Fast"/>
-        <menu-item id="normal" label="@Strings.Normal"/>
-        <menu-item id="slow" label="@Strings.Slow"/>
-        <menu-item id="vslow" label="@Strings.VerySlow"/>
+        <menu-item          id="_"                          label="@Strings.VeryFast"           subLabel="2"/>
+        <menu-item          id="_"                          label="@Strings.Fast"               subLabel="3"/>
+        <menu-item          id="_"                          label="@Strings.Normal"             subLabel="4"/>
+        <menu-item          id="_"                          label="@Strings.Slow"               subLabel="5"/>
+        <menu-item          id="_"                          label="@Strings.VerySlow"           subLabel="7"/>
     </menu2>
 
     <jsonData id="DefaultSettings">
