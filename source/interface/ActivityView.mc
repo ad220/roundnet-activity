@@ -32,8 +32,19 @@ class RoundnetActivityView extends WatchUi.View {
         View.onUpdate(dc);
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(ICM.scaleX(0.219), ICM.scaleY(0.500), ICM.fontLarge, activity.getScore(RoundnetActivity.TEAM_OPPONENT), ICM.JTEXT_MID);
-        dc.drawText(ICM.scaleY(0.295), ICM.scaleY(0.816), ICM.fontLarge, activity.getScore(RoundnetActivity.TEAM_PLAYER), ICM.JTEXT_MID);
+
+        var scorePlayer = activity.getScore(RoundnetActivity.TEAM_PLAYER);
+        var scoreOpponent = activity.getScore(RoundnetActivity.TEAM_OPPONENT);
+        var scoreFont = ICM.fontLarge;
+        if (!activity.isHelperReady()) {
+            var state = activity.getServiceState() == 0xF0;
+            scorePlayer = loadResource(state ? Rez.Strings.Right : Rez.Strings.Us);
+            scoreOpponent = loadResource(state ? Rez.Strings.Left : Rez.Strings.Them);
+            scoreFont = ICM.fontMedium;
+        }
+
+        dc.drawText(ICM.scaleX(0.219), ICM.scaleY(0.500), scoreFont, scoreOpponent, ICM.JTEXT_MID);
+        dc.drawText(ICM.scaleY(0.295), ICM.scaleY(0.816), scoreFont, scorePlayer, ICM.JTEXT_MID);
         dc.drawText(ICM.scaleX(0.460), ICM.scaleY(0.185), ICM.fontMedium, activity.getFormattedTime(), ICM.JTEXT_LEFT);
 
         var hr = activity.getHR();

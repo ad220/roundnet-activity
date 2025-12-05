@@ -50,6 +50,15 @@
     <string id="FirstPosition">Êtes-vous à gauche\nou à droite de\nvotre coéquipier ?</string>
     <string id="FirstService">Quelle équipe\nsert en premier ?</string>
 
+
+    <!-- Score labels -->
+    <!-- $$$ Medium -->
+    <string id="Left">G</string>
+    <string id="Right">D</string>
+    <string id="Us">Nous</string>
+    <string id="Them">Eux</string>
+
+
     <!-- Units -->
     <!-- $$$ ConnectIQ labels -->
     <string id="StepsUnit"  translatable="true">pas</string>

@@ -50,6 +50,15 @@
     <string id="FirstPosition">Are you left or\nright from your\nteam mate?</string>
     <string id="FirstService">Which team\nis serving\nfirst?</string>
 
+
+    <!-- Score labels -->
+    <!-- $$$ Medium -->
+    <string id="Left">L</string>
+    <string id="Right">R</string>
+    <string id="Us">Us</string>
+    <string id="Them">Them</string>
+    
+
     <!-- Units -->
     <!-- $$$ Small -->
     <string id="Kilometers" translatable="false">km</string>

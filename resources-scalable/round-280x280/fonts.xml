@@ -1,5 +1,5 @@
 <fonts>
     <font id="Small" filename="../fonts/bold/bold_16.fnt" antialias="true" filter=" -.0123456789:?ACQRWacdefghiklmnopqrstuvyz°Êàé"/>
-    <font id="Medium" filename="../fonts/heavy/heavy_22.fnt" antialias="true" filter=" ,-.0123456789ERadeilnoprstuvyzé:'&#34;&quot;"/>
+    <font id="Medium" filename="../fonts/heavy/heavy_22.fnt" antialias="true" filter=" ',-.0123456789:DEGLNRTUadehilmnoprstuvxyzé&#34;&quot;"/>
     <font id="Large" filename="../fonts/heavy/heavy_27.fnt" antialias="true" filter=" -.0123456789"/>
 </fonts>
