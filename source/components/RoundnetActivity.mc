@@ -86,7 +86,9 @@ class RoundnetActivity {
         self.retryAutoWin = getApp().settings.get("game_win_retry") as Boolean;
         self.locEnabled = getApp().settings.get("sensor_location") as Boolean;
         self.tempEnabled = getApp().settings.get("sensor_temperature") as Boolean;
+
         createSession();
+        if (session==null) { throw new Exception(); }
 
         self.tempField = tempEnabled ? session.createField("temperature", 0, FitContributor.DATA_TYPE_SINT8, {:units=>"°C", :nativeNum=>RECORD_TEMPERATURE}) : null;
 

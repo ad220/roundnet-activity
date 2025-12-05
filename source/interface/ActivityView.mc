@@ -45,7 +45,7 @@ class RoundnetActivityView extends WatchUi.View {
 
         dc.drawText(ICM.scaleX(0.219), ICM.scaleY(0.500), scoreFont, scoreOpponent, ICM.JTEXT_MID);
         dc.drawText(ICM.scaleY(0.295), ICM.scaleY(0.816), scoreFont, scorePlayer, ICM.JTEXT_MID);
-        dc.drawText(ICM.scaleX(0.460), ICM.scaleY(0.185), ICM.fontMedium, activity.getFormattedTime(), ICM.JTEXT_LEFT);
+        dc.drawText(ICM.scaleX(0.440), ICM.scaleY(0.185), ICM.fontMedium, activity.getFormattedTime(), ICM.JTEXT_LEFT);
 
         var hr = activity.getHR();
         dc.drawText(ICM.scaleX(0.650), ICM.scaleY(0.816), ICM.fontMedium, hr!=null ? hr : "- -", ICM.JTEXT_LEFT);
@@ -158,15 +158,15 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     public function scorePlayer() as Void {
         if (activity.isHelperReady()) {
 
-        if (lastInput==KEY_DOWN) {
-            lastInput = null;
-            uiTimer.stop(currentTimer);
-            activity.decrPlayerScore();
-        } else {
-            lastInput = KEY_DOWN;
-            uiTimer.stop(currentTimer);
-            uiTimer.start(method(:onTimer), doubleClickSpeed, false);
-            currentTimer = uiTimer.start(activity.method(:incrPlayerScore), doubleClickSpeed, false);
+            if (lastInput==KEY_DOWN) {
+                lastInput = null;
+                uiTimer.stop(currentTimer);
+                activity.decrPlayerScore();
+            } else {
+                lastInput = KEY_DOWN;
+                uiTimer.stop(currentTimer);
+                uiTimer.start(method(:onTimer), doubleClickSpeed, false);
+                currentTimer = uiTimer.start(activity.method(:incrPlayerScore), doubleClickSpeed, false);
             }
         } else {
             activity.initServiceHelper(RoundnetActivity.TEAM_PLAYER);
@@ -177,15 +177,15 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     public function scoreOpponent() as Void {
         if (activity.isHelperReady()) {
 
-        if (lastInput==KEY_UP) {
-            lastInput = null;
-            uiTimer.stop(currentTimer);
-            activity.decrOpponentScore();
-        } else {
-            lastInput = KEY_UP;
-            uiTimer.stop(currentTimer);
-            uiTimer.start(method(:onTimer), doubleClickSpeed, false);
-            currentTimer = uiTimer.start(activity.method(:incrOpponentScore), doubleClickSpeed, false);
+            if (lastInput==KEY_UP) {
+                lastInput = null;
+                uiTimer.stop(currentTimer);
+                activity.decrOpponentScore();
+            } else {
+                lastInput = KEY_UP;
+                uiTimer.stop(currentTimer);
+                uiTimer.start(method(:onTimer), doubleClickSpeed, false);
+                currentTimer = uiTimer.start(activity.method(:incrOpponentScore), doubleClickSpeed, false);
             }
         } else {
             activity.initServiceHelper(RoundnetActivity.TEAM_OPPONENT);

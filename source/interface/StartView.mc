@@ -125,13 +125,15 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
 
     public function onKey(keyEvent as KeyEvent) as Boolean {
         if (keyEvent.getKey()==KEY_ENTER and keyEvent.getType()==PRESS_TYPE_ACTION) {
-            var activity = new RoundnetActivity();
-            if (activity.isRecording()) {
-                var view = new RoundnetActivityView(activity);
-                var delegate = new RoundnetActivityDelegate(view, activity);
-                activity.registerDelegate(delegate);
-                WatchUi.pushView(view, new RoundnetActivityDelegate(view, activity), SLIDE_UP);
-            } else {
+            try {
+                var activity = new RoundnetActivity();
+                if (activity.isRecording()) {
+                    var view = new RoundnetActivityView(activity);
+                    var delegate = new RoundnetActivityDelegate(view, activity);
+                    activity.registerDelegate(delegate);
+                    WatchUi.pushView(view, new RoundnetActivityDelegate(view, activity), SLIDE_UP);
+                } else { throw new Exception(); }
+            } catch (ex) {
                 (view.findDrawableById("title") as Text).setText(Rez.Strings.StartFailed);
                 requestUpdate();
             }
