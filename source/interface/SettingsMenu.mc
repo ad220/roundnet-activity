@@ -6,14 +6,12 @@ import Toybox.Application;
 
 class SettingsDelegate extends WatchUi.Menu2InputDelegate {
 
-    private var menu as Menu2;
     protected var key as String?;
     protected var callback as Method(label as String or ResourceId or Null)?;
 
     public function initialize(menu as Menu2, key as String?, callback as Method(label as String or ResourceId or Null)?) {
         Menu2InputDelegate.initialize();
 
-        self.menu = menu;
         self.key = key;
         self.callback = callback;
 
