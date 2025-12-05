@@ -30,7 +30,6 @@
     <string id="TwoPoint">Two points difference</string>
     <string id="WinPoints">Points to win</string>
     <string id="RetryAutoWin">Persist auto win</string>
-    <string id="ServiceHelper">Service pos. helper</string>
     <string id="EqualServing">Equal serving system</string>
     <string id="SwitchAlarm">Rotate start positions alarm</string>
     <string id="SwitchPoints">Points to rotate</string>
@@ -48,6 +47,8 @@
     <!-- Fields text -->
     <!-- $$$ Small -->
     <string id="Switch">Rotate \npositions</string>
+    <string id="FirstPosition">Are you left or\nright from your\nteam mate?</string>
+    <string id="FirstService">Which team\nis serving\nfirst?</string>
 
     <!-- Units -->
     <!-- $$$ Small -->

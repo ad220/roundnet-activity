@@ -14,7 +14,7 @@ def extract_word(line:str):
 def filter(filename:str, translatable:bool):
     with open(filename, 'r', encoding="utf-8") as f:
         lines = f.readlines()
-        small_filter = [" 0123456789-:"]
+        small_filter = [" .0123456789-:"]
         medium_filter = [" .0123456789-:'"]
         large_filter = [" .0123456789-"]
         current_filters = []

@@ -100,7 +100,7 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     }
 
     public function onSwipe(swipeEvent as SwipeEvent) as Boolean {
-        if (swipeScroll) {
+        if (swipeScroll and activity.isHelperReady()) {
             if (swipeEvent.getDirection()==SWIPE_LEFT) {
                 view.loopField.nextField();
             } else if (swipeEvent.getDirection()==SWIPE_RIGHT) {
@@ -145,6 +145,8 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     }
 
     public function scorePlayer() as Void {
+        if (activity.isHelperReady()) {
+
         if (lastInput==KEY_DOWN) {
             lastInput = null;
             uiTimer.stop(currentTimer);
@@ -154,10 +156,16 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
             uiTimer.stop(currentTimer);
             uiTimer.start(method(:onTimer), doubleClickSpeed, false);
             currentTimer = uiTimer.start(activity.method(:incrPlayerScore), doubleClickSpeed, false);
+            }
+        } else {
+            activity.initServiceHelper(RoundnetActivity.TEAM_PLAYER);
+            view.loopField.refreshField();
         }
     }
 
     public function scoreOpponent() as Void {
+        if (activity.isHelperReady()) {
+
         if (lastInput==KEY_UP) {
             lastInput = null;
             uiTimer.stop(currentTimer);
@@ -167,6 +175,10 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
             uiTimer.stop(currentTimer);
             uiTimer.start(method(:onTimer), doubleClickSpeed, false);
             currentTimer = uiTimer.start(activity.method(:incrOpponentScore), doubleClickSpeed, false);
+            }
+        } else {
+            activity.initServiceHelper(RoundnetActivity.TEAM_OPPONENT);
+            view.loopField.refreshField();
         }
     }
 
@@ -183,5 +195,9 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
             Attention.playTone({:toneProfile => [new Attention.ToneProfile(690, 600)]});
         }
         WatchUi.pushView(view, new LapDelegate(view), SLIDE_IMMEDIATE);
+    }
+
+    public function onLap() as Void {
+        view.loopField.resetField();
     }
 }

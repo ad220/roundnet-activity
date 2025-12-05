@@ -47,6 +47,8 @@
     <!-- Fields text -->
     <!-- $$$ Small -->
     <string id="Switch">Changez de\nposition</string>
+    <string id="FirstPosition">Êtes-vous à gauche\nou à droite de\nvotre coéquipier ?</string>
+    <string id="FirstService">Quelle équipe\nsert en premier ?</string>
 
     <!-- Units -->
     <!-- $$$ ConnectIQ labels -->

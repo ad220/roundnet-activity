@@ -62,7 +62,7 @@ class LoopField extends Drawable {
         self.scrollSpeed = (2*(getApp().settings.get("scrollspeed") as Number - 1.5)).toNumber();
 
         retrieveFieldSettings();
-        nextField();
+        resetField();
     }
 
     private function retrieveFieldSettings() as Void {
@@ -73,6 +73,16 @@ class LoopField extends Drawable {
         if (settings.get("field_temperature") as Boolean)   { enabledFields.add(FIELD_TEMPERATURE); }
         if (settings.get("field_daytime") as Boolean)       { enabledFields.add(FIELD_DAYTIME); }
         if (settings.get("field_service") as Boolean)       { enabledFields.add(FIELD_SERVICE); }
+    }
+
+    public function resetField() as Void  {
+        var serviceIdx = enabledFields.indexOf(FIELD_SERVICE);
+        if (serviceIdx != -1) {
+            stateIndex = serviceIdx;
+            refreshField();
+        } else if (stateIndex == -1) {
+            nextField();
+        }
     }
 
     public function draw(dc as Dc) as Void {
@@ -97,6 +107,13 @@ class LoopField extends Drawable {
 
     private function drawService(dc as Dc) as Void {
         var state = activity.getServiceState();
+
+        // setup service helper
+        if (state & 0x0F == 0) {
+            dc.drawText(ICM.scaleX(0.7), ICM.scaleY(0.5), ICM.fontSmall, label, ICM.JTEXT_MID);
+            return;
+        }
+
         var radius = ICM.scaleX(0.085);
         var dotRadius = ICM.scaleX(0.032);
         
@@ -155,14 +172,22 @@ class LoopField extends Drawable {
                 var daytime = Time.Gregorian.info(Time.now(), Time.FORMAT_SHORT);
                 label = daytime.hour + ":" + daytime.min.format("%02d");
                 break;
+            case FIELD_SERVICE:
+                var state = activity.getServiceState();
+                if (state == 0xF0) {
+                    label = loadResource(Rez.Strings.FirstPosition);
+                } else if (state & 0x0F == 0) {
+                    label = loadResource(Rez.Strings.FirstService);
+                }
+                break;
             default:
                 System.println("Unknown field id");
                 break;
         }
 
         // setup next automatic refresh
-        if (autoScroll) {
-            getApp().timer.stop(currentTimer);
+        getApp().timer.stop(currentTimer);
+        if (autoScroll and activity.isHelperReady()) {
             currentTimer = getApp().timer.start(method(:nextField), scrollSpeed, false);
         }
     }

@@ -36,7 +36,6 @@
         <menu-item          id="createWinPointsMenu"        label="@Strings.WinPoints"          subLabel="game_win_points"/>
         <toggle-menu-item   id="_"                          label="@Strings.TwoPoint"           subLabel="game_win_two_pt_diff"/>
         <toggle-menu-item   id="_"                          label="@Strings.RetryAutoWin"       subLabel="game_win_retry"/>
-        <toggle-menu-item   id="_"                          label="@Strings.ServiceHelper"      subLabel="game_service_helper"/>
         <toggle-menu-item   id="_"                          label="@Strings.EqualServing"       subLabel="game_equal_serving"/>
         <toggle-menu-item   id="_"                          label="@Strings.SwitchAlarm"        subLabel="game_switch_alarm"/>
         <menu-item          id="createSwitchPointsMenu"     label="@Strings.SwitchPoints"/>

@@ -78,7 +78,7 @@ class RoundnetActivity {
         self.stepsOnStart = ActivityMonitor.getInfo().steps;
         self.stepsOnLap = ActivityMonitor.getInfo().steps;
         
-        self.serviceState = getApp().settings.get("game_service_helper") as Boolean ? 0x61 : -1;
+        self.serviceState = getApp().settings.get("field_service") as Boolean ? 0xF0 : -1;
         self.equalServing = getApp().settings.get("game_equal_serving") as Boolean;
         self.pointsToSwitch = getApp().settings.get("game_switch_alarm") as Boolean ? getApp().settings.get("game_switch_points") : 0;
         self.pointsToWin = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
@@ -196,6 +196,7 @@ class RoundnetActivity {
             updateLapFields();
             session.addLap();
             pointsToWin = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
+            delegate.onLap();
             WatchUi.requestUpdate();
         }
     }
@@ -230,6 +231,10 @@ class RoundnetActivity {
         }
         scorePlayer = 0;
         scoreOpponent = 0;
+
+        if (serviceState != -1) {
+            serviceState = 0xF0;
+        }
     }
 
     public function save() as Void {
@@ -362,6 +367,20 @@ class RoundnetActivity {
             mask &= winner ? team : ~team;
             serviceState ^= mask ^ server; 
         }
+    }
+
+    public function initServiceHelper(team as Team) as Void {
+        if      (serviceState == 0xF0) {
+            serviceState &= 0x60 << team;
+        }
+        else if (serviceState & 0x0F == 0) {
+            serviceState ^= 1 << (serviceState >> 7 + team << 1);
+        }
+        WatchUi.requestUpdate();
+    }
+
+    public function isHelperReady() as Boolean {
+        return serviceState & 0x0F != 0;
     }
 
     public function getScore(teamId as Team) as Number {
