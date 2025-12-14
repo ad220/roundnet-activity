@@ -18,18 +18,21 @@ class RoundnetApp extends Application.AppBase {
 
         self.settings = Storage.getValue("settings") as Dictionary;
         var defaults = WatchUi.loadResource(Rez.JsonData.DefaultSettings) as Dictionary;
+        var version = defaults.get("version") as Number;
+        
         if (settings == null or settings.get("version")==null) {
             Storage.clearValues();
             settings = defaults;
-        } else if (settings.get("version") as Number < defaults.get("version") as Number) {
-            settings.put("version", defaults.get("version"));
-            
+        } else if (settings.get("version") as Number < version) {
             var keys = defaults.keys();
             for (var i=0; i<keys.size(); i++) {
-                if (settings.get(keys[i])==null) {
-                    settings.put(keys[i], defaults.get(keys[i]));
+                var param = settings.get(keys[i]);
+                if (param != null) {
+                    defaults.put(keys[i], param);
                 }
             }
+            settings = defaults;
+            settings.put("version", version);
         }
     }
 

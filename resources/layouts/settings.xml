@@ -69,7 +69,6 @@
         "game_win_points": 21,
         "game_win_retry": false,
         "game_equal_serving": true,
-        "game_service_helper": true,
         "game_switch_alarm": true,
         "game_switch_points": 5
     }
