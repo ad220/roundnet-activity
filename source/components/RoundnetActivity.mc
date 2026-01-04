@@ -314,8 +314,10 @@ class RoundnetActivity {
         } else {
             // check if rotating positions
             var points = scorePlayer + scoreOpponent;
-            var checkSwitch = (equalServing ? (points+1)%4 : points%pointsToSwitch) == 0 and points>2;
-            if (pointsToSwitch!=0 and checkSwitch) {
+
+            var checkSwitch = pointsToSwitch!=0 and (equalServing ? (points+1)%4 : points%pointsToSwitch) == 0 and points>2;
+
+            if (checkSwitch) {
                 if (Attention has :vibrate) {
                     Attention.vibrate([new Attention.VibeProfile(80, 600)]);
                 }
