@@ -50,6 +50,7 @@ class RoundnetActivity {
     private var stepsOnStart as Number;
     private var stepsOnLap as Number;
     private var serviceState as Number;
+    private var serviceHistory as ByteArray;
 
     private var equalServing as Boolean;
     private var pointsToSwitch as Number;
@@ -77,8 +78,11 @@ class RoundnetActivity {
         self.gamesOpponent = 0;
         self.stepsOnStart = ActivityMonitor.getInfo().steps;
         self.stepsOnLap = ActivityMonitor.getInfo().steps;
-        
+
         self.serviceState = getApp().settings.get("field_service") as Boolean ? 0xF0 : -1;
+        self.serviceHistory = []b;
+        for (var i=0; i<256; i+=1) { self.serviceHistory.add(0); }
+
         self.equalServing = getApp().settings.get("game_equal_serving") as Boolean;
         self.pointsToSwitch = getApp().settings.get("game_switch_alarm") as Boolean ? getApp().settings.get("game_switch_points") : 0;
         self.pointsToWin = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
@@ -292,6 +296,7 @@ class RoundnetActivity {
     public function decrPlayerScore() as Void {
         if (scorePlayer>0) {
             scorePlayer--;
+            decodeServiceState(serviceHistory[scorePlayer + scoreOpponent]);
             Attention.vibrate([new Attention.VibeProfile(50, 80)]);
         }
         WatchUi.requestUpdate();
@@ -300,6 +305,7 @@ class RoundnetActivity {
     public function decrOpponentScore() as Void {
         if (scoreOpponent>0) {
             scoreOpponent--;
+            decodeServiceState(serviceHistory[scorePlayer + scoreOpponent]);
             Attention.vibrate([new Attention.VibeProfile(50, 80)]);
         }
         WatchUi.requestUpdate();
@@ -337,6 +343,7 @@ class RoundnetActivity {
                     updateLegacyServing(winner);
                 }
             }
+            serviceHistory[points] = encodeServiceState();
 
             WatchUi.requestUpdate();
         }
@@ -381,6 +388,22 @@ class RoundnetActivity {
         }
     }
 
+    private function encodeServiceState() as Char {
+        var result = 0;
+        result |= serviceState & 0x800 ? 8 : 0;
+        result |= serviceState & 0x080 ? 4 : 0;
+        result |= serviceState & 0x00C ? 2 : 0;
+        result |= serviceState & 0x00A ? 1 : 0;
+        return result as Char;
+    }
+
+    private function decodeServiceState(state as Number) as Void {
+        serviceState = 0;
+        serviceState |= state & 8 ? 0xA00 : 0x500; 
+        serviceState |= state & 4 ? 0x0C0 : 0x060; 
+        serviceState |= 1 << (state & 0x03);
+    } 
+
     public function initServiceHelper(team as Team) as Void {
         if      (serviceState == 0xF0) {
             // team mate position
@@ -390,6 +413,7 @@ class RoundnetActivity {
             // server position
             serviceState ^= 1 << (serviceState >> 7 + team << 1);
             serviceState ^= 0x500;
+            serviceHistory[0] = encodeServiceState();
         }
         WatchUi.requestUpdate();
     }
