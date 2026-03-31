@@ -114,22 +114,28 @@ class LoopField extends Drawable {
             return;
         }
 
-        var radius = ICM.scaleX(0.085);
-        var dotRadius = ICM.scaleX(0.032);
+        var radius = ICM.scaleX(0.094);
+        var dotRadius = ICM.scaleX(0.039);
         
-        dc.setPenWidth(ICM.scaleX(0.012));
+        dc.setPenWidth(ICM.scaleX(0.014));
         ICM.toggleAA(dc, true);
 
         for (var i=0; i<4; i++) {
-            dc.setColor(state >> (i+4) & 1 ? Graphics.COLOR_DK_GRAY : 0xFFAA00, Graphics.COLOR_BLACK);
-            var x = ICM.scaleX(0.69) + radius*Math.sin(i*Math.PI/2);
+            var isOpponent = state >> (i+4) & 1;
+            dc.setColor(isOpponent ? Graphics.COLOR_DK_GRAY : 0xFFAA00, Graphics.COLOR_BLACK);
+            var x = ICM.scaleX(0.7) + radius*Math.sin(i*Math.PI/2);
             var y = ICM.scaleY(0.5) + radius*Math.cos(i*Math.PI/2);
 
             if (state >> i & 1) {
                 dc.drawCircle(x, y, dotRadius);
             } else {
                 dc.fillCircle(x, y, dotRadius);
+                if (isOpponent) {
+                    dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_DK_GRAY);
+                    dc.drawText(x, y, ICM.fontSmall, state >> (8+i) & 1 ? "A" : "B", ICM.JTEXT_MID);
+                }
             }
+
         }
 
         ICM.toggleAA(dc, false);

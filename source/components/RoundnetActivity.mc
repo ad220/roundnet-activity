@@ -344,13 +344,19 @@ class RoundnetActivity {
 
     private function updateEqualServing() as Void {
         var server = serviceState & 0x0F;
-        if ((scorePlayer + scoreOpponent) & 1 == 1 or server&9 == 0) {
+        var totalScore = scorePlayer + scoreOpponent;
+        if (totalScore & 1 == 1 or server & 0x09 == 0){
+            // swap opponents if they are on their second service
+            if (serviceState & (server << 4) != 0 && totalScore & 1 == 0) { serviceState ^= 0xF00; }
+
             // changing server counter clockwise
             var mask = server ^ (server << 1 + server >> 3) & 0x0F;
             serviceState ^= mask;
+
         } else {
             // swapping positions with team mate
             serviceState ^= server==1 ? 0xA0 : 0xAA;
+            serviceState ^= 0xF00;
         }
     }
 
@@ -359,15 +365,17 @@ class RoundnetActivity {
         var servingTeam = serviceState & (server << 4) ? TEAM_OPPONENT : TEAM_PLAYER;
 
         if (winner == servingTeam) {
+            // swapping team mate positions
             if (servingTeam == TEAM_OPPONENT) {
-                serviceState ^= serviceState >> 4;
+                serviceState ^= (serviceState >> 4) & 0x0F;
             } else {
                 serviceState ^= server==1 ? 0xA0 : 0xAA;
             }
+            serviceState ^= 0xF00;
         } else {
             var oddScore = (winner ? scoreOpponent : scorePlayer) & 1;
-            var mask = (serviceState >> 7) ^ oddScore ? 0x0A : 0x05;
-            var team = (serviceState >> 4);
+            var mask = ((serviceState >> 7) ^ oddScore) & 1 ? 0x0A : 0x05;
+            var team = (serviceState >> 4) & 0x0F;
             mask &= winner ? team : ~team;
             serviceState ^= mask ^ server; 
         }
@@ -375,10 +383,13 @@ class RoundnetActivity {
 
     public function initServiceHelper(team as Team) as Void {
         if      (serviceState == 0xF0) {
+            // team mate position
             serviceState &= 0x60 << team;
         }
         else if (serviceState & 0x0F == 0) {
+            // server position
             serviceState ^= 1 << (serviceState >> 7 + team << 1);
+            serviceState ^= 0x500;
         }
         WatchUi.requestUpdate();
     }

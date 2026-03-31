@@ -6,8 +6,8 @@ import Toybox.Graphics;
 
 module InterfaceComponentsManager {
     
-    var screenH as Number?;
-    var screenW as Number?;
+    (:initialized) var screenH as Number;
+    (:initialized) var screenW as Number;
 
     var fontSmall as FontResource?;
     var fontMedium as FontResource?;
