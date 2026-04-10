@@ -7,10 +7,17 @@ Roundnet activity tracker for Garmin smartwatches. Allows you to keep score so y
 - shows up as roundnet activity in Garmin Connect
 - custom datafields per point and per game in activity summary / details
 - alarm to rotate starting positions every X rounds
+- service position helper with a diagram
+- 3s service timer with observer mode
+
+Check the [settings](#settings) and [activity](#activity) section below to learn how to use the app
 
 ## Planned features
+- break timers
+    * 1 minute timeout
+    * 3 minute set-break
+    * 5 minute injury break
 - custom activity summary
-- service position helper
 
 ## Screenshots
 ![](doc/start_menu.png)
@@ -25,14 +32,18 @@ You can also build it from source for your specific device with the VSCode exten
 When starting the app, you get a menu similar to Garmin's native activity starting screen. Pressing the start button will start the activity, pressing the "menu" button will open the settings (on touchscreen devices, it's usually a long press or a down swipe).
 
 ### Settings
-The app allows you to customize a few things:
+The app allows you to customize a *few* things:
 
 - Sensors -- enable sensors for the activity recording
     * Toggle location (GPS)
     * Toggle temperature
 
 - Datafield -- settings for the dynamic datafield
-    - Fields -- enable or disable distance, calories, score, daytime and temperature datafields
+    - Fields -- enable or disable distance, calories, score, daytime, temperature and service position datafields
+        * Service position
+            + shows a small diagram representing both teams around the spike; the bottom circle would be you and the empty circle is the player who should serve for the next point.
+        * Show player tags
+            + adds letter tags in the circles to identify players; if disabled, the setting `Òbserver mode` will not have an effect on the service position diagram.
 
     - Scrolling -- define dynamic field scrolling behavior
         * Toggle Auto Scroll
@@ -54,14 +65,33 @@ The app allows you to customize a few things:
     * Set points to rotate
         + set the number of points to play between each start position rotation, between 3 and 10, defaults to 5
 
+* Observer mode
+    + enables 3s service timer and yellow team letter tags on service position helper
+
 * Set double click speed
     + very fast: 160ms, fast: 240ms, normal: 320ms, slow: 400ms, very slow: 560ms 
 
 ### Activity
 
-On the activity view, you have the timer, the score, the dynamic field and the heartrate field. Pressing the up button will increase your opponent's score in grey and pressing the down button will increase yours in yellow. If enabled in the settings, swipping left or right on touchscreen devices will skip to the next or previous data in the dynamic field.Pressing the lap button will save the game state to the activity file and start a new one. Press the start button to stop the activity and save or discard it.
+On the activity view, you have the timer, the score, the dynamic field and the heartrate field. Pressing the up button will increase your opponent's score in grey and pressing the down button will increase yours in yellow. If enabled in the settings, swipping left or right on touchscreen devices will skip to the next or previous data in the dynamic field. Pressing the lap button will save the game state to the activity file and start a new one. Press the start button to stop the activity and save or discard it.
+
+When observer mode is enabled, pressing the lap button once will silently start a 3s service timer. The watch will vibrate on timeout to alarm the user. To start a new set/game, double click the lap button.
 
 ## Changelog
+
+### v0.12
+- add setting option to disable player tags on service position helper
+- add observer mode
+    * 3s service timer when pressing lap button
+    * player tags for yellow team
+
+### v0.11:
+- add letters on service helper for opponents
+- various bug fixes
+
+### v0.10:
+- add service position helper
+- add equal service system for helper and rotate position alarm
 
 ### v0.9:
 - add a font that scale with every display size
