@@ -9,6 +9,7 @@
     <string id="Settings">Roundnet Settings</string>
     <string id="Datafield">Datafield</string>
     <string id="Sensors">Sensors</string>
+    <string id="ObsMode">Observer mode</string>
     <string id="DoubleClick">Double click speed</string>
 
     <string id="Fields">Fields</string>
@@ -17,6 +18,7 @@
     <string id="Score">Score</string>
     <string id="Daytime">Daytime</string>
     <string id="ServicePos">Service position</string>
+    <string id="ServicePosTags">Show player tags</string>
     <string id="Location">Location</string>
     <string id="Temperature">Temperature</string>
 

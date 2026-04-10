@@ -3,7 +3,9 @@
         <menu-item          id="createSensorsMenu"          label="@Strings.Sensors"/>
         <menu-item          id="createDatafieldMenu"        label="@Strings.Datafield"/>
         <menu-item          id="createGameMenu"             label="@Strings.GameRules"/>
+        <toggle-menu-item   id="_"                          label="@Strings.ObsMode"            subLabel="observer_mode"/>
         <menu-item          id="createSpeedMenu"            label="@Strings.DoubleClick"        subLabel="doubleclickspeed"/>
+        <menu-item          id="version"                    label="_"/>
     </menu2>
 
     <menu2 id="SensorsMenu" title="@Strings.Sensors">
@@ -23,6 +25,7 @@
         <toggle-menu-item   id="_"                          label="@Strings.Temperature"        subLabel="field_temperature"/>
         <toggle-menu-item   id="_"                          label="@Strings.Daytime"            subLabel="field_daytime"/>
         <toggle-menu-item   id="_"                          label="@Strings.ServicePos"         subLabel="field_service"/>
+        <toggle-menu-item   id="_"                          label="@Strings.ServicePosTags"     subLabel="field_service_tags"/>
     </menu2>
 
     <menu2 id="ScrollingMenu" title="@Strings.Scrolling">
@@ -51,7 +54,8 @@
 
     <jsonData id="DefaultSettings">
     {
-        "version": 3,
+        "version": 4,
+        "observer_mode": false,
         "sensor_location": true,
         "sensor_temperature": true,
         "field_distance": true,
@@ -60,6 +64,7 @@
         "field_temperature": true,
         "field_daytime": true,
         "field_service": true,
+        "field_service_tags": true,
         "autoscroll": true,
         "swipescroll": true,
         "scrollspeed": 4,

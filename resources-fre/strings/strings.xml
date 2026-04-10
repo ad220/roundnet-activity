@@ -9,6 +9,7 @@
     <string id="Settings">Paramètres Roundnet</string>
     <string id="Datafield">Écran de données</string>
     <string id="Sensors">Capteurs</string>
+    <string id="ObsMode">Mode obs.</string>
     <string id="DoubleClick">Vitesse de double clic</string>
 
     <string id="Fields">Données</string> 
@@ -16,7 +17,8 @@
     <string id="Calories">Calories</string>
     <string id="Score">Score</string>
     <string id="Daytime">Heure</string>
-    <string id="ServicePos">Position du serveur</string>
+    <string id="ServicePos">Positions de départ</string>
+    <string id="ServicePosTags">Labelliser joueurs</string>
     <string id="Location">Position</string>
     <string id="Temperature">Température</string>
     

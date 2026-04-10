@@ -31,6 +31,8 @@ class LoopField extends Drawable {
     private var scrollSpeed as Number;
     private var units as Array<String?>;
     private var currentTimer as TimerCallback?;
+    private var serviceTagsEnabled as Boolean;
+    private var obsModeEnabled as Boolean;
 
 
     public function initialize(activity as RoundnetActivity) {
@@ -60,6 +62,8 @@ class LoopField extends Drawable {
         ];
         self.autoScroll = getApp().settings.get("autoscroll") as Boolean;
         self.scrollSpeed = (2*(getApp().settings.get("scrollspeed") as Number - 1.5)).toNumber();
+        self.serviceTagsEnabled = true;
+        self.obsModeEnabled = false;
 
         retrieveFieldSettings();
         resetField();
@@ -73,6 +77,8 @@ class LoopField extends Drawable {
         if (settings.get("field_temperature") as Boolean)   { enabledFields.add(FIELD_TEMPERATURE); }
         if (settings.get("field_daytime") as Boolean)       { enabledFields.add(FIELD_DAYTIME); }
         if (settings.get("field_service") as Boolean)       { enabledFields.add(FIELD_SERVICE); }
+        serviceTagsEnabled  = settings.get("field_service_tags") as Boolean;
+        obsModeEnabled      = settings.get("observer_mode") as Boolean;
     }
 
     public function resetField() as Void  {
@@ -122,7 +128,8 @@ class LoopField extends Drawable {
 
         for (var i=0; i<4; i++) {
             var isOpponent = state >> (i+4) & 1;
-            dc.setColor(isOpponent ? Graphics.COLOR_DK_GRAY : 0xFFAA00, Graphics.COLOR_BLACK);
+            var color = isOpponent ? Graphics.COLOR_DK_GRAY : 0xFFAA00;
+            dc.setColor(color, Graphics.COLOR_BLACK);
             var x = ICM.scaleX(0.7) + radius*Math.sin(i*Math.PI/2);
             var y = ICM.scaleY(0.5) + radius*Math.cos(i*Math.PI/2);
 
@@ -130,9 +137,13 @@ class LoopField extends Drawable {
                 dc.drawCircle(x, y, dotRadius);
             } else {
                 dc.fillCircle(x, y, dotRadius);
-                if (isOpponent) {
-                    dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_DK_GRAY);
-                    dc.drawText(x, y, ICM.fontSmall, state >> (8+i) & 1 ? "A" : "B", ICM.JTEXT_MID);
+                if (serviceTagsEnabled) {
+                    dc.setColor(Graphics.COLOR_WHITE, color);
+                    if (isOpponent) {
+                        dc.drawText(x, y, ICM.fontSmall, state >> (8+i) & 1 ? "A" : "B", ICM.JTEXT_MID);
+                    } else if (obsModeEnabled) {
+                        dc.drawText(x, y, ICM.fontSmall, i ? "B" : "A", ICM.JTEXT_MID);
+                    }
                 }
             }
 
