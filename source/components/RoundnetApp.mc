@@ -3,6 +3,7 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.ActivityRecording;
 import Toybox.Position;
+import Toybox.Timer;
 
 using InterfaceComponentsManager as ICM;
 
@@ -10,12 +11,14 @@ class RoundnetApp extends Application.AppBase {
 
     public const version = "v0.12";
     public var timer as TimerController;
+    public var preciseTimer as Timer.Timer;
     public var settings as Dictionary<String, Object>;
 
     function initialize() {
         AppBase.initialize();
 
         self.timer = new TimerController(1000);
+        self.preciseTimer = new Timer.Timer();
 
         self.settings = Storage.getValue("settings") as Dictionary;
         var defaults = WatchUi.loadResource(Rez.JsonData.DefaultSettings) as Dictionary;

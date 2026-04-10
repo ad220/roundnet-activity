@@ -67,8 +67,9 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     private var uiTimer as TimerController;
     private var doubleClickSpeed as Number;
     private var swipeScroll as Boolean;
-    private var currentTimer as TimerCallback?;
+    private var doubleClickTimer as TimerCallback?;
     private var lastInput as WatchUi.Key?;
+    private var obsModeEnabled as Boolean;
 
     public function initialize(view as RoundnetActivityView, activity as RoundnetActivity) {
         BehaviorDelegate.initialize();
@@ -76,8 +77,11 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
         self.view = view;
         self.activity = activity;
         self.uiTimer = new TimerController(80);
-        self.doubleClickSpeed = getApp().settings.get("doubleclickspeed") as Number;
-        self.swipeScroll = getApp().settings.get("swipescroll") as Boolean;
+
+        var settings = getApp().settings;
+        self.doubleClickSpeed = settings.get("doubleclickspeed") as Number;
+        self.swipeScroll = settings.get("swipescroll") as Boolean;
+        self.obsModeEnabled = settings.get("observer_mode") as Boolean;
     }
 
     public function onSelect() as Boolean {
@@ -94,7 +98,8 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
             WatchUi.switchToView(menu, new StopDelegate(activity), WatchUi.SLIDE_UP);
             return true;
         } else if (keyEvent.getKey()==KEY_ESC and keyEvent.getType()==PRESS_TYPE_ACTION) {
-            warnLap();
+            if (obsModeEnabled) { onObserverLap(); }
+            else                { warnLap(); }
             return true;
         }
         return false;
@@ -151,22 +156,22 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
         return false;
     }
 
-    public function onTimer() as Void {
+    public function onClickTimeout() as Void {
         lastInput = null;
     }
 
     public function scorePlayer() as Void {
         if (activity.isHelperReady()) {
 
-            if (lastInput==KEY_DOWN) {
+            if (lastInput == KEY_DOWN) {
                 lastInput = null;
-                uiTimer.stop(currentTimer);
+                uiTimer.stop(doubleClickTimer);
                 activity.decrPlayerScore();
             } else {
                 lastInput = KEY_DOWN;
-                uiTimer.stop(currentTimer);
-                uiTimer.start(method(:onTimer), doubleClickSpeed, false);
-                currentTimer = uiTimer.start(activity.method(:incrPlayerScore), doubleClickSpeed, false);
+                uiTimer.stop(doubleClickTimer);
+                uiTimer.start(method(:onClickTimeout), doubleClickSpeed, false);
+                doubleClickTimer = uiTimer.start(activity.method(:incrPlayerScore), doubleClickSpeed, false);
             }
         } else {
             activity.initServiceHelper(RoundnetActivity.TEAM_PLAYER);
@@ -177,15 +182,15 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     public function scoreOpponent() as Void {
         if (activity.isHelperReady()) {
 
-            if (lastInput==KEY_UP) {
+            if (lastInput == KEY_UP) {
                 lastInput = null;
-                uiTimer.stop(currentTimer);
+                uiTimer.stop(doubleClickTimer);
                 activity.decrOpponentScore();
             } else {
                 lastInput = KEY_UP;
-                uiTimer.stop(currentTimer);
-                uiTimer.start(method(:onTimer), doubleClickSpeed, false);
-                currentTimer = uiTimer.start(activity.method(:incrOpponentScore), doubleClickSpeed, false);
+                uiTimer.stop(doubleClickTimer);
+                uiTimer.start(method(:onClickTimeout), doubleClickSpeed, false);
+                doubleClickTimer = uiTimer.start(activity.method(:incrOpponentScore), doubleClickSpeed, false);
             }
         } else {
             activity.initServiceHelper(RoundnetActivity.TEAM_OPPONENT);
@@ -210,5 +215,34 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
 
     public function onLap() as Void {
         view.loopField.resetField();
+    }
+
+    public function onObserverLap() as Void {
+        if (activity.isHelperReady()) {
+            if (lastInput == KEY_ESC) {
+                lastInput = null;
+                cancelServiceTimer();
+                warnLap();
+            } else {
+                lastInput = KEY_ESC;
+                uiTimer.stop(doubleClickTimer);
+                uiTimer.start(method(:onClickTimeout), doubleClickSpeed, false);
+                startServiceTimer();
+            }
+        } else {
+            warnLap();
+        }
+    }
+
+    private function startServiceTimer() as Void {
+        getApp().preciseTimer.start(method(:onServiceTimer), 3000, false);
+    }
+
+    private function cancelServiceTimer() as Void {
+        getApp().preciseTimer.start(method(:onClickTimeout), 0, false);
+    }
+
+    public function onServiceTimer() as Void {
+        if (Attention has :vibrate) { Attention.vibrate([new Attention.VibeProfile(100, 200)]); }
     }
 }
