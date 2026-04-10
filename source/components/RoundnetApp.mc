@@ -8,6 +8,7 @@ using InterfaceComponentsManager as ICM;
 
 class RoundnetApp extends Application.AppBase {
 
+    public const version = "v0.12";
     public var timer as TimerController;
     public var settings as Dictionary<String, Object>;
 

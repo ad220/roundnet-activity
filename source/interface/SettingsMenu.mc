@@ -33,6 +33,15 @@ class SettingsDelegate extends WatchUi.Menu2InputDelegate {
                         item.initialize(item.getLabel(), settings.get(sublabel).toString(), [item.getId(), sublabel], null);
                     }
                     menu.updateItem(item, i);
+                } else if (item.getId() == :version) {
+                    var version = getApp().version;
+                    if (menu has :setFooter) {
+                        menu.setFooter(version);
+                        menu.deleteItem(i);
+                    }
+                    else {
+                        item.setLabel(version);
+                    }
                 }
             }
             i++;
