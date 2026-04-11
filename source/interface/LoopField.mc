@@ -191,11 +191,8 @@ class LoopField extends Drawable {
                 break;
             case FIELD_SERVICE:
                 var state = activity.getServiceState();
-                if (state == 0xF0) {
-                    label = loadResource(Rez.Strings.FirstPosition);
-                } else if (state & 0x0F == 0) {
-                    label = loadResource(Rez.Strings.FirstService);
-                }
+                if (state == 0xF0 and !obsModeEnabled)  { label = loadResource(Rez.Strings.FirstPosition); }
+                else if (state & 0x0F == 0)             { label = loadResource(Rez.Strings.FirstService); }
                 break;
             default:
                 System.println("Unknown field id");

@@ -1,5 +1,5 @@
 # <p align="center"> <br/> <img src="doc/roundnetapp.png" alt="roundnet icon" width="128"/> <br/> <br/> Roundnet Activity <br/> </p>
-Roundnet activity tracker for Garmin smartwatches. Allows you to keep score so you don't forget the game's progress. Comes with customizable data records and fields, plus an alarm to remind you to switch sides every X rounds.
+Roundnet activity tracker for Garmin smartwatches. Allows you to keep score so that you don't forget game progress even after an epic rally. Comes with customizable data records and fields, plus an alarm to remind you to switch sides every X rounds.
 
 ## Features
 - records score, heartrate, calories, steps, distance and temperature

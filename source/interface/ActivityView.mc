@@ -38,8 +38,19 @@ class RoundnetActivityView extends WatchUi.View {
         var scoreFont = ICM.fontLarge;
         if (!activity.isHelperReady()) {
             var state = activity.getServiceState() == 0xF0;
-            scorePlayer = loadResource(state ? Rez.Strings.Right : Rez.Strings.Us);
-            scoreOpponent = loadResource(state ? Rez.Strings.Left : Rez.Strings.Them);
+            var obsMode = getApp().settings["observer_mode"] as Boolean;
+
+            if (obsMode) { 
+                if (state) {
+                    // skip team mate position setup
+                    activity.initServiceHelper(RoundnetActivity.TEAM_PLAYER);
+                }
+                scorePlayer = loadResource(Rez.Strings.Yellow);
+                scoreOpponent = loadResource(Rez.Strings.Gray);
+            } else {
+                scorePlayer = loadResource(state ? Rez.Strings.Right : Rez.Strings.Us);
+                scoreOpponent = loadResource(state ? Rez.Strings.Left : Rez.Strings.Them);
+            }
             scoreFont = ICM.fontMedium;
         }
 
