@@ -1,0 +1,5 @@
+<menu2 id="ActivityMenu">
+    <menu-item id="break_timeout" label="@Strings.Timeout" />
+    <menu-item id="break_set" label="@Strings.SetBreak" />
+    <menu-item id="break_injury" label="@Strings.InjuryBreak" />
+</menu2>

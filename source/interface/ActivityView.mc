@@ -122,6 +122,11 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
         return true;
     }
 
+    public function onMenu() as Boolean {
+        pushView(new Rez.Menus.ActivityMenu(), new ActivityMenuDelegate(activity), SLIDE_UP);
+        return true;
+    }
+
     public function onBack() as Boolean {
         return false;
     }

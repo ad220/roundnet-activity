@@ -46,6 +46,12 @@
     <string id="Save">Save</string>
     <string id="Discard">Discard</string>
 
+    <string id="Timeout">Timeout (1 min)</string>
+    <string id="SetBreak">Set break (3 min)</string>
+    <string id="InjuryBreak">Injury break (5 min)</string>
+
+
+
     <!-- Fields text -->
     <!-- $$$ Small -->
     <string id="Switch">Rotate \npositions</string>

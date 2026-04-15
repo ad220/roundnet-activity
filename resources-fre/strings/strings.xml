@@ -46,6 +46,11 @@
     <string id="Save">Enregistrer</string>
     <string id="Discard">Abandonner</string>
     
+    <string id="Timeout">Temps mort (1 min)</string>
+    <string id="SetBreak">Pause inter-set (3 min)</string>
+    <string id="InjuryBreak">Pause blessure (5 min)</string>
+
+    
     <!-- Fields text -->
     <!-- $$$ Small -->
     <string id="Switch">Changez de\nposition</string>
