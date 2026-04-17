@@ -1,5 +1,16 @@
-<menu2 id="ActivityMenu">
-    <menu-item id="break_timeout" label="@Strings.Timeout" />
-    <menu-item id="break_set" label="@Strings.SetBreak" />
-    <menu-item id="break_injury" label="@Strings.InjuryBreak" />
-</menu2>
+<resources>
+
+    <menu2 id="ActivityMenu" title="@Strings.AppName">
+        <icon-menu-item id="onTimers"       icon="@Drawables.Hourglass"     label="@Strings.Timers" />
+        <icon-menu-item id="onObserver"     icon="@Drawables.Observer"      label="@Strings.SetObserver" />
+        <icon-menu-item id="onSettings"     icon="@Drawables.Settings"      label="@Strings.Settings" />
+        <icon-menu-item id="onObserver"     icon="@Drawables.Player"        label="@Strings.SetPlayer" />
+    </menu2>
+
+    <menu2 id="TimersMenu" title="@Strings.Timers">
+        <icon-menu-item id="onTimeout"      icon="@Drawables.Timeout"       label="@Strings.Timeout" />
+        <icon-menu-item id="onSet"          icon="@Drawables.Bottle"        label="@Strings.SetBreak" />
+        <icon-menu-item id="onInjury"       icon="@Drawables.Injury"        label="@Strings.InjuryBreak" />
+    </menu2>
+
+</resources>

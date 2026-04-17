@@ -50,6 +50,9 @@
     <string id="SetBreak">Set break (3 min)</string>
     <string id="InjuryBreak">Injury break (5 min)</string>
 
+    <string id="Timers">Timers</string>
+    <string id="SetObserver">Switch to obs. mode</string>
+    <string id="SetPlayer">Switch to player mode</string>
 
 
     <!-- Fields text -->
@@ -65,8 +68,8 @@
     <string id="Right">R</string>
     <string id="Us">Us</string>
     <string id="Them">Them</string>
-    <string id="Yellow">Ylow.</string>
-    <string id="Gray">Gray</string>
+    <string id="Yellow">YEL</string>
+    <string id="Gray">GRY</string>
     
 
     <!-- Units -->

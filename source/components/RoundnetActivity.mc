@@ -49,16 +49,17 @@ class RoundnetActivity {
     private var gamesOpponent as Number;
     private var stepsOnStart as Number;
     private var stepsOnLap as Number;
-    private var serviceState as Number;
     private var serviceHistory as ByteArray;
 
-    private var equalServing as Boolean;
-    private var pointsToSwitch as Number;
-    private var pointsToWin as Number;
-    private var twoPointsDiff as Boolean;
-    private var retryAutoWin as Boolean;
-    private var locEnabled as Boolean;
-    private var tempEnabled as Boolean;
+    (:initialized) private var serviceState as Number;
+    (:initialized) private var equalServing as Boolean;
+    (:initialized) private var pointsToSwitch as Number;
+    (:initialized) private var pointsToWin as Number;
+    (:initialized) private var twoPointsDiff as Boolean;
+    (:initialized) private var retryAutoWin as Boolean;
+    (:initialized) private var locEnabled as Boolean;
+    (:initialized) private var tempEnabled as Boolean;
+
     private var lastTemp as Number?;
     private var tempField as FitContributor.Field?;
     private var recordTimer as TimerCallback?;
@@ -79,17 +80,10 @@ class RoundnetActivity {
         self.stepsOnStart = ActivityMonitor.getInfo().steps;
         self.stepsOnLap = ActivityMonitor.getInfo().steps;
 
-        self.serviceState = getApp().settings.get("field_service") as Boolean ? 0xF0 : -1;
         self.serviceHistory = []b;
         for (var i=0; i<256; i+=1) { self.serviceHistory.add(0); }
 
-        self.equalServing = getApp().settings.get("game_equal_serving") as Boolean;
-        self.pointsToSwitch = getApp().settings.get("game_switch_alarm") as Boolean ? getApp().settings.get("game_switch_points") : 0;
-        self.pointsToWin = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
-        self.twoPointsDiff = getApp().settings.get("game_win_two_pt_diff") as Boolean;
-        self.retryAutoWin = getApp().settings.get("game_win_retry") as Boolean;
-        self.locEnabled = getApp().settings.get("sensor_location") as Boolean;
-        self.tempEnabled = getApp().settings.get("sensor_temperature") as Boolean;
+        refreshSettings();
 
         createSession();
         if (session==null) { throw new Exception(); }
@@ -121,6 +115,17 @@ class RoundnetActivity {
         if (!status) {
             exit();
         }
+    }
+
+    private function refreshSettings() {
+        serviceState = getApp().settings.get("field_service") as Boolean ? 0xF0 : -1;
+        equalServing = getApp().settings.get("game_equal_serving") as Boolean;
+        pointsToSwitch = getApp().settings.get("game_switch_alarm") as Boolean ? getApp().settings.get("game_switch_points") : 0;
+        pointsToWin = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
+        twoPointsDiff = getApp().settings.get("game_win_two_pt_diff") as Boolean;
+        retryAutoWin = getApp().settings.get("game_win_retry") as Boolean;
+        locEnabled = getApp().settings.get("sensor_location") as Boolean;
+        tempEnabled = getApp().settings.get("sensor_temperature") as Boolean;
     }
 
     (:sysgt6)
@@ -201,7 +206,11 @@ class RoundnetActivity {
         if (session.isRecording()) {
             updateLapFields();
             session.addLap();
-            pointsToWin = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
+            
+            refreshSettings();
+            scorePlayer = 0;
+            scoreOpponent = 0;
+
             delegate.onLap();
             WatchUi.requestUpdate();
         }
@@ -230,17 +239,8 @@ class RoundnetActivity {
             distanceOnLap = currentDistance;
         }
         
-        if (scorePlayer > scoreOpponent) {
-            gamesPlayer++;
-        } if (scoreOpponent > scorePlayer) {
-            gamesOpponent++;
-        }
-        scorePlayer = 0;
-        scoreOpponent = 0;
-
-        if (serviceState != -1) {
-            serviceState = 0xF0;
-        }
+        if      (scorePlayer > scoreOpponent) { gamesPlayer++; }
+        else if (scoreOpponent > scorePlayer) { gamesOpponent++; }
     }
 
     public function save() as Void {

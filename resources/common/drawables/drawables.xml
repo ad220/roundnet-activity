@@ -1,14 +1,23 @@
 <drawables>
-    <bitmap id="LauncherIcon" filename="ball.png" dithering="none"/>
-    
-    <bitmap id="Steps" filename="steps.png" scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
-    <bitmap id="Calories" filename="calories.png" scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
-    <bitmap id="Score" filename="trophy.png" scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
-    <bitmap id="Temperature" filename="temperature.png" scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
-    <bitmap id="Daytime" filename="clock.png" scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
-    <bitmap id="Switch" filename="switch.png" scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="LauncherIcon"   filename="ball.png" dithering="none" automaticPalette="true"/>
 
-    <bitmap id="Start" filename="start.png" scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
-    <bitmap id="Save" filename="save.png" scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
-    <bitmap id="Delete" filename="delete.png" scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Steps"          filename="steps.png"        scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Calories"       filename="calories.png"     scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Score"          filename="trophy.png"       scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Temperature"    filename="temperature.png"  scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Daytime"        filename="clock.png"        scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Switch"         filename="switch.png"       scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+
+    <bitmap id="Start"          filename="start.png"        scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Save"           filename="save.png"         scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Delete"         filename="delete.png"       scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+
+    <bitmap id="Hourglass"      filename="hourglass.png"    scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Observer"       filename="eyes.png"         scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Player"         filename="player.png"       scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Settings"       filename="settings.png"     scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Timeout"        filename="timeout.png"      scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Bottle"         filename="bottle.png"       scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Injury"         filename="injury.png"       scaleX="10%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+
 </drawables>

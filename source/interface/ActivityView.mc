@@ -122,8 +122,10 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
         return true;
     }
 
+    (:notva3)
     public function onMenu() as Boolean {
-        pushView(new Rez.Menus.ActivityMenu(), new ActivityMenuDelegate(activity), SLIDE_UP);
+        var menu = new Rez.Menus.ActivityMenu();
+        pushView(menu, new ActivityMenuDelegate(menu, activity), SLIDE_UP);
         return true;
     }
 
@@ -219,14 +221,14 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     } 
 
     public function warnLap() as Void {
-        var view = new LapView(activity, uiTimer);
+        // var view = new LapView(activity, uiTimer);
         if (Attention has :vibrate) {
             Attention.vibrate([new Attention.VibeProfile(80, 600)]);
         }
         if (Attention has :playTone) {
             Attention.playTone({:toneProfile => [new Attention.ToneProfile(690, 600)]});
         }
-        WatchUi.pushView(view, new LapDelegate(view), SLIDE_IMMEDIATE);
+        // WatchUi.pushView(view, new LapDelegate(view), SLIDE_IMMEDIATE);
     }
 
     public function onLap() as Void {
