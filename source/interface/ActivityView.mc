@@ -11,6 +11,9 @@ class RoundnetActivityView extends WatchUi.View {
 
     public var loopField as LoopField;
 
+    (:initialized) private var obsMode as Boolean;
+    (:initialized) private var showLapTime as Boolean;
+
     function initialize(activity as RoundnetActivity) {
         View.initialize();
 
@@ -18,12 +21,29 @@ class RoundnetActivityView extends WatchUi.View {
         self.loopField = new LoopField(activity);
     }
 
+
+    (:sysgt6)
     function onLayout(dc as Dc) as Void {
+        obsMode     = getApp().settings["observer_mode"] as Boolean;
+        showLapTime = getApp().settings["show_lap_time"] as Boolean;
         setLayout(Rez.Layouts.ActivityLayout(dc));
+
+        if (!showLapTime) {
+            (findDrawableById("Lap") as Bitmap).setVisible(false);
+        }
     }
 
-    function onShow() as Void {
+    (:syslt6)
+    function onLayout(dc as Dc) as Void {
+        obsMode     = getApp().settings["observer_mode"] as Boolean;
+        showLapTime = getApp().settings["show_lap_time"] as Boolean;
+        setLayout(Rez.Layouts.ActivityLayout(dc));
+
+        if (!showLapTime) {
+            (findDrawableById("Lap") as Bitmap).setLocation(0,0);
+        }
     }
+
 
     function onUpdate(dc as Dc) as Void {
         // if (dc has :setAntiAlias) {
@@ -38,7 +58,6 @@ class RoundnetActivityView extends WatchUi.View {
         var scoreFont = ICM.fontLarge;
         if (!activity.isHelperReady()) {
             var state = activity.getServiceState() == 0xF0;
-            var obsMode = getApp().settings["observer_mode"] as Boolean;
 
             if (obsMode) { 
                 if (state) {
@@ -56,7 +75,12 @@ class RoundnetActivityView extends WatchUi.View {
 
         dc.drawText(ICM.scaleX(0.219), ICM.scaleY(0.500), scoreFont, scoreOpponent, ICM.JTEXT_MID);
         dc.drawText(ICM.scaleY(0.295), ICM.scaleY(0.816), scoreFont, scorePlayer, ICM.JTEXT_MID);
-        dc.drawText(ICM.scaleX(0.440), ICM.scaleY(0.185), ICM.fontMedium, activity.getFormattedTime(), ICM.JTEXT_LEFT);
+        dc.drawText(ICM.scaleX(0.440), ICM.scaleY(0.185), ICM.fontMedium, activity.getFormattedTime(false), ICM.JTEXT_LEFT);
+
+        if (showLapTime) {
+            var lapTime = activity.getFormattedTime(true).substring(2, 7);
+            dc.drawText(ICM.scaleX(0.520), ICM.scaleY(0.271), ICM.fontSmall, lapTime, ICM.JTEXT_LEFT);
+        }
 
         var hr = activity.getHR();
         dc.drawText(ICM.scaleX(0.650), ICM.scaleY(0.816), ICM.fontMedium, hr!=null ? hr : "- -", ICM.JTEXT_LEFT);
@@ -105,7 +129,7 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
             uiTimer.stopAll();
             view.loopField.stop();
             var menu = new Rez.Menus.StopMenu();
-            menu.setTitle(activity.getFormattedTime());
+            menu.setTitle(activity.getFormattedTime(false));
             switchToView(menu, new StopDelegate(activity), SLIDE_UP);
             return true;
         } else if (keyEvent.getKey()==KEY_ESC and keyEvent.getType()==PRESS_TYPE_ACTION) {

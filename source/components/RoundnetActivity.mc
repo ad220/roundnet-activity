@@ -210,6 +210,8 @@ class RoundnetActivity {
             refreshSettings();
             scorePlayer = 0;
             scoreOpponent = 0;
+            
+            time = Activity.getActivityInfo().timerTime / 1000;
 
             delegate.onLap();
             WatchUi.requestUpdate();
@@ -452,8 +454,9 @@ class RoundnetActivity {
         return Sensor.getInfo().temperature;
     }
 
-    public function getFormattedTime() as String {
-        return (time/3600).format("%01d") + "'" + (time%3600/60).format("%02d") + '"' + (time%60).format("%02d");
+    public function getFormattedTime(ofLap as Boolean) as String {
+        var t = ofLap ? time - timeOnLap/1000 : time;
+        return (t / 3600).format("%01d") + "'" + (t % 3600 / 60).format("%02d") + '"' + (t % 60).format("%02d");
     }
 
     public function getServiceState() as Number {

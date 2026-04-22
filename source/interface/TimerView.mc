@@ -77,7 +77,7 @@ class TimerView extends WatchUi.View {
 
         dc.setPenWidth(0.025 * width);
         dc.setColor(delegate.isPaused() ? Graphics.COLOR_DK_GRAY : 0xFFAA00, Graphics.COLOR_TRANSPARENT);
-        dc.drawArc(0.5*width, 0.5*height, 0.5*width, Graphics.ARC_CLOCKWISE, 90, 90 + (currentTick * 360 / maxTicks));
+        dc.drawArc(0.5*width - 0.5, 0.5*height -0.5, 0.5*width, Graphics.ARC_CLOCKWISE, 90, 90 + (currentTick * 360 / maxTicks));
 
         currentTick = maxTicks - currentTick;
         var labelText = label!=null ? label : currentTick/60 + ":" + (currentTick%60).format("%02d");

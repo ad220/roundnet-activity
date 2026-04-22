@@ -26,6 +26,7 @@
     <string id="AutoScroll">Auto scroll</string>
     <string id="ScrollSpeed">Auto scroll speed</string>
     <string id="SwipeScroll">Swipe scroll</string>
+    <string id="LapTime">Show game time</string>
 
     <string id="GameRules">Game rules</string>
     <string id="AutoWin">Auto win / loose</string>

@@ -26,6 +26,7 @@
     <string id="AutoScroll">Défilement auto</string>
     <string id="ScrollSpeed">Vitesse de défilement</string>
     <string id="SwipeScroll">Défilement tactile</string>
+    <string id="LapTime">Aff. durée de partie</string>
 
     <string id="GameRules">Règles du match</string>
     <string id="AutoWin">Fin de partie auto</string>
