@@ -16,7 +16,7 @@ def filter(filename:str, translatable:bool):
         lines = f.readlines()
         small_filter = [" .0123456789-:AB"]
         medium_filter = [" .0123456789-:'"]
-        large_filter = [" .0123456789-"]
+        large_filter = [" .0123456789-:"]
         current_filters = []
         for line in lines:
             if '$$$' in line:
