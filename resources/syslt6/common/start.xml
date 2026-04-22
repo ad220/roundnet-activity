@@ -2,9 +2,9 @@
     <layout id="StartLayout">
         <drawable id="StartDots" />
 
-        <bitmap id="ball_start" x="42.5%" y="42.5%" filename="../common/drawables/ball.png" scaleY="15%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
-        <bitmap id="temp_start" x="46%" y="10%" filename="../common/drawables/temperature.png" scaleY="8%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
-        <bitmap id="gps_start" x="46%" y="20%" filename="../common/drawables/gps.png" scaleY="8%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+        <bitmap id="ball_start" x="42.5%" y="42.5%" filename="../../common/drawables/ball.png" scaleY="15%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+        <bitmap id="temp_start" x="46%" y="10%" filename="../../common/drawables/temperature.png" scaleY="8%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+        <bitmap id="gps_start" x="46%" y="20%" filename="../../common/drawables/gps.png" scaleY="8%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
 
         <label id="title" text="@Strings.AppName" x="50%" y="60%" font="@Fonts.Medium" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_CENTER"/>
         <label id="daytime" text="" x="50%" y="90%" font="@Fonts.Medium" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_CENTER | Gfx.TEXT_JUSTIFY_VCENTER" />
