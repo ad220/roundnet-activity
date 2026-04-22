@@ -1,7 +1,7 @@
 <resources>
     <layout id="StartLayout">
-        <bitmap id="MenuHint" personality="system_icon_dark__hint_button_left_middle system_loc__hint_button_left_middle"/>
-        <bitmap id="StartHint" personality="system_icon_positive__hint_button_right_top system_loc__hint_button_right_top"/>
+        <bitmap id="StartHint" personality="system_icon_positive__hint_button_right_top system_loc__hint_button_right_top" />
+        <bitmap id="MenuHint"  personality="system_icon_dark__hint_button_left_middle system_loc__hint_button_left_middle"/>
         <drawable id="StartDots" />
 
         <bitmap id="ball_start" x="42.5%" y="42.5%" filename="../../common/drawables/ball.png" scaleY="15%" scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>

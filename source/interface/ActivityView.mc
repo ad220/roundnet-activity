@@ -79,7 +79,7 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     private var doubleClickSpeed as Number;
     private var swipeScroll as Boolean;
     private var doubleClickTimer as TimerCallback?;
-    private var lastInput as WatchUi.Key?;
+    private var lastInput as Key?;
     private var obsModeEnabled as Boolean;
 
     public function initialize(view as RoundnetActivityView, activity as RoundnetActivity) {
@@ -106,7 +106,7 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
             view.loopField.stop();
             var menu = new Rez.Menus.StopMenu();
             menu.setTitle(activity.getFormattedTime());
-            WatchUi.switchToView(menu, new StopDelegate(activity), WatchUi.SLIDE_UP);
+            switchToView(menu, new StopDelegate(activity), SLIDE_UP);
             return true;
         } else if (keyEvent.getKey()==KEY_ESC and keyEvent.getType()==PRESS_TYPE_ACTION) {
             if (obsModeEnabled) { onObserverLap(); }
@@ -125,7 +125,7 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     (:notva3)
     public function onMenu() as Boolean {
         var menu = new Rez.Menus.ActivityMenu();
-        pushView(menu, new ActivityMenuDelegate(menu, activity), SLIDE_UP);
+        switchToView(menu, new ActivityMenuDelegate(menu, activity), SLIDE_UP);
         return true;
     }
 
@@ -221,14 +221,15 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     } 
 
     public function warnLap() as Void {
-        // var view = new LapView(activity, uiTimer);
+        var dlgt = new TimerDelegate(activity, uiTimer, 100);
         if (Attention has :vibrate) {
             Attention.vibrate([new Attention.VibeProfile(80, 600)]);
         }
         if (Attention has :playTone) {
             Attention.playTone({:toneProfile => [new Attention.ToneProfile(690, 600)]});
         }
-        // WatchUi.pushView(view, new LapDelegate(view), SLIDE_IMMEDIATE);
+        var label = activity.getScore(RoundnetActivity.TEAM_PLAYER) + " - " + activity.getScore(RoundnetActivity.TEAM_OPPONENT);
+        switchToView(new TimerView(dlgt, :LapLayout, Rez.Drawables.Score, label), dlgt, SLIDE_IMMEDIATE);
     }
 
     public function onLap() as Void {

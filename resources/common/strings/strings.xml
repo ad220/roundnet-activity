@@ -51,13 +51,13 @@
     <string id="InjuryBreak">Injury break (5 min)</string>
 
     <string id="Timers">Timers</string>
-    <string id="SetObserver">Switch to obs. mode</string>
-    <string id="SetPlayer">Switch to player mode</string>
+    <string id="SetObserver">Switch to\nobs. mode</string>
+    <string id="SetPlayer">Switch to\nplayer mode</string>
 
 
     <!-- Fields text -->
     <!-- $$$ Small -->
-    <string id="Switch">Rotate \npositions</string>
+    <string id="Switch">Rotate\npositions</string>
     <string id="FirstPosition">Are you left or\nright from your\nteam mate?</string>
     <string id="FirstService">Which team\nis serving\nfirst?</string>
 

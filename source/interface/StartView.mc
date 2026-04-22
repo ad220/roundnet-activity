@@ -131,7 +131,7 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
                     var view = new RoundnetActivityView(activity);
                     var delegate = new RoundnetActivityDelegate(view, activity);
                     activity.registerDelegate(delegate);
-                    WatchUi.pushView(view, new RoundnetActivityDelegate(view, activity), SLIDE_UP);
+                    pushView(view, new RoundnetActivityDelegate(view, activity), SLIDE_UP);
                 } else { throw new Exception(); }
             } catch (ex) {
                 (view.findDrawableById("title") as Text).setText(Rez.Strings.StartFailed);

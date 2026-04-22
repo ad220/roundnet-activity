@@ -46,9 +46,13 @@
     <string id="Save">Enregistrer</string>
     <string id="Discard">Abandonner</string>
     
-    <string id="Timeout">Temps mort (1 min)</string>
-    <string id="SetBreak">Pause inter-set (3 min)</string>
-    <string id="InjuryBreak">Pause blessure (5 min)</string>
+    <string id="Timeout">Temps mort\n(1 min)</string>
+    <string id="SetBreak">Pause inter-set\n(3 min)</string>
+    <string id="InjuryBreak">Pause blessure\n(5 min)</string>
+
+    <string id="Timers">Minuteurs</string>
+    <string id="SetObserver">Passer en\nmode obs.</string>
+    <string id="SetPlayer">Passer en\nmode joueur</string>
 
     
     <!-- Fields text -->

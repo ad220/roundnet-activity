@@ -6,7 +6,7 @@ import Toybox.WatchUi;
 class ActivityMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     private var activity as RoundnetActivity;
-    private var menu as Rez.Menus.ActivityMenu;
+    private var menu as Menu2;
     private var modeCachedItem as IconMenuItem;
 
     public function initialize(menu as Rez.Menus.ActivityMenu, activity as RoundnetActivity) {
@@ -27,8 +27,23 @@ class ActivityMenuDelegate extends WatchUi.Menu2InputDelegate {
         method(item.getId() as Symbol).invoke();
     }
 
+    public function onBack() as Void {
+        if (menu instanceof Rez.Menus.ActivityMenu){
+            var view = new RoundnetActivityView(activity);
+            var delegate = new RoundnetActivityDelegate(view, activity);
+            activity.registerDelegate(delegate);
+            switchToView(view, delegate, SLIDE_DOWN);
+        }
+        else {
+            initialize(new Rez.Menus.ActivityMenu(), activity);
+            switchToView(menu, self, SLIDE_RIGHT);
+        }
+    }
+
+
     public function onTimers() as Void {
-        pushView(new Rez.Menus.TimersMenu(), null, SLIDE_IMMEDIATE);
+        menu = new Rez.Menus.TimersMenu();
+        switchToView(menu, self, SLIDE_IMMEDIATE);
     }
 
     public function onObserver() as Void {
@@ -43,15 +58,25 @@ class ActivityMenuDelegate extends WatchUi.Menu2InputDelegate {
         modeCachedItem = cache;
     }
 
+
     public function onSettings() as Void {
-        var menu = new Rez.Menus.SettingsMenu();
-        pushView(menu, new SettingsDelegate(menu, null, null), SLIDE_IMMEDIATE);
+        var nmenu = new Rez.Menus.SettingsMenu();
+        pushView(nmenu, new SettingsDelegate(nmenu, null, null), SLIDE_LEFT);
     }
 
-    public function onBack() as Void {
-        var view = new RoundnetActivityView(activity);
-        var delegate = new RoundnetActivityDelegate(view, activity);
-        activity.registerDelegate(delegate);
-        WatchUi.switchToView(view, delegate, SLIDE_DOWN);
+    public function onTimeout() as Void {
+        var dlgt = new TimerDelegate(activity, getApp().timer, 60);
+        switchToView(new TimerView(dlgt, :TimerLayout, Rez.Drawables.Timeout, null), dlgt, SLIDE_IMMEDIATE); 
     }
+
+    public function onSet() as Void {
+        var dlgt = new TimerDelegate(activity, getApp().timer, 180);
+        switchToView(new TimerView(dlgt, :TimerLayout, Rez.Drawables.Bottle, null), dlgt, SLIDE_IMMEDIATE); 
+    }
+
+    public function onInjury() as Void {
+        var dlgt = new TimerDelegate(activity, getApp().timer, 300);
+        switchToView(new TimerView(dlgt, :TimerLayout, Rez.Drawables.Injury, null), dlgt, SLIDE_IMMEDIATE); 
+    }
+
 }
