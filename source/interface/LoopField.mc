@@ -46,7 +46,7 @@ class LoopField extends Drawable {
         self.icons = [
             Rez.Drawables.Steps,
             Rez.Drawables.Calories,
-            Rez.Drawables.Score,
+            Rez.Drawables.Medal,
             Rez.Drawables.Temperature,
             Rez.Drawables.Daytime,
             Rez.Drawables.Switch,
