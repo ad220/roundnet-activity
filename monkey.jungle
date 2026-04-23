@@ -24,6 +24,10 @@ rectangle-320x360.resourcePath = $(round-360x360.resourcePath)
 
 # Devices with unique resolution
 fr55.resourcePath                       = $(round-218x218.resourcePath)
+venusq.resourcePath                     = $(round-240x240.resourcePath)
+venusqm.resourcePath                    = $(round-240x240.resourcePath)
+venusq2.resourcePath                    = $(round-360x360.resourcePath)
+venusq2m.resourcePath                   = $(round-360x360.resourcePath)
 venux1.resourcePath                     = $(round-454x454.resourcePath)
 
 # Old devices with 5 buttons layout
@@ -105,7 +109,6 @@ fr265s.resourcePath                     = $(fr265s.resourcePath);               
 fr55.resourcePath                       = $(fr55.resourcePath);                     $(res_sysgt6_buttons)
 fr57042mm.resourcePath                  = $(fr57042mm.resourcePath);                $(res_sysgt6_buttons)
 fr57047mm.resourcePath                  = $(fr57047mm.resourcePath);                $(res_sysgt6_buttons)
-fr745.resourcePath                      = $(fr745.resourcePath);                    $(res_sysgt6_buttons)
 fr945lte.resourcePath                   = $(fr945lte.resourcePath);                 $(res_sysgt6_buttons)
 fr955.resourcePath                      = $(fr955.resourcePath);                    $(res_sysgt6_buttons)
 fr965.resourcePath                      = $(fr965.resourcePath);                    $(res_sysgt6_buttons)
