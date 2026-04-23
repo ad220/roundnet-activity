@@ -9,6 +9,7 @@ Roundnet activity tracker for Garmin smartwatches. Allows you to keep score so t
 - alarm to rotate starting positions every X rounds
 - service position helper with a diagram
 - 3s service timer with observer mode
+- break timers
 
 Check the [settings](#settings) and [activity](#activity) section below to learn how to use the app
 
@@ -24,7 +25,7 @@ Check the [settings](#settings) and [activity](#activity) section below to learn
 ![](doc/activity_view.png)
 
 ## Installation
-The app is available on the [Garmin Connect IQ Store](https://apps.garmin.com/fr-FR/apps/25832203-f7ed-40a7-977d-0a9172b68ee4).
+The app is available on the [Garmin Connect IQ Store](https://apps.garmin.com/apps/25832203-f7ed-40a7-977d-0a9172b68ee4).
 
 You can also build it from source for your specific device with the VSCode extension. This process is described [here](https://developer.garmin.com/connect-iq/connect-iq-basics/getting-started/) and [here](https://developer.garmin.com/connect-iq/connect-iq-basics/your-first-app/#ariaid-title7).
 
@@ -77,7 +78,14 @@ On the activity view, you have the timer, the score, the dynamic field and the h
 
 When observer mode is enabled, pressing the lap button once will silently start a 3s service timer. The watch will vibrate on timeout to alarm the user. To start a new set/game, double click the lap button.
 
+You can start break timers and change settings from the activity by pressing the menu button on your watch.
+
 ## Changelog
+
+### v0.13
+- add timers for timeouts, breaks and injuries
+- add activity menu to pause the activity and start a timer or change settings during game
+- update icons
 
 ### v0.12
 - add setting option to disable player tags on service position helper
