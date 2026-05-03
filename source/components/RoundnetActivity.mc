@@ -140,6 +140,16 @@ class RoundnetActivity {
         });
     }
 
+    function restoreSession() {
+        if (!session.isRecording()) {
+            session = ActivityRecording.createSession({
+                :name=>"Roundnet",
+                :sport=> Activity.SPORT_GENERIC,
+                :subSport=> Activity.SUB_SPORT_MATCH
+            });
+        }
+    }
+
     (:syslt6)
     private function createSession() {
         System.println("API level lower than 3.4.0");

@@ -128,7 +128,8 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
             activity.stop();
             uiTimer.stopAll();
             view.loopField.stop();
-            var menu = new Rez.Menus.StopMenu();
+            var dlgt = new StopDelegate(activity);
+            var menu = new StopMenuView(dlgt);
             menu.setTitle(activity.getFormattedTime(false));
             switchToView(menu, new StopDelegate(activity), SLIDE_UP);
             return true;
