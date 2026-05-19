@@ -97,16 +97,16 @@ class LoopField extends Drawable {
             return;
         }
 
-        dc.drawBitmap(ICM.scaleX(0.52), ICM.scaleY(0.45), currentIcon);
-        dc.drawText(ICM.scaleX(0.65), ICM.scaleY(0.5), ICM.fontSmall, label, ICM.JTEXT_LEFT);
+        dc.drawBitmap(Screen.WIDTH * 0.52, Screen.HEIGHT * 0.45, currentIcon);
+        dc.drawText(Screen.WIDTH * 0.65, Screen.HEIGHT * 0.5, ICM.fontSmall, label, ICM.JTEXT_LEFT);
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.setPenWidth(ICM.scaleX(0.005));
+        dc.setPenWidth(Screen.WIDTH * 0.005);
         var count = enabledFields.size();
         for (var i=0; i<count; i++) {
-            dc.drawCircle(ICM.scaleX(0.69) + ICM.scaleX(0.04)*(i-count/2), ICM.scaleY(0.62), ICM.scaleX(0.01));
+            dc.drawCircle(Screen.WIDTH * 0.69 + Screen.WIDTH * 0.04*(i-count/2), Screen.HEIGHT * 0.62, Screen.WIDTH * 0.01);
             if (i==stateIndex) {
-                dc.fillCircle(ICM.scaleX(0.69) + ICM.scaleX(0.04)*(i-count/2), ICM.scaleY(0.62), ICM.scaleX(0.01));
+                dc.fillCircle(Screen.WIDTH * 0.69 + Screen.WIDTH * 0.04*(i-count/2), Screen.HEIGHT * 0.62, Screen.WIDTH * 0.01);
             }
         }
     }
@@ -116,22 +116,22 @@ class LoopField extends Drawable {
 
         // setup service helper
         if (state & 0x0F == 0) {
-            dc.drawText(ICM.scaleX(0.7), ICM.scaleY(0.5), ICM.fontSmall, label, ICM.JTEXT_MID);
+            dc.drawText(Screen.WIDTH * 0.7, Screen.HEIGHT * 0.5, ICM.fontSmall, label, ICM.JTEXT_MID);
             return;
         }
 
-        var radius = ICM.scaleX(0.094);
-        var dotRadius = ICM.scaleX(0.039);
+        var radius = Screen.WIDTH * 0.094;
+        var dotRadius = Screen.WIDTH * 0.039;
         
-        dc.setPenWidth(ICM.scaleX(0.014));
+        dc.setPenWidth(Screen.WIDTH * 0.014);
         ICM.toggleAA(dc, true);
 
         for (var i=0; i<4; i++) {
             var isOpponent = state >> (i+4) & 1;
             var color = isOpponent ? Graphics.COLOR_DK_GRAY : 0xFFAA00;
             dc.setColor(color, Graphics.COLOR_BLACK);
-            var x = ICM.scaleX(0.7) + radius*Math.sin(i*Math.PI/2);
-            var y = ICM.scaleY(0.5) + radius*Math.cos(i*Math.PI/2);
+            var x = Screen.WIDTH * 0.7 + radius*Math.sin(i*Math.PI/2);
+            var y = Screen.HEIGHT * 0.5 + radius*Math.cos(i*Math.PI/2);
 
             if (state >> i & 1) {
                 dc.drawCircle(x, y, dotRadius);

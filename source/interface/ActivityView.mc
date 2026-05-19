@@ -73,19 +73,19 @@ class RoundnetActivityView extends WatchUi.View {
             scoreFont = ICM.fontMedium;
         }
 
-        dc.drawText(ICM.scaleX(0.219), ICM.scaleY(0.500), scoreFont, scoreOpponent, ICM.JTEXT_MID);
-        dc.drawText(ICM.scaleY(0.295), ICM.scaleY(0.816), scoreFont, scorePlayer, ICM.JTEXT_MID);
-        dc.drawText(ICM.scaleX(0.440), ICM.scaleY(0.185), ICM.fontMedium, activity.getFormattedTime(false), ICM.JTEXT_LEFT);
+        dc.drawText(Screen.WIDTH * 0.219, Screen.HEIGHT * 0.500, scoreFont, scoreOpponent, ICM.JTEXT_MID);
+        dc.drawText(Screen.HEIGHT * 0.295, Screen.HEIGHT * 0.816, scoreFont, scorePlayer, ICM.JTEXT_MID);
+        dc.drawText(Screen.WIDTH * 0.440, Screen.HEIGHT * 0.185, ICM.fontMedium, activity.getFormattedTime(false), ICM.JTEXT_LEFT);
 
         if (showLapTime) {
             var lapTime = activity.getFormattedTime(true).substring(2, 7);
-            dc.drawText(ICM.scaleX(0.520), ICM.scaleY(0.271), ICM.fontSmall, lapTime, ICM.JTEXT_LEFT);
+            dc.drawText(Screen.WIDTH * 0.520, Screen.HEIGHT * 0.271, ICM.fontSmall, lapTime, ICM.JTEXT_LEFT);
         }
 
         var hr = activity.getHR();
-        dc.drawText(ICM.scaleX(0.650), ICM.scaleY(0.816), ICM.fontMedium, hr!=null ? hr : "- -", ICM.JTEXT_LEFT);
+        dc.drawText(Screen.WIDTH * 0.650, Screen.HEIGHT * 0.816, ICM.fontMedium, hr!=null ? hr : "- -", ICM.JTEXT_LEFT);
 
-        dc.setClip(ICM.scaleX(0.333), ICM.scaleY(0.333), ICM.scaleX(0.667), ICM.scaleY(0.333));
+        dc.setClip(Screen.WIDTH * 0.333, Screen.HEIGHT * 0.333, Screen.WIDTH * 0.667, Screen.HEIGHT * 0.333);
         loopField.draw(dc);
         dc.clearClip();
     }
@@ -188,10 +188,10 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     (:touch)
     public function onTap(tap as ClickEvent) as Boolean {
         var coord = tap.getCoordinates();
-        if (coord[0]<ICM.scaleX(0.5) and coord[1]<ICM.scaleY(0.66) and coord[1]>ICM.scaleY(0.33)) {
+        if (coord[0]<Screen.WIDTH * 0.5 and coord[1]<Screen.HEIGHT * 0.66 and coord[1]>Screen.HEIGHT * 0.33) {
             scoreOpponent();
             return true;
-        } else if (coord[0]<ICM.scaleX(0.5) and coord[1]>ICM.scaleY(0.66)) {
+        } else if (coord[0]<Screen.WIDTH * 0.5 and coord[1]>Screen.HEIGHT * 0.66) {
             scorePlayer();
             return true;
         } 

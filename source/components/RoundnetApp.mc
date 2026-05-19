@@ -44,7 +44,6 @@ class RoundnetApp extends Application.AppBase {
     // onStart() is called on application start up
     function onStart(state as Dictionary?) as Void {
         ICM.loadFonts();
-        ICM.computeInterfaceConstants();
         Position.enableLocationEvents(getLocationSetting(), null);
     }
 

@@ -68,11 +68,11 @@ class StartView extends WatchUi.View {
         View.onUpdate(dc);
 
         if (locationSetting == Position.LOCATION_CONTINUOUS) {
-            dc.setPenWidth(ICM.scaleX(0.005));
+            dc.setPenWidth(Screen.WIDTH * 0.005);
             dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][lastGpsAccuracy], Graphics.COLOR_TRANSPARENT);
-            dc.fillRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX((lastGpsAccuracy+1)*0.015), ICM.scaleY(0.02));
+            dc.fillRectangle(Screen.WIDTH * 0.46, Screen.HEIGHT * 0.29, Screen.WIDTH * (lastGpsAccuracy+1*0.015), Screen.HEIGHT * 0.02);
             dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
-            dc.drawRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX(0.08), ICM.scaleY(0.02));
+            dc.drawRectangle(Screen.WIDTH * 0.46, Screen.HEIGHT * 0.29, Screen.WIDTH * 0.08, Screen.HEIGHT * 0.02);
         }
     }
 
@@ -88,18 +88,18 @@ class StartView extends WatchUi.View {
         View.onUpdate(dc);
         
         if (locationSetting == Position.LOCATION_CONTINUOUS) {
-            dc.setPenWidth(ICM.scaleX(0.005));
+            dc.setPenWidth(Screen.WIDTH * 0.005);
             dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][lastGpsAccuracy], Graphics.COLOR_TRANSPARENT);
-            dc.fillRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX((lastGpsAccuracy+1)*0.015), ICM.scaleY(0.02));
+            dc.fillRectangle(Screen.WIDTH * 0.46, Screen.HEIGHT * 0.29, Screen.WIDTH * (lastGpsAccuracy+1*0.015), Screen.HEIGHT * 0.02);
             dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
-            dc.drawRectangle(ICM.scaleX(0.46), ICM.scaleY(0.29), ICM.scaleX(0.08), ICM.scaleY(0.02));
+            dc.drawRectangle(Screen.WIDTH * 0.46, Screen.HEIGHT * 0.29, Screen.WIDTH * 0.08, Screen.HEIGHT * 0.02);
         } else {
             dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
-            dc.fillCircle(ICM.scaleX(0.525), ICM.scaleY(0.27), ICM.scaleX(0.015));
+            dc.fillCircle(Screen.WIDTH * 0.525, Screen.HEIGHT * 0.27, Screen.WIDTH * 0.015);
         }
 
         dc.setColor(temperatureEnabled ? 0x00AA00 : 0xFF0000, Graphics.COLOR_TRANSPARENT);
-        dc.fillCircle(ICM.scaleX(0.525), ICM.scaleY(0.17), ICM.scaleX(0.015));
+        dc.fillCircle(Screen.WIDTH * 0.525, Screen.HEIGHT * 0.17, Screen.WIDTH * 0.015);
     }
 
     public function onHide() as Void {

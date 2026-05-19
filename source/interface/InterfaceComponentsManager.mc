@@ -17,20 +17,6 @@ module InterfaceComponentsManager {
     const JTEXT_LEFT = Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER;
 
 
-    function computeInterfaceConstants() {
-        var deviceSettings = System.getDeviceSettings();
-        screenH = deviceSettings.screenHeight;
-        screenW = deviceSettings.screenWidth;
-    }
-
-    function scaleX(xPercent as Float) as Number {
-        return (xPercent*screenW as Float).toNumber();
-    }
-
-    function scaleY(yPercent as Float) as Number {
-        return (yPercent*screenH as Float).toNumber();
-    }
-
     function loadFonts() as Void{
         fontSmall = WatchUi.loadResource(Rez.Fonts.Small);
         fontMedium = WatchUi.loadResource(Rez.Fonts.Medium);
