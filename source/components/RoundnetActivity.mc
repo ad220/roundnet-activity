@@ -314,17 +314,27 @@ class RoundnetActivity {
     }
 
     private function onPoint(winCond as Boolean, winner as Team) as Void {
-        if (pointsToWin>0 and winCond) {
-            if (!retryAutoWin) {
-                pointsToWin = 0;
-            }
-            delegate.warnLap();
-        } else {
-            // check if rotating positions
-            var points = scorePlayer + scoreOpponent;
+        winCond = winCond and pointsToWin > 1;
+        var points = scorePlayer + scoreOpponent;
 
+        // serving helper update
+        if (serviceState != -1) {
+            if (equalServing) {
+                updateEqualServing();
+            } else {
+                updateLegacyServing(winner);
+            }
+        }
+        serviceHistory[points] = encodeServiceState();
+
+        if (winCond) {
+            if (!retryAutoWin) { pointsToWin &= 1; }
+            delegate.warnLap();
+        }
+        else {
+            // check if rotating positions
             var checkSwitch =
-                pointsToSwitch!=0 and points>2 and
+                pointsToSwitch!=0 and
                 (equalServing ? (points+1)%4 : points%pointsToSwitch) == 0 and
                 (!equalServing or points < pointsToWin << 1 - 1);
 
@@ -339,16 +349,6 @@ class RoundnetActivity {
             } else {
                 Attention.vibrate([new Attention.VibeProfile(50, 80)]);
             }
-
-            // serving helper update
-            if (serviceState != -1) {
-                if (equalServing) {
-                    updateEqualServing();
-                } else {
-                    updateLegacyServing(winner);
-                }
-            }
-            serviceHistory[points] = encodeServiceState();
 
             WatchUi.requestUpdate();
         }
@@ -365,7 +365,7 @@ class RoundnetActivity {
             if (shift == 0) { shift = 2; }
             mask = server ^ (server << shift + server >> (4-shift)) & 0x0F;
         }
-        else if (totalScore & 1 == 1 or server & 0x09 == 0){
+        else if (totalScore & 1 == 1 or server & 0x09 == 0){    
             // swap opponents if they are on their second service
             if (serviceState & (server << 4) != 0 && totalScore & 1 == 0) { serviceState ^= 0xF00; }
 
