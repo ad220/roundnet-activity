@@ -51,7 +51,7 @@ class RoundnetActivity {
     private var stepsOnLap as Number;
     private var serviceHistory as ByteArray;
 
-    (:initialized) private var serviceState as Number;
+    (:initialized) private var serviceState as Number; // 0xF00: player tracker, 0x0F0: team position, 0x00F: server position
     (:initialized) private var equalServing as Boolean;
     (:initialized) private var pointsToSwitch as Number;
     (:initialized) private var pointsToWin as Number;
@@ -323,7 +323,10 @@ class RoundnetActivity {
             // check if rotating positions
             var points = scorePlayer + scoreOpponent;
 
-            var checkSwitch = pointsToSwitch!=0 and (equalServing ? (points+1)%4 : points%pointsToSwitch) == 0 and points>2;
+            var checkSwitch =
+                pointsToSwitch!=0 and points>2 and
+                (equalServing ? (points+1)%4 : points%pointsToSwitch) == 0 and
+                (!equalServing or points < pointsToWin << 1 - 1);
 
             if (checkSwitch) {
                 if (Attention has :vibrate) {
@@ -354,19 +357,27 @@ class RoundnetActivity {
     private function updateEqualServing() as Void {
         var server = serviceState & 0x0F;
         var totalScore = scorePlayer + scoreOpponent;
-        if (totalScore & 1 == 1 or server & 0x09 == 0){
+        var mask = 0;
+        
+        if (totalScore >= pointsToWin << 1 - 1) {
+            // 2 points difference win condition
+            var shift = (totalScore - pointsToWin << 1 + 2) % 4;
+            if (shift == 0) { shift = 2; }
+            mask = server ^ (server << shift + server >> (4-shift)) & 0x0F;
+        }
+        else if (totalScore & 1 == 1 or server & 0x09 == 0){
             // swap opponents if they are on their second service
             if (serviceState & (server << 4) != 0 && totalScore & 1 == 0) { serviceState ^= 0xF00; }
 
             // changing server counter clockwise
-            var mask = server ^ (server << 1 + server >> 3) & 0x0F;
-            serviceState ^= mask;
-
-        } else {
-            // swapping positions with team mate
-            serviceState ^= server==1 ? 0xA0 : 0xAA;
-            serviceState ^= 0xF00;
+            mask = server ^ (server << 1 + server >> 3) & 0x0F;
         }
+        else {
+            // swapping positions with team mate
+            mask = server==1 ? 0xFA0 : 0xFAA;
+        }
+
+        serviceState ^= mask;
     }
 
     private function updateLegacyServing(winner as Team) as Void {
