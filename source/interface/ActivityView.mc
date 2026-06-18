@@ -22,26 +22,72 @@ class RoundnetActivityView extends WatchUi.View {
     }
 
 
-    (:sysgt6)
     function onLayout(dc as Dc) as Void {
         obsMode     = getApp().settings["observer_mode"] as Boolean;
         showLapTime = getApp().settings["show_lap_time"] as Boolean;
-        setLayout(Rez.Layouts.ActivityLayout(dc));
 
-        if (!showLapTime) {
-            (findDrawableById("Lap") as Bitmap).setVisible(false);
+
+        var hrIcon = new Bitmap({
+            :rezId  => Rez.Drawables.Heart,
+            :locX   => Screen.WIDTH * 0.53,
+            :locY   => Screen.HEIGHT * 0.77,
+        });
+
+        var hrLabel = new WatchUi.Text({
+            :identifier => :hrLabel,
+            :locX => Screen.WIDTH * 0.650,
+            :locY => Screen.HEIGHT * 0.816,
+            :justification => ICM.JTEXT_LEFT,
+            :font => ICM.fontMedium
+        });
+
+        var layout = [
+            new Bitmap({
+                :rezId  => Rez.Drawables.Ball,
+                :locX   => Screen.WIDTH * 0.24,
+                :locY   => Screen.HEIGHT * 0.118,
+            }),
+            hrIcon,
+            hrLabel,
+        ];
+        if (activity.isWarmup()) {
+            layout.addAll([
+                new Bitmap({
+                    :rezId  => Rez.Drawables.Steps,
+                    :locX   => Screen.WIDTH * 0.17,
+                    :locY   => Screen.HEIGHT * 0.45,
+                }),
+                new Bitmap({
+                    :rezId  => Rez.Drawables.Calories,
+                    :locX   => Screen.WIDTH * 0.55,
+                    :locY   => Screen.HEIGHT * 0.45,
+                }),
+                new Bitmap({
+                    :rezId  => Rez.Drawables.Daytime,
+                    :locX   => Screen.WIDTH * 0.17,
+                    :locY   => Screen.HEIGHT * 0.70,
+                }),
+            ]);
+
+            hrIcon.setLocation(Screen.WIDTH * 0.56, Screen.HEIGHT * 0.71);
+            hrLabel.setLocation(Screen.WIDTH * 0.69, Screen.HEIGHT * 0.75);
         }
-    }
-
-    (:syslt6)
-    function onLayout(dc as Dc) as Void {
-        obsMode     = getApp().settings["observer_mode"] as Boolean;
-        showLapTime = getApp().settings["show_lap_time"] as Boolean;
-        setLayout(Rez.Layouts.ActivityLayout(dc));
-
-        if (!showLapTime) {
-            (findDrawableById("Lap") as Bitmap).setLocation(0,0);
+        else {
+            layout.addAll([
+                loopField,
+                new Rez.Drawables.ScoreBackground(),
+            ]);
         }
+
+        if (showLapTime) {
+            layout.add(new Bitmap({
+                :rezId  => Rez.Drawables.Lap,
+                :locX   => Screen.WIDTH * 0.44,
+                :locY   => Screen.HEIGHT * 0.24,
+            }));
+        }
+
+        setLayout(layout);
     }
 
 
@@ -49,32 +95,15 @@ class RoundnetActivityView extends WatchUi.View {
         // if (dc has :setAntiAlias) {
         //     dc.setAntiAlias(true);
         // }
+
+        var hr = activity.getHR();
+        var hrLabel = findDrawableById(:hrLabel) as Text;
+        hrLabel.setText(hr!=null ? hr : "- -");
+
         View.onUpdate(dc);
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 
-        var scorePlayer = activity.getScore(RoundnetActivity.TEAM_PLAYER);
-        var scoreOpponent = activity.getScore(RoundnetActivity.TEAM_OPPONENT);
-        var scoreFont = ICM.fontLarge;
-        if (!activity.isHelperReady()) {
-            var state = activity.getServiceState() == 0xF0;
-
-            if (obsMode) { 
-                if (state) {
-                    // skip team mate position setup
-                    activity.initServiceHelper(RoundnetActivity.TEAM_PLAYER);
-                }
-                scorePlayer = loadResource(Rez.Strings.Yellow);
-                scoreOpponent = loadResource(Rez.Strings.Gray);
-            } else {
-                scorePlayer = loadResource(state ? Rez.Strings.Right : Rez.Strings.Us);
-                scoreOpponent = loadResource(state ? Rez.Strings.Left : Rez.Strings.Them);
-            }
-            scoreFont = ICM.fontMedium;
-        }
-
-        dc.drawText(Screen.WIDTH * 0.219, Screen.HEIGHT * 0.500, scoreFont, scoreOpponent, ICM.JTEXT_MID);
-        dc.drawText(Screen.HEIGHT * 0.295, Screen.HEIGHT * 0.816, scoreFont, scorePlayer, ICM.JTEXT_MID);
         dc.drawText(Screen.WIDTH * 0.440, Screen.HEIGHT * 0.185, ICM.fontMedium, activity.getFormattedTime(false), ICM.JTEXT_LEFT);
 
         if (showLapTime) {
@@ -82,15 +111,35 @@ class RoundnetActivityView extends WatchUi.View {
             dc.drawText(Screen.WIDTH * 0.520, Screen.HEIGHT * 0.271, ICM.fontSmall, lapTime, ICM.JTEXT_LEFT);
         }
 
-        var hr = activity.getHR();
-        dc.drawText(Screen.WIDTH * 0.650, Screen.HEIGHT * 0.816, ICM.fontMedium, hr!=null ? hr : "- -", ICM.JTEXT_LEFT);
 
-        dc.setClip(Screen.WIDTH * 0.333, Screen.HEIGHT * 0.333, Screen.WIDTH * 0.667, Screen.HEIGHT * 0.333);
-        loopField.draw(dc);
-        dc.clearClip();
-    }
+        if (activity.isWarmup()) {
+            
+        }
+        else {
+            var scorePlayer = activity.getScore(RoundnetActivity.TEAM_PLAYER);
+            var scoreOpponent = activity.getScore(RoundnetActivity.TEAM_OPPONENT);
+            var scoreFont = ICM.fontLarge;
+            if (!activity.isHelperReady()) {
+                var state = activity.getServiceState() == 0xF0;
 
-    function onHide() as Void {
+                if (obsMode) { 
+                    if (state) {
+                        // skip team mate position setup
+                        activity.initServiceHelper(RoundnetActivity.TEAM_PLAYER);
+                    }
+                    scorePlayer = loadResource(Rez.Strings.Yellow);
+                    scoreOpponent = loadResource(Rez.Strings.Gray);
+                } else {
+                    scorePlayer = loadResource(state ? Rez.Strings.Right : Rez.Strings.Us);
+                    scoreOpponent = loadResource(state ? Rez.Strings.Left : Rez.Strings.Them);
+                }
+                scoreFont = ICM.fontMedium;
+            }
+
+            dc.drawText(Screen.WIDTH * 0.219, Screen.HEIGHT * 0.500, scoreFont, scoreOpponent, ICM.JTEXT_MID);
+            dc.drawText(Screen.HEIGHT * 0.295, Screen.HEIGHT * 0.816, scoreFont, scorePlayer, ICM.JTEXT_MID);
+
+        }
     }
 
 }

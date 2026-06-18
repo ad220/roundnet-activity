@@ -50,6 +50,7 @@ class RoundnetActivity {
     private var stepsOnStart as Number;
     private var stepsOnLap as Number;
     private var serviceHistory as ByteArray;
+    private var warmup as Boolean;
 
     (:initialized) private var serviceState as Number; // 0xF00: player tracker, 0x0F0: team position, 0x00F: server position
     (:initialized) private var equalServing as Boolean;
@@ -79,6 +80,7 @@ class RoundnetActivity {
         self.gamesOpponent = 0;
         self.stepsOnStart = ActivityMonitor.getInfo().steps;
         self.stepsOnLap = ActivityMonitor.getInfo().steps;
+        self.warmup = true;
 
         self.serviceHistory = []b;
         for (var i=0; i<256; i+=1) { self.serviceHistory.add(0); }
@@ -210,6 +212,7 @@ class RoundnetActivity {
             refreshSettings();
             scorePlayer = 0;
             scoreOpponent = 0;
+            warmup = false;
             
             time = Activity.getActivityInfo().timerTime / 1000;
 
@@ -472,5 +475,13 @@ class RoundnetActivity {
 
     public function getServiceState() as Number {
         return serviceState;
+    }
+
+    public function toggleWarmup() as Void {
+        warmup = !warmup;
+    }
+
+    public function isWarmup() as Boolean {
+        return warmup;
     }
 }
