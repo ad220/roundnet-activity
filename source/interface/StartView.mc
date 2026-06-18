@@ -70,7 +70,7 @@ class StartView extends WatchUi.View {
         if (locationSetting == Position.LOCATION_CONTINUOUS) {
             dc.setPenWidth(Screen.WIDTH * 0.005);
             dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][lastGpsAccuracy], Graphics.COLOR_TRANSPARENT);
-            dc.fillRectangle(Screen.WIDTH * 0.46, Screen.HEIGHT * 0.29, Screen.WIDTH * (lastGpsAccuracy+1*0.015), Screen.HEIGHT * 0.02);
+            dc.fillRectangle(Screen.WIDTH * 0.46, Screen.HEIGHT * 0.29, Screen.WIDTH * 0.015 * (lastGpsAccuracy+1), Screen.HEIGHT * 0.02);
             dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
             dc.drawRectangle(Screen.WIDTH * 0.46, Screen.HEIGHT * 0.29, Screen.WIDTH * 0.08, Screen.HEIGHT * 0.02);
         }
@@ -90,7 +90,7 @@ class StartView extends WatchUi.View {
         if (locationSetting == Position.LOCATION_CONTINUOUS) {
             dc.setPenWidth(Screen.WIDTH * 0.005);
             dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][lastGpsAccuracy], Graphics.COLOR_TRANSPARENT);
-            dc.fillRectangle(Screen.WIDTH * 0.46, Screen.HEIGHT * 0.29, Screen.WIDTH * (lastGpsAccuracy+1*0.015), Screen.HEIGHT * 0.02);
+            dc.fillRectangle(Screen.WIDTH * 0.46, Screen.HEIGHT * 0.29, Screen.WIDTH * 0.015 * (lastGpsAccuracy+1), Screen.HEIGHT * 0.02);
             dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
             dc.drawRectangle(Screen.WIDTH * 0.46, Screen.HEIGHT * 0.29, Screen.WIDTH * 0.08, Screen.HEIGHT * 0.02);
         } else {
