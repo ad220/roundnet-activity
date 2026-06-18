@@ -213,6 +213,7 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
             } else if (swipeEvent.getDirection()==SWIPE_RIGHT) {
                 view.loopField.previousField();
             }
+            requestUpdate();
         }
         return true;
     }

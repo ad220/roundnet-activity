@@ -120,14 +120,14 @@ class RoundnetActivity {
     }
 
     private function refreshSettings() {
-        serviceState = getApp().settings.get("field_service") as Boolean ? 0xF0 : -1;
-        equalServing = getApp().settings.get("game_equal_serving") as Boolean;
-        pointsToSwitch = getApp().settings.get("game_switch_alarm") as Boolean ? getApp().settings.get("game_switch_points") : 0;
-        pointsToWin = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
-        twoPointsDiff = getApp().settings.get("game_win_two_pt_diff") as Boolean;
-        retryAutoWin = getApp().settings.get("game_win_retry") as Boolean;
-        locEnabled = getApp().settings.get("sensor_location") as Boolean;
-        tempEnabled = getApp().settings.get("sensor_temperature") as Boolean;
+        serviceState    = getApp().settings.get("field_service") as Boolean ? 0xF0 : -1;
+        equalServing    = getApp().settings.get("game_equal_serving") as Boolean;
+        pointsToSwitch  = getApp().settings.get("game_switch_alarm") as Boolean ? getApp().settings.get("game_switch_points") : 0;
+        pointsToWin     = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
+        twoPointsDiff   = getApp().settings.get("game_win_two_pt_diff") as Boolean;
+        retryAutoWin    = getApp().settings.get("game_win_retry") as Boolean;
+        locEnabled      = getApp().settings.get("sensor_location") as Boolean;
+        tempEnabled     = getApp().settings.get("sensor_temperature") as Boolean;
     }
 
     (:sysgt6)
@@ -144,7 +144,6 @@ class RoundnetActivity {
 
     (:syslt6)
     private function createSession() {
-        System.println("API level lower than 3.4.0");
         var sensors = [Sensor.SENSOR_HEARTRATE];
         if (tempEnabled) { sensors.add(Sensor.SENSOR_TEMPERATURE); }
         Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE, Sensor.SENSOR_TEMPERATURE]);
