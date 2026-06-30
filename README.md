@@ -10,14 +10,11 @@ Roundnet activity tracker for Garmin smartwatches. Allows you to keep score so t
 - service position helper with a diagram
 - 3s service timer with observer mode
 - break timers
+- warmup view without score
 
 Check the [settings](#settings) and [activity](#activity) section below to learn how to use the app
 
 ## Planned features
-- break timers
-    * 1 minute timeout
-    * 3 minute set-break
-    * 5 minute injury break
 - custom activity summary
 
 ## Screenshots
@@ -81,6 +78,10 @@ When observer mode is enabled, pressing the lap button once will silently start 
 You can start break timers and change settings from the activity by pressing the menu button on your watch.
 
 ## Changelog
+
+### v0.14
+- add warmup view
+- service helper on lap cancel and on two point diff win condition.
 
 ### v0.13
 - add timers for timeouts, breaks and injuries
