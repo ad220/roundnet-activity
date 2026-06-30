@@ -50,7 +50,7 @@ class ActivityMenuDelegate extends WatchUi.Menu2InputDelegate {
             warmupItem.setLabel(isWarmup ? Rez.Strings.SetGame : Rez.Strings.SetWarmup);
 
             var bmp = new Bitmap({
-                :rezId  => isWarmup ? Rez.Drawables.Medal : Rez.Drawables.Calories,
+                :rezId  => isWarmup ? Rez.Drawables.Trophy : Rez.Drawables.Warmup,
                 :locX   => LAYOUT_HALIGN_CENTER,
                 :locY   => LAYOUT_VALIGN_CENTER
             });

@@ -2,7 +2,7 @@
 
     <menu2 id="ActivityMenu" title="@Strings.AppName">
         <icon-menu-item id="onTimers"       icon="@Drawables.Hourglass"     label="@Strings.Timers" />
-        <icon-menu-item id="onWarmup"       icon="@Drawables.Calories"      label="@Strings.SetWarmup" />
+        <icon-menu-item id="onWarmup"       icon="@Drawables.Warmup"        label="@Strings.SetWarmup" />
         <icon-menu-item id="onObserver"     icon="@Drawables.Observer"      label="@Strings.SetObserver" />
         <icon-menu-item id="onSettings"     icon="@Drawables.Settings"      label="@Strings.Settings" />
     </menu2>

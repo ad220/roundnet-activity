@@ -21,6 +21,8 @@
     <bitmap id="Hourglass"      filename="hourglass.png"    scaleX="10%"    scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
     <bitmap id="Observer"       filename="eyes.png"         scaleX="10%"    scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
     <bitmap id="Player"         filename="player.png"       scaleX="10%"    scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Warmup"         filename="warmup.png"       scaleX="10%"    scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
+    <bitmap id="Trophy"         filename="trophy.png"       scaleX="10%"    scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
     <bitmap id="Settings"       filename="settings.png"     scaleX="10%"    scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
     <bitmap id="Timeout"        filename="timeout.png"      scaleX="10%"    scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>
     <bitmap id="Bottle"         filename="bottle.png"       scaleX="10%"    scaleRelativeTo="screen" dithering="none" automaticPalette="true"/>

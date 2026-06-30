@@ -69,7 +69,7 @@ class RoundnetActivityView extends WatchUi.View {
                 }),
             ]);
 
-            hrIcon.setLocation(Screen.WIDTH * 0.595, Screen.HEIGHT * 0.71);
+            hrIcon.setLocation(Screen.WIDTH * 0.605, Screen.HEIGHT * 0.71);
             hrLabel.setLocation(Screen.WIDTH * 0.735, Screen.HEIGHT * 0.75);
         }
         else {
@@ -115,7 +115,7 @@ class RoundnetActivityView extends WatchUi.View {
         if (activity.isWarmup()) {
             dc.setColor(0xFFAA00, -1);
             dc.setPenWidth(0.0125 * Screen.WIDTH);
-            dc.drawLine(0, 0.333 * Screen.HEIGHT, Screen.WIDTH, 0.333 * Screen.HEIGHT);
+            dc.drawLine(0, 0.34 * Screen.HEIGHT, Screen.WIDTH, 0.34 * Screen.HEIGHT);
 
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
             dc.drawText(Screen.WIDTH * 0.285, Screen.HEIGHT * 0.50, ICM.fontSmall, activity.getFormattedField(LoopField.FIELD_DISTANCE), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
