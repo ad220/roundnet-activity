@@ -21,6 +21,15 @@ class LoopField extends Drawable {
         FIELD_COUNT,
     }
 
+    static const fieldUnits = [
+        WatchUi.loadResource(Rez.Strings.Kilometers),
+        WatchUi.loadResource(Rez.Strings.KCalories),
+        null,
+        WatchUi.loadResource(Rez.Strings.Celsius),
+        null,
+        null
+    ] as Array<String>;
+
     private var activity as RoundnetActivity;
     private var stateIndex as Number;
     private var enabledFields as Array<FieldId>;
@@ -29,7 +38,6 @@ class LoopField extends Drawable {
     private var icons as Array<ResourceId?>;
     private var autoScroll as Boolean;
     private var scrollSpeed as Number;
-    private var units as Array<String?>;
     private var currentTimer as TimerCallback?;
     private var serviceTagsEnabled as Boolean;
     private var obsModeEnabled as Boolean;
@@ -50,14 +58,6 @@ class LoopField extends Drawable {
             Rez.Drawables.Temperature,
             Rez.Drawables.Daytime,
             Rez.Drawables.Switch,
-            null
-        ];
-        self.units = [
-            loadResource(Rez.Strings.Kilometers),
-            loadResource(Rez.Strings.KCalories),
-            null,
-            loadResource(Rez.Strings.Celsius),
-            null,
             null
         ];
         self.autoScroll = getApp().settings.get("autoscroll") as Boolean;
@@ -163,40 +163,16 @@ class LoopField extends Drawable {
     }
 
     public function refreshField() as Void {
-        // refresh icon
+        // refresh icon and label
         if (enabledFields[stateIndex] != FIELD_SERVICE) {
-            currentIcon = loadResource(icons[enabledFields[stateIndex]]);
+            currentIcon = loadResource(icons[enabledFields[stateIndex]] as ResourceId) as BitmapResource;
+            label = activity.getFormattedField(stateIndex as FieldId);
         } else {
             currentIcon = null;
-        }
 
-        // refresh label
-        switch (enabledFields[stateIndex]) {
-            case FIELD_DISTANCE:
-                label = activity.getSteps() + "\n" + (activity.getDistance()/1000.0).format("%.2f") + units[FIELD_DISTANCE];
-                break;
-            case FIELD_CALORIES:
-                label = activity.getKcal() + units[FIELD_CALORIES];
-                break;
-            case FIELD_SCORE:
-                label = activity.getGames(RoundnetActivity.TEAM_PLAYER)+" - "+activity.getGames(RoundnetActivity.TEAM_OPPONENT);
-                break;
-            case FIELD_TEMPERATURE:
-                var temp = activity.getTemperature();
-                label = (temp!=null ? temp.format("%.1f") : "- - ") + units[FIELD_TEMPERATURE];
-                break;
-            case FIELD_DAYTIME:
-                var daytime = Time.Gregorian.info(Time.now(), Time.FORMAT_SHORT);
-                label = daytime.hour + ":" + daytime.min.format("%02d");
-                break;
-            case FIELD_SERVICE:
-                var state = activity.getServiceState();
-                if (state == 0xF0 and !obsModeEnabled)  { label = loadResource(Rez.Strings.FirstPosition); }
-                else if (state & 0x0F == 0)             { label = loadResource(Rez.Strings.FirstService); }
-                break;
-            default:
-                System.println("Unknown field id");
-                break;
+            var state = activity.getServiceState();
+            if (state == 0xF0 and !obsModeEnabled)  { label = loadResource(Rez.Strings.FirstPosition) as String; }
+            else if (state & 0x0F == 0)             { label = loadResource(Rez.Strings.FirstService) as String; }
         }
 
         // setup next automatic refresh

@@ -52,6 +52,8 @@
     <string id="InjuryBreak">Injury break (5 min)</string>
 
     <string id="Timers">Timers</string>
+    <string id="SetWarmup">Switch to\nwarmup view</string>
+    <string id="SetGame">Switch to\ngame view</string>
     <string id="SetObserver">Switch to\nobs. mode</string>
     <string id="SetPlayer">Switch to\nplayer mode</string>
 

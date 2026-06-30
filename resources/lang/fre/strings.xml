@@ -52,6 +52,8 @@
     <string id="InjuryBreak">Pause blessure\n(5 min)</string>
 
     <string id="Timers">Minuteurs</string>
+    <string id="SetWarmup">Passer en\nvue d'échauf.</string>
+    <string id="SetGame">Passer en\nvue match</string>
     <string id="SetObserver">Passer en\nmode obs.</string>
     <string id="SetPlayer">Passer en\nmode joueur</string>
 

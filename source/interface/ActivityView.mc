@@ -54,23 +54,23 @@ class RoundnetActivityView extends WatchUi.View {
             layout.addAll([
                 new Bitmap({
                     :rezId  => Rez.Drawables.Steps,
-                    :locX   => Screen.WIDTH * 0.17,
+                    :locX   => Screen.WIDTH * 0.155,
                     :locY   => Screen.HEIGHT * 0.45,
                 }),
                 new Bitmap({
                     :rezId  => Rez.Drawables.Calories,
-                    :locX   => Screen.WIDTH * 0.55,
+                    :locX   => Screen.WIDTH * 0.595,
                     :locY   => Screen.HEIGHT * 0.45,
                 }),
                 new Bitmap({
                     :rezId  => Rez.Drawables.Daytime,
-                    :locX   => Screen.WIDTH * 0.17,
+                    :locX   => Screen.WIDTH * 0.155,
                     :locY   => Screen.HEIGHT * 0.70,
                 }),
             ]);
 
-            hrIcon.setLocation(Screen.WIDTH * 0.56, Screen.HEIGHT * 0.71);
-            hrLabel.setLocation(Screen.WIDTH * 0.69, Screen.HEIGHT * 0.75);
+            hrIcon.setLocation(Screen.WIDTH * 0.595, Screen.HEIGHT * 0.71);
+            hrLabel.setLocation(Screen.WIDTH * 0.735, Screen.HEIGHT * 0.75);
         }
         else {
             layout.addAll([
@@ -113,7 +113,14 @@ class RoundnetActivityView extends WatchUi.View {
 
 
         if (activity.isWarmup()) {
-            
+            dc.setColor(0xFFAA00, -1);
+            dc.setPenWidth(0.0125 * Screen.WIDTH);
+            dc.drawLine(0, 0.333 * Screen.HEIGHT, Screen.WIDTH, 0.333 * Screen.HEIGHT);
+
+            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(Screen.WIDTH * 0.285, Screen.HEIGHT * 0.50, ICM.fontSmall, activity.getFormattedField(LoopField.FIELD_DISTANCE), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+            dc.drawText(Screen.WIDTH * 0.735, Screen.HEIGHT * 0.50, ICM.fontSmall, activity.getFormattedField(LoopField.FIELD_CALORIES), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+            dc.drawText(Screen.WIDTH * 0.285, Screen.HEIGHT * 0.75, ICM.fontSmall, activity.getFormattedField(LoopField.FIELD_DAYTIME),  Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
         }
         else {
             var scorePlayer = activity.getScore(RoundnetActivity.TEAM_PLAYER);

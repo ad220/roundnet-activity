@@ -5,26 +5,21 @@ import Toybox.WatchUi;
 (:notva3)
 class ActivityMenuDelegate extends WatchUi.Menu2InputDelegate {
 
-    private var activity as RoundnetActivity;
-    private var menu as Menu2;
-    private var modeCachedItem as IconMenuItem;
+    private var activity    as RoundnetActivity;
+    private var menu        as Menu2;
 
     public function initialize(menu as Rez.Menus.ActivityMenu, activity as RoundnetActivity) {
         Menu2InputDelegate.initialize();
 
-        self.activity = activity;
-        self.menu = menu;
-        self.modeCachedItem = menu.getItem(3) as IconMenuItem;
+        self.activity       = activity;
+        self.menu           = menu;
 
-        menu.deleteItem(3);
-
-        if (getApp().settings["observer_mode"] as Boolean) {
-            updateObserver();
-        }
+        onWarmup(false);
+        onObserver(false);
     }
 
     public function onSelect(item as MenuItem) as Void {
-        method(item.getId() as Symbol).invoke();
+        method(item.getId() as Symbol).invoke(true);
     }
 
     public function onBack() as Void {
@@ -40,41 +35,68 @@ class ActivityMenuDelegate extends WatchUi.Menu2InputDelegate {
         }
     }
 
-
-    public function onTimers() as Void {
+    public function onTimers(selected as Boolean) as Void {
         menu = new Rez.Menus.TimersMenu();
         switchToView(menu, self, SLIDE_IMMEDIATE);
     }
 
-    public function onObserver() as Void {
+    public function onWarmup(selected as Boolean) as Void {
+        if (selected) { activity.toggleWarmup(); }
+        var isWarmup = activity.isWarmup();
+       
+        if (selected or isWarmup) {
+            var warmupItem = menu.getItem(1) as IconMenuItem;
+
+            warmupItem.setLabel(isWarmup ? Rez.Strings.SetGame : Rez.Strings.SetWarmup);
+
+            var bmp = new Bitmap({
+                :rezId  => isWarmup ? Rez.Drawables.Medal : Rez.Drawables.Calories,
+                :locX   => LAYOUT_HALIGN_CENTER,
+                :locY   => LAYOUT_VALIGN_CENTER
+            });
+            warmupItem.setIcon(bmp);
+        }
+    }
+
+    public function onObserver(selected as Boolean) as Void {
         var settings = getApp().settings;
-        settings["observer_mode"] = !(settings["observer_mode"] as Boolean);
-        updateObserver();
+        var isObsMode = settings["observer_mode"] as Boolean;
+
+        if (selected) {
+            settings["observer_mode"] = !isObsMode;
+            isObsMode = !isObsMode;
+        }
+
+        if (selected or isObsMode) {
+            var obsItem = menu.getItem(2) as IconMenuItem;
+
+            obsItem.setLabel(isObsMode ? Rez.Strings.SetPlayer : Rez.Strings.SetObserver);
+
+            var bmp = new Bitmap({
+                :rezId  => isObsMode ? Rez.Drawables.Player : Rez.Drawables.Observer,
+                :locX   => LAYOUT_HALIGN_CENTER,
+                :locY   => LAYOUT_VALIGN_CENTER
+            });
+            obsItem.setIcon(bmp);
+        }
     }
 
-    private function updateObserver() as Void {
-        var cache = menu.getItem(1) as IconMenuItem;
-        menu.updateItem(modeCachedItem, 1);
-        modeCachedItem = cache;
-    }
-
-
-    public function onSettings() as Void {
+    public function onSettings(selected as Boolean) as Void {
         var nmenu = new Rez.Menus.SettingsMenu();
         pushView(nmenu, new SettingsDelegate(nmenu, null, null), SLIDE_LEFT);
     }
 
-    public function onTimeout() as Void {
+    public function onTimeout(selected as Boolean) as Void {
         var dlgt = new TimerDelegate(activity, getApp().timer, 60);
         switchToView(new TimerView(dlgt, :TimerLayout, Rez.Drawables.Timeout, null), dlgt, SLIDE_IMMEDIATE); 
     }
 
-    public function onSet() as Void {
+    public function onSet(selected as Boolean) as Void {
         var dlgt = new TimerDelegate(activity, getApp().timer, 180);
         switchToView(new TimerView(dlgt, :TimerLayout, Rez.Drawables.Bottle, null), dlgt, SLIDE_IMMEDIATE); 
     }
 
-    public function onInjury() as Void {
+    public function onInjury(selected as Boolean) as Void {
         var dlgt = new TimerDelegate(activity, getApp().timer, 300);
         switchToView(new TimerView(dlgt, :TimerLayout, Rez.Drawables.Injury, null), dlgt, SLIDE_IMMEDIATE); 
     }

@@ -80,7 +80,7 @@ class RoundnetActivity {
         self.gamesOpponent = 0;
         self.stepsOnStart = ActivityMonitor.getInfo().steps;
         self.stepsOnLap = ActivityMonitor.getInfo().steps;
-        self.warmup = true;
+        self.warmup = false;
 
         self.serviceHistory = []b;
         for (var i=0; i<256; i+=1) { self.serviceHistory.add(0); }
@@ -211,7 +211,6 @@ class RoundnetActivity {
             refreshSettings();
             scorePlayer = 0;
             scoreOpponent = 0;
-            warmup = false;
             
             time = Activity.getActivityInfo().timerTime / 1000;
 
@@ -482,5 +481,27 @@ class RoundnetActivity {
 
     public function isWarmup() as Boolean {
         return warmup;
+    }
+
+    public function getFormattedField(field as LoopField.FieldId) as String {
+        if      (field == LoopField.FIELD_DISTANCE) {
+            return getSteps() + "\n" + (getDistance()/1000.0).format("%.2f") + LoopField.fieldUnits[LoopField.FIELD_DISTANCE];
+        }
+        else if (field == LoopField.FIELD_CALORIES) {
+            return getKcal() + LoopField.fieldUnits[LoopField.FIELD_CALORIES];
+        }
+        else if (field == LoopField.FIELD_SCORE) {
+            return getGames(RoundnetActivity.TEAM_PLAYER) + " - " + getGames(RoundnetActivity.TEAM_OPPONENT);
+        }
+        else if (field == LoopField.FIELD_TEMPERATURE) {
+            var temp = getTemperature();
+            return (temp!=null ? temp.format("%.1f") : "- - ") + LoopField.fieldUnits[LoopField.FIELD_TEMPERATURE];
+        }
+        else if (field == LoopField.FIELD_DAYTIME) {
+            var daytime = Time.Gregorian.info(Time.now(), Time.FORMAT_SHORT);
+            return daytime.hour + ":" + daytime.min.format("%02d");
+        }
+        System.println("Unknown field id");
+        return ". . .";
     }
 }
