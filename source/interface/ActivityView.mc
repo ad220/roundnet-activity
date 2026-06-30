@@ -232,26 +232,28 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     
     (:buttons)
     public function onNextPage() as Boolean {
-        scorePlayer();
+        if (!activity.isWarmup()) { scorePlayer(); }
         return true;
     }
 
     (:buttons)
     public function onPreviousPage() as Boolean {
-        scoreOpponent();
+        if (!activity.isWarmup()) { scoreOpponent(); }
         return true;
     }
 
     (:touch)
     public function onTap(tap as ClickEvent) as Boolean {
-        var coord = tap.getCoordinates();
-        if (coord[0]<Screen.WIDTH * 0.5 and coord[1]<Screen.HEIGHT * 0.66 and coord[1]>Screen.HEIGHT * 0.33) {
-            scoreOpponent();
-            return true;
-        } else if (coord[0]<Screen.WIDTH * 0.5 and coord[1]>Screen.HEIGHT * 0.66) {
-            scorePlayer();
-            return true;
-        } 
+        if (!activity.isWarmup()) {
+            var coord = tap.getCoordinates();
+            if (coord[0]<Screen.WIDTH * 0.5 and coord[1]<Screen.HEIGHT * 0.66 and coord[1]>Screen.HEIGHT * 0.33) {
+                scoreOpponent();
+                return true;
+            } else if (coord[0]<Screen.WIDTH * 0.5 and coord[1]>Screen.HEIGHT * 0.66) {
+                scorePlayer();
+                return true;
+            } 
+        }
         return false;
     }
 
