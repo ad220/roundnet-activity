@@ -20,8 +20,8 @@ class NumberPickerDelegate extends SettingsDelegate {
     }
 
     public function onSelect(item as MenuItem) as Void {
-        getApp().settings.put(key, item.getId());
-        callback.invoke(item.getLabel());
+        getApp().settings.put(key as String, item.getId() as Object);
+        (callback as Method(label as String or ResourceId or Null) as Void).invoke(item.getLabel());
         popView(SLIDE_RIGHT);
     }
 }

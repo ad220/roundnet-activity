@@ -6,31 +6,33 @@ import Toybox.Application;
 
 class SettingsDelegate extends WatchUi.Menu2InputDelegate {
 
-    protected var key as String?;
-    protected var callback as Method(label as String or ResourceId or Null)?;
+    typedef SettingsCallback as Method(label as String or ResourceId or Null) as Void;
 
-    public function initialize(menu as Menu2, key as String?, callback as Method(label as String or ResourceId or Null)?) {
+    protected var key as String?;
+    protected var callback as SettingsCallback?;
+
+    public function initialize(menu as Menu2, key as String?, callback as SettingsCallback?) {
         Menu2InputDelegate.initialize();
 
         self.key = key;
         self.callback = callback;
 
         var settings = getApp().settings;
-        var i = 0; 
+        var i = 0;
         var item = menu.getItem(i);
         while (item != null) {
             if (item instanceof ToggleMenuItem) {
-                var id = item.getSubLabel();
+                var id = item.getSubLabel() as String;
                 item.initialize(item.getLabel(), null, id, settings.get(id) as Boolean, null);
                 menu.updateItem(item, i);
             } else {
                 var sublabel = item.getSubLabel();
-                if (sublabel != null) {
+                if (sublabel instanceof String) {
                     var id = item.getId();
                     if (id == :_) {
                         item.initialize(item.getLabel(), null, sublabel.toNumber(), null);
                     } else {
-                        item.initialize(item.getLabel(), settings.get(sublabel).toString(), [item.getId(), sublabel], null);
+                        item.initialize(item.getLabel(), (settings.get(sublabel) as Number).toString(), [item.getId(), sublabel], null);
                     }
                     menu.updateItem(item, i);
                 } else if (item.getId() == :version) {
@@ -50,19 +52,22 @@ class SettingsDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     public function onSelect(item as MenuItem) as Void {
-        var id = item.getId();
+        var id = item.getId() as Object;
         if (callback != null) {
             callback.invoke(item.getLabel());
         }
 
-        if (id instanceof Symbol) {
+        if      (id instanceof Symbol) {
             if (self has id) { self.method(id).invoke(item); }
-        } else if (id instanceof Array) {
-            if (self has id[0]) { self.method(id[0]).invoke(item); }
-        } else if (item instanceof ToggleMenuItem) {
+        }
+        else if (id instanceof Array) {
+            if (self has id[0]) { self.method(id[0] as Symbol).invoke(item); }
+        }
+        else if (item instanceof ToggleMenuItem) {
             getApp().settings.put(item.getId() as String, item.isEnabled());
-        } else {
-            getApp().settings.put(key, item.getId());
+        }
+        else {
+            getApp().settings.put(key as String, id);
             onBack();
         }
     }
@@ -75,12 +80,12 @@ class SettingsDelegate extends WatchUi.Menu2InputDelegate {
         var menu = new Rez.Menus.SensorsMenu();
         pushView(menu, new SettingsDelegate(menu, null, null), SLIDE_LEFT);
     }
-    
+
     public function createDatafieldMenu(item as MenuItem) as Void {
         var menu = new Rez.Menus.DatafieldMenu();
         pushView(menu, new SettingsDelegate(menu, null, null), SLIDE_LEFT);
     }
-    
+
     public function createGameMenu(item as MenuItem) as Void {
         var menu = new Rez.Menus.GameMenu();
         pushView(menu, new SettingsDelegate(menu, null, null), SLIDE_LEFT);
@@ -89,7 +94,7 @@ class SettingsDelegate extends WatchUi.Menu2InputDelegate {
     public function createSpeedMenu(item as MenuItem) as Void {
         var menu = new Rez.Menus.SpeedMenu();
         var callback = item.method(:setSubLabel);
-        var key = (item.getId() as Array)[1];
+        var key = (item.getId() as [Symbol, String])[1];
         var delegate = new SettingsDelegate(menu, key, callback);
         menu.setTitle(item.getLabel());
         menu.setFocus(getApp().settings.get(key) as Number - 2);
@@ -100,7 +105,7 @@ class SettingsDelegate extends WatchUi.Menu2InputDelegate {
         var menu = new Rez.Menus.FieldsMenu();
         pushView(menu, new SettingsDelegate(menu, null, null), SLIDE_LEFT);
     }
-    
+
     public function createScrollingMenu(item as MenuItem) as Void {
         var menu = new Rez.Menus.ScrollingMenu();
         pushView(menu, new SettingsDelegate(menu, null, null), SLIDE_LEFT);

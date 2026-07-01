@@ -27,9 +27,9 @@ class TimerView extends WatchUi.View {
         self.label      = label;
     }
 
-    
+
     public function onLayout(dc as Dc) as Void {
-        var layout = (new Method(Rez.Layouts, layoutId)).invoke(dc);
+        var layout = (new Method(Rez.Layouts, layoutId)).invoke(dc) as Array<Drawable>;
         var width = dc.getWidth();
         var height = dc.getHeight();
 
@@ -87,7 +87,7 @@ class TimerView extends WatchUi.View {
 
 }
 
-class TimerDelegate extends BehaviorDelegate {
+class TimerDelegate extends WatchUi.BehaviorDelegate {
 
     private var activity        as RoundnetActivity;
     private var timerController as TimerController;
@@ -131,15 +131,15 @@ class TimerDelegate extends BehaviorDelegate {
         return onInput(KEY_DOWN);
     }
 
-    
+
     public function onInput(key as Key) as Boolean {
         var isLap = timerController != getApp().timer;
 
-        if      (key == KEY_ENTER) 
+        if      (key == KEY_ENTER)
         {
             if (isLap) {
                 activity.lap();
-                animationTimer.stop();
+                if (animationTimer != null) { animationTimer.stop(); }
                 exit();
             }
             else {
@@ -159,8 +159,8 @@ class TimerDelegate extends BehaviorDelegate {
             if (isLap)
             {
                 activity.lap();
-                animationTimer.stop();
-                
+                if (animationTimer != null) { animationTimer.stop(); }
+
                 self.initialize(activity, getApp().timer, 180);
                 var nview = new TimerView(self, :TimerLayout, Rez.Drawables.Bottle, null);
                 switchToView(nview, self, SLIDE_IMMEDIATE);
@@ -183,7 +183,7 @@ class TimerDelegate extends BehaviorDelegate {
             currentTick += 1;
             requestUpdate();
         } else {
-            animationTimer.stop();
+            if (animationTimer != null)             { animationTimer.stop(); }
             if (timerController != getApp().timer)  { activity.lap(); }
             else                                    { activity.resume(); }
             exit();

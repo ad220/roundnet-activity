@@ -34,11 +34,11 @@ class RoundnetActivityView extends WatchUi.View {
         });
 
         var hrLabel = new WatchUi.Text({
-            :identifier => :hrLabel,
-            :locX => Screen.WIDTH * 0.650,
-            :locY => Screen.HEIGHT * 0.816,
-            :justification => ICM.JTEXT_LEFT,
-            :font => ICM.fontMedium
+            :identifier     => :hrLabel,
+            :locX           => Screen.WIDTH * 0.650,
+            :locY           => Screen.HEIGHT * 0.813,
+            :justification  => ICM.JTEXT_LEFT,
+            :font           => ICM.fontMedium
         });
 
         var layout = [
@@ -49,7 +49,7 @@ class RoundnetActivityView extends WatchUi.View {
             }),
             hrIcon,
             hrLabel,
-        ];
+        ] as Array<Drawable>;
         if (activity.isWarmup()) {
             layout.addAll([
                 new Bitmap({
@@ -71,11 +71,12 @@ class RoundnetActivityView extends WatchUi.View {
 
             hrIcon.setLocation(Screen.WIDTH * 0.605, Screen.HEIGHT * 0.71);
             hrLabel.setLocation(Screen.WIDTH * 0.735, Screen.HEIGHT * 0.75);
+            hrLabel.setFont(ICM.fontSmall);
         }
         else {
             layout.addAll([
                 loopField,
-                new Rez.Drawables.ScoreBackground(),
+                new Rez.Drawables.ScoreBackground() as Drawable,
             ]);
         }
 
@@ -98,7 +99,7 @@ class RoundnetActivityView extends WatchUi.View {
 
         var hr = activity.getHR();
         var hrLabel = findDrawableById(:hrLabel) as Text;
-        hrLabel.setText(hr!=null ? hr : "- -");
+        hrLabel.setText(hr != null ? hr.toString() : "- -");
 
         View.onUpdate(dc);
 
@@ -129,7 +130,7 @@ class RoundnetActivityView extends WatchUi.View {
             if (!activity.isHelperReady()) {
                 var state = activity.getServiceState() == 0xF0;
 
-                if (obsMode) { 
+                if (obsMode) {
                     if (state) {
                         // skip team mate position setup
                         activity.initServiceHelper(RoundnetActivity.TEAM_PLAYER);
@@ -144,14 +145,13 @@ class RoundnetActivityView extends WatchUi.View {
             }
 
             dc.drawText(Screen.WIDTH * 0.219, Screen.HEIGHT * 0.500, scoreFont, scoreOpponent, ICM.JTEXT_MID);
-            dc.drawText(Screen.HEIGHT * 0.295, Screen.HEIGHT * 0.816, scoreFont, scorePlayer, ICM.JTEXT_MID);
-
+            dc.drawText(Screen.WIDTH * 0.295, Screen.HEIGHT * 0.816, scoreFont, scorePlayer, ICM.JTEXT_MID);
         }
     }
 
 }
 
-class RoundnetActivityDelegate extends BehaviorDelegate {
+class RoundnetActivityDelegate extends WatchUi.BehaviorDelegate {
 
     private var view as RoundnetActivityView;
     private var activity as RoundnetActivity;
@@ -229,7 +229,7 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
     public function onTap(clickEvent as ClickEvent) as Boolean {
         return false;
     }
-    
+
     (:buttons)
     public function onNextPage() as Boolean {
         if (!activity.isWarmup()) { scorePlayer(); }
@@ -252,7 +252,7 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
             } else if (coord[0]<Screen.WIDTH * 0.5 and coord[1]>Screen.HEIGHT * 0.66) {
                 scorePlayer();
                 return true;
-            } 
+            }
         }
         return false;
     }
@@ -301,7 +301,7 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
 
     public function triggerSwitchAlarm() as Void {
         view.loopField.showSwitchAlarm();
-    } 
+    }
 
     public function warnLap() as Void {
         var dlgt = new TimerDelegate(activity, uiTimer, 100);
@@ -313,10 +313,6 @@ class RoundnetActivityDelegate extends BehaviorDelegate {
         }
         var label = activity.getScore(RoundnetActivity.TEAM_PLAYER) + " - " + activity.getScore(RoundnetActivity.TEAM_OPPONENT);
         switchToView(new TimerView(dlgt, :LapLayout, Rez.Drawables.Score, label), dlgt, SLIDE_IMMEDIATE);
-    }
-
-    public function onLap() as Void {
-        view.loopField.resetField();
     }
 
     public function onObserverLap() as Void {

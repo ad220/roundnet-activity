@@ -25,7 +25,7 @@ class RoundnetActivity {
         SESSION_AVG_DISTANCE,
         SESSION_AVG_STEPS,
     }
-    
+
     public enum LapField {
         LAP_OPPONENT_SCORE      = 74,
         LAP_PLAYER_SCORE        = 83,
@@ -39,7 +39,7 @@ class RoundnetActivity {
         RECORD_TEMPERATURE      = 13,
     }
 
-    private var session as ActivityRecording.Session?;
+    (:initialized) private var session as ActivityRecording.Session;
     private var time as Number;
     private var timeOnLap as Number;
     private var distanceOnLap as Numeric;
@@ -59,11 +59,10 @@ class RoundnetActivity {
     (:initialized) private var twoPointsDiff as Boolean;
     (:initialized) private var retryAutoWin as Boolean;
     (:initialized) private var locEnabled as Boolean;
-    (:initialized) private var tempEnabled as Boolean;
 
     private var lastTemp as Number?;
     private var tempField as FitContributor.Field?;
-    private var recordTimer as TimerCallback?;
+    (:initialized) private var recordTimer as TimerCallback;
 
     private var lapFields as Dictionary;
     private var sessionFields as Dictionary;
@@ -71,26 +70,27 @@ class RoundnetActivity {
 
     public function initialize() {
 
-        self.time = 0;
-        self.timeOnLap = 0;
-        self.distanceOnLap = 0;
-        self.scorePlayer = 0;
-        self.scoreOpponent = 0;
-        self.gamesPlayer = 0;
-        self.gamesOpponent = 0;
-        self.stepsOnStart = ActivityMonitor.getInfo().steps;
-        self.stepsOnLap = ActivityMonitor.getInfo().steps;
+        self.time               = 0;
+        self.timeOnLap          = 0;
+        self.distanceOnLap      = 0;
+        self.scorePlayer        = 0;
+        self.scoreOpponent      = 0;
+        self.gamesPlayer        = 0;
+        self.gamesOpponent      = 0;
+
+        var startingSteps       = ActivityMonitor.getInfo().steps;
+        if (startingSteps == null) { startingSteps = 0; }
+        self.stepsOnStart       = startingSteps;
+        self.stepsOnLap         = 0;
         self.warmup = false;
 
-        self.serviceHistory = []b;
-        for (var i=0; i<256; i+=1) { self.serviceHistory.add(0); }
+        self.serviceHistory     = new [256]b;
 
         refreshSettings();
 
         createSession();
-        if (session==null) { throw new Exception(); }
 
-        self.tempField = tempEnabled ? session.createField("temperature", 0, FitContributor.DATA_TYPE_SINT8, {:units=>"°C", :nativeNum=>RECORD_TEMPERATURE}) : null;
+        self.tempField = getApp().settings.get("sensor_temperature") as Boolean ? session.createField("temperature", 0, FitContributor.DATA_TYPE_SINT8, {:units => "°C", :nativeNum => RECORD_TEMPERATURE}) : null;
 
         self.lapFields = {};
         self.lapFields.put(LAP_PLAYER_SCORE,    session.createField("player_score",     1, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP, :nativeNum => LAP_PLAYER_SCORE}));
@@ -98,14 +98,14 @@ class RoundnetActivity {
         self.lapFields.put(LAP_STEPS,           session.createField("steps",            3, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP}));
         self.lapFields.put(LAP_AVG_TIME,        session.createField("avg_time",         4, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP}));
         self.lapFields.put(LAP_AVG_STEPS,       session.createField("avg_steps",        6, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP}));
-        
+
         self.sessionFields = {};
         self.sessionFields.put(SESSION_PLAYER_SCORE,    session.createField("player_score",     7,  FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION, :nativeNum => SESSION_PLAYER_SCORE}));
         self.sessionFields.put(SESSION_OPPONENT_SCORE,  session.createField("opponent_score",   8,  FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION, :nativeNum => SESSION_OPPONENT_SCORE}));
         self.sessionFields.put(SESSION_STEPS,           session.createField("steps",            9,  FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION}));
         self.sessionFields.put(SESSION_AVG_TIME,        session.createField("avg_time",         10, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION}));
         self.sessionFields.put(SESSION_AVG_STEPS,       session.createField("avg_steps",        12, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION}));
-        
+
         if (locEnabled) {
             self.lapFields.put(LAP_AVG_DISTANCE, session.createField("avg_distance", 5, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_LAP}));
             self.sessionFields.put(SESSION_AVG_DISTANCE, session.createField("avg_distance", 11, FitContributor.DATA_TYPE_UINT16, {:mesgType => FitContributor.MESG_TYPE_SESSION}));
@@ -119,21 +119,21 @@ class RoundnetActivity {
         }
     }
 
-    private function refreshSettings() {
-        serviceState    = getApp().settings.get("field_service") as Boolean ? 0xF0 : -1;
-        equalServing    = getApp().settings.get("game_equal_serving") as Boolean;
-        pointsToSwitch  = getApp().settings.get("game_switch_alarm") as Boolean ? getApp().settings.get("game_switch_points") : 0;
-        pointsToWin     = getApp().settings.get("game_win_auto") as Boolean ? getApp().settings.get("game_win_points") : 0;
-        twoPointsDiff   = getApp().settings.get("game_win_two_pt_diff") as Boolean;
-        retryAutoWin    = getApp().settings.get("game_win_retry") as Boolean;
-        locEnabled      = getApp().settings.get("sensor_location") as Boolean;
-        tempEnabled     = getApp().settings.get("sensor_temperature") as Boolean;
+    private function refreshSettings() as Void {
+        var settings    = getApp().settings;
+        serviceState    = settings.get("field_service") as Boolean ? 0xF0 : -1;
+        equalServing    = settings.get("game_equal_serving") as Boolean;
+        pointsToSwitch  = settings.get("game_switch_alarm") as Boolean ? settings.get("game_switch_points") as Number : 0;
+        pointsToWin     = settings.get("game_win_auto") as Boolean ? settings.get("game_win_points") as Number : 0;
+        twoPointsDiff   = settings.get("game_win_two_pt_diff") as Boolean;
+        retryAutoWin    = settings.get("game_win_retry") as Boolean;
+        locEnabled      = settings.get("sensor_location") as Boolean;
     }
 
     (:sysgt6)
-    private function createSession() {
+    private function createSession() as Void {
         Sensor.enableSensorType(Sensor.SENSOR_HEARTRATE);
-        if (tempEnabled) { Sensor.enableSensorType(Sensor.SENSOR_TEMPERATURE); }
+        if (tempField != null) { Sensor.enableSensorType(Sensor.SENSOR_TEMPERATURE); }
 
         self.session = ActivityRecording.createSession({    // set up recording session
             :name=>"Roundnet",                              // set session name
@@ -143,9 +143,9 @@ class RoundnetActivity {
     }
 
     (:syslt6)
-    private function createSession() {
-        var sensors = [Sensor.SENSOR_HEARTRATE];
-        if (tempEnabled) { sensors.add(Sensor.SENSOR_TEMPERATURE); }
+    private function createSession() as Void {
+        var sensors = [Sensor.SENSOR_HEARTRATE] as Array<Sensor.SensorType>;
+        if (tempField != null) { sensors.add(Sensor.SENSOR_TEMPERATURE); }
         Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE, Sensor.SENSOR_TEMPERATURE]);
 
         self.session = ActivityRecording.createSession({
@@ -155,12 +155,12 @@ class RoundnetActivity {
         });
     }
 
-    public function registerDelegate(delegate as RoundnetActivityDelegate) {
+    public function registerDelegate(delegate as RoundnetActivityDelegate) as Void {
         self.delegate = delegate;
     }
 
     public function isRecording() as Boolean {
-        return session!=null and session.isRecording();
+        return session.isRecording();
     }
 
     public function stop() as Boolean {
@@ -185,84 +185,88 @@ class RoundnetActivity {
     }
 
     public function updateRecordFields() as Void {
-        if (session.isRecording()) {
-            time = Activity.getActivityInfo().timerTime / 1000;
+        if (!session.isRecording()) { return; }
 
-            if (tempEnabled) {
-                var temp = getTemperature();
-                if (temp!=null) {
-                    temp = temp.toNumber();
-                    if (temp!=lastTemp) {
-                        tempField.setData(temp);
-                        lastTemp = temp;
-                    }
+        var ttime = Activity.getActivityInfo().timerTime;
+        time = ttime != null ? ttime / 1000 : 0;
+
+        if (tempField != null) {
+            var temp = getTemperature();
+            if (temp != null) {
+                temp = temp.toNumber();
+                if (temp != lastTemp) {
+                    (tempField as Field).setData(temp);
+                    lastTemp = temp;
                 }
             }
-
-            WatchUi.requestUpdate();
         }
+
+        WatchUi.requestUpdate();
     }
 
     public function lap() as Void {
         if (session.isRecording()) {
             updateLapFields();
             session.addLap();
-            
+
             refreshSettings();
             scorePlayer = 0;
             scoreOpponent = 0;
-            
-            time = Activity.getActivityInfo().timerTime / 1000;
 
-            delegate.onLap();
-            WatchUi.requestUpdate();
+            var ttime = Activity.getActivityInfo().timerTime;
+            time = ttime != null ? ttime / 1000 : 0;
         }
     }
 
     private function updateLapFields() as Void {
-        var info = Activity.getActivityInfo();
-        var currentTime = info.timerTime;
-        var currentDistance = info.elapsedDistance;
-        var pointsCount = scorePlayer + scoreOpponent;
-        var steps = ActivityMonitor.getInfo().steps;
-        (lapFields.get(LAP_PLAYER_SCORE) as FitContributor.Field).setData(scorePlayer);
-        (lapFields.get(LAP_OPPONENT_SCORE) as FitContributor.Field).setData(scoreOpponent);
-        (lapFields.get(LAP_STEPS) as FitContributor.Field).setData(steps - stepsOnLap);
+        var info                = Activity.getActivityInfo();
+        var pointsCount         = scorePlayer + scoreOpponent;
+        var steps               = getSteps();
 
-        (lapFields.get(LAP_AVG_TIME) as FitContributor.Field)
-            .setData(pointsCount>0 ? (currentTime - timeOnLap)/pointsCount/1000 : 0);
+        var currentTime         = info.timerTime;
+        var currentDistance     = info.elapsedDistance;
+        if (currentTime         == null) { currentTime      = 0; }
+        if (currentDistance     == null) { currentDistance  = 0.0; }
+
+        (lapFields.get(LAP_PLAYER_SCORE)    as FitContributor.Field).setData(scorePlayer);
+        (lapFields.get(LAP_OPPONENT_SCORE)  as FitContributor.Field).setData(scoreOpponent);
+        (lapFields.get(LAP_STEPS)           as FitContributor.Field).setData(steps - stepsOnLap);
+
+        (lapFields.get(LAP_AVG_TIME)        as FitContributor.Field)
+            .setData(pointsCount > 0 ? (currentTime - timeOnLap) / pointsCount / 1000 : 0);
         (lapFields.get(LAP_AVG_STEPS) as FitContributor.Field)
-            .setData(pointsCount>0 ? (steps - stepsOnLap)/pointsCount : 0);
+            .setData(pointsCount > 0 ? (steps - stepsOnLap) / pointsCount : 0);
+
         timeOnLap = currentTime;
         stepsOnLap = steps;
-        
+
         if (locEnabled) {
             (lapFields.get(LAP_AVG_DISTANCE) as FitContributor.Field)
                 .setData(pointsCount>0 ? (currentDistance - distanceOnLap)/pointsCount : 0);
             distanceOnLap = currentDistance;
         }
-        
+
         if      (scorePlayer > scoreOpponent) { gamesPlayer++; }
         else if (scoreOpponent > scorePlayer) { gamesOpponent++; }
     }
 
     public function save() as Void {
-        var info = Activity.getActivityInfo();
         var steps = getSteps();
         var gamesCount = gamesPlayer + gamesOpponent;
         updateLapFields();
+
         (sessionFields.get(SESSION_PLAYER_SCORE)    as FitContributor.Field).setData(gamesPlayer);
         (sessionFields.get(SESSION_OPPONENT_SCORE)  as FitContributor.Field).setData(gamesOpponent);
         (sessionFields.get(SESSION_STEPS)           as FitContributor.Field).setData(steps);
 
         (sessionFields.get(SESSION_AVG_TIME)        as FitContributor.Field)
-            .setData(gamesCount>0 ? info.timerTime/gamesCount/60000 : 0);
+            .setData(gamesCount>0 ? time / gamesCount / 60000 : 0);
         (sessionFields.get(SESSION_AVG_STEPS)       as FitContributor.Field)
-            .setData(gamesCount>0 ? steps/gamesCount : 0);
+            .setData(gamesCount>0 ? steps / gamesCount : 0);
 
         if (locEnabled) {
             (sessionFields.get(SESSION_AVG_DISTANCE) as FitContributor.Field)
-                .setData(gamesCount>0 ? info.elapsedDistance/gamesCount : 0);
+                .setData(gamesCount>0 ? getDistance() / gamesCount : 0);
         }
 
         session.save();
@@ -275,9 +279,10 @@ class RoundnetActivity {
     }
 
     private function exit() as Void {
-        session = null;
         delegate = null;
-        
+        recordTimer.stop();
+        recordTimer.clear();
+
         if (Sensor has :disableSensorType) {
             Sensor.disableSensorType(Sensor.SENSOR_HEARTRATE);
             Sensor.disableSensorType(Sensor.SENSOR_TEMPERATURE);
@@ -290,7 +295,7 @@ class RoundnetActivity {
         scorePlayer++;
         onPoint(scorePlayer>=pointsToWin and (!twoPointsDiff or scorePlayer>=scoreOpponent+2), TEAM_PLAYER);
     }
-    
+
     public function incrOpponentScore() as Void {
         scoreOpponent++;
         onPoint(scoreOpponent>=pointsToWin and (!twoPointsDiff or scoreOpponent>=scorePlayer+2), TEAM_OPPONENT);
@@ -329,8 +334,8 @@ class RoundnetActivity {
         serviceHistory[points] = encodeServiceState();
 
         if (winCond) {
-            if (!retryAutoWin) { pointsToWin &= 1; }
-            delegate.warnLap();
+            if (!retryAutoWin)      { pointsToWin &= 1; }
+            if (delegate != null)   { delegate.warnLap(); }
         }
         else {
             // check if rotating positions
@@ -346,7 +351,10 @@ class RoundnetActivity {
                 if (Attention has :playTone) {
                     Attention.playTone({:toneProfile => [new Attention.ToneProfile(690, 600)]});
                 }
-                delegate.triggerSwitchAlarm();
+
+                if (delegate != null) {
+                    delegate.triggerSwitchAlarm();
+                }
             } else {
                 Attention.vibrate([new Attention.VibeProfile(50, 80)]);
             }
@@ -359,14 +367,14 @@ class RoundnetActivity {
         var server = serviceState & 0x0F;
         var totalScore = scorePlayer + scoreOpponent;
         var mask = 0;
-        
+
         if (totalScore >= pointsToWin << 1 - 1) {
             // 2 points difference win condition
             var shift = (totalScore - pointsToWin << 1 + 2) % 4;
             if (shift == 0) { shift = 2; }
             mask = server ^ (server << shift + server >> (4-shift)) & 0x0F;
         }
-        else if (totalScore & 1 == 1 or server & 0x09 == 0){    
+        else if (totalScore & 1 == 1 or server & 0x09 == 0){
             // swap opponents if they are on their second service
             if (serviceState & (server << 4) != 0 && totalScore & 1 == 0) { serviceState ^= 0xF00; }
 
@@ -398,7 +406,7 @@ class RoundnetActivity {
             var mask = ((serviceState >> 7) ^ oddScore) & 1 ? 0x0A : 0x05;
             var team = (serviceState >> 4) & 0x0F;
             mask &= winner ? team : ~team;
-            serviceState ^= mask ^ server; 
+            serviceState ^= mask ^ server;
         }
     }
 
@@ -408,15 +416,15 @@ class RoundnetActivity {
         result |= serviceState & 0x080 ? 4 : 0;
         result |= serviceState & 0x00C ? 2 : 0;
         result |= serviceState & 0x00A ? 1 : 0;
-        return result as Char;
+        return result.toChar();
     }
 
     private function decodeServiceState(state as Number) as Void {
         serviceState = 0;
-        serviceState |= state & 8 ? 0xA00 : 0x500; 
-        serviceState |= state & 4 ? 0x0C0 : 0x060; 
+        serviceState |= state & 8 ? 0xA00 : 0x500;
+        serviceState |= state & 4 ? 0x0C0 : 0x060;
         serviceState |= 1 << (state & 0x03);
-    } 
+    }
 
     public function initServiceHelper(team as Team) as Void {
         if      (serviceState == 0xF0) {
@@ -444,12 +452,13 @@ class RoundnetActivity {
         return teamId ? gamesOpponent : gamesPlayer;
     }
 
-    public function getHR() as Number {
+    public function getHR() as Number? {
         return Sensor.getInfo().heartRate;
     }
 
     public function getSteps() as Number {
-        return ActivityMonitor.getInfo().steps - stepsOnStart;
+        var steps = ActivityMonitor.getInfo().steps;
+        return steps != null ? steps - stepsOnStart : 0;
     }
 
     public function getDistance() as Number {

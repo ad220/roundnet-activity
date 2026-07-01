@@ -7,7 +7,7 @@ import Toybox.Math;
 
 using InterfaceComponentsManager as ICM;
 
-class LoopField extends Drawable {
+class LoopField extends WatchUi.Drawable {
 
     public enum FieldId {
         FIELD_DISTANCE,
@@ -22,13 +22,13 @@ class LoopField extends Drawable {
     }
 
     static const fieldUnits = [
-        WatchUi.loadResource(Rez.Strings.Kilometers),
-        WatchUi.loadResource(Rez.Strings.KCalories),
+        WatchUi.loadResource(Rez.Strings.Kilometers) as String,
+        WatchUi.loadResource(Rez.Strings.KCalories) as String,
         null,
-        WatchUi.loadResource(Rez.Strings.Celsius),
+        WatchUi.loadResource(Rez.Strings.Celsius) as String,
         null,
         null
-    ] as Array<String>;
+    ];
 
     private var activity as RoundnetActivity;
     private var stateIndex as Number;
@@ -122,7 +122,7 @@ class LoopField extends Drawable {
 
         var radius = Screen.WIDTH * 0.094;
         var dotRadius = Screen.WIDTH * 0.039;
-        
+
         dc.setPenWidth(Screen.WIDTH * 0.014);
         ICM.toggleAA(dc, true);
 
@@ -183,8 +183,8 @@ class LoopField extends Drawable {
     }
 
     public function showSwitchAlarm() as Void {
-        currentIcon = loadResource(icons[FIELD_SWITCH]);
-        label = loadResource(Rez.Strings.Switch);
+        currentIcon     = loadResource(icons[FIELD_SWITCH] as ResourceId) as BitmapResource;
+        label           = loadResource(Rez.Strings.Switch) as String;
         requestUpdate();
         getApp().timer.stop(currentTimer);
         currentTimer = getApp().timer.start(method(:refreshField), scrollSpeed, false);
