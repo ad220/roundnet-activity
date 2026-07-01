@@ -51,32 +51,6 @@ class StartView extends WatchUi.View {
         requestUpdate();
     }
 
-    (:sysgt6)
-    public function onUpdate(dc as Graphics.Dc) as Void {
-        if (dc has :setAntiAlias) {
-            dc.setAntiAlias(true);
-        }
-        var daytime = Time.Gregorian.info(Time.now(), Time.FORMAT_SHORT);
-        daytime = daytime.hour + ":" + daytime.min.format("%02d");
-        (findDrawableById("daytime") as Text).setText(daytime);
-        
-        findDrawableById("GpsDisabled").setVisible(locationSetting == Position.LOCATION_DISABLE);
-
-        findDrawableById("TempEnabled").setVisible(temperatureEnabled);
-        findDrawableById("TempDisabled").setVisible(!temperatureEnabled);
-
-        View.onUpdate(dc);
-
-        if (locationSetting == Position.LOCATION_CONTINUOUS) {
-            dc.setPenWidth(Screen.WIDTH * 0.005);
-            dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][lastGpsAccuracy], Graphics.COLOR_TRANSPARENT);
-            dc.fillRectangle(Screen.WIDTH * 0.46, Screen.HEIGHT * 0.29, Screen.WIDTH * 0.015 * (lastGpsAccuracy+1), Screen.HEIGHT * 0.02);
-            dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
-            dc.drawRectangle(Screen.WIDTH * 0.46, Screen.HEIGHT * 0.29, Screen.WIDTH * 0.08, Screen.HEIGHT * 0.02);
-        }
-    }
-
-    (:syslt6)
     public function onUpdate(dc as Graphics.Dc) as Void {
         if (dc has :setAntiAlias) {
             dc.setAntiAlias(true);
@@ -86,7 +60,7 @@ class StartView extends WatchUi.View {
         (findDrawableById("daytime") as Text).setText(daytime);
 
         View.onUpdate(dc);
-        
+
         if (locationSetting == Position.LOCATION_CONTINUOUS) {
             dc.setPenWidth(Screen.WIDTH * 0.005);
             dc.setColor([0xFF0000, 0xFF5500, 0xAAAA00, 0x55AA00, 0x00AA00][lastGpsAccuracy], Graphics.COLOR_TRANSPARENT);
@@ -104,8 +78,10 @@ class StartView extends WatchUi.View {
 
     public function onHide() as Void {
         Position.enableLocationEvents(locationSetting, null);
-        updater.stop();
-        updater = null;
+        if (updater != null) {
+            updater.stop();
+            updater = null;
+        }
     }
 }
 
@@ -118,7 +94,7 @@ class StartDelegate extends WatchUi.BehaviorDelegate {
 
         self.view = view;
     }
-    
+
     public function onSelect() as Boolean {
         return false;
     }

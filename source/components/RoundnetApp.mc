@@ -10,7 +10,7 @@ using InterfaceComponentsManager as ICM;
 class RoundnetApp extends Application.AppBase {
 
     public const version = "v0.14";
-    
+
     public var timer as TimerController;
     public var preciseTimer as Timer.Timer;
     public var settings as Dictionary<String, Object>;
@@ -21,11 +21,11 @@ class RoundnetApp extends Application.AppBase {
         self.timer = new TimerController(1000);
         self.preciseTimer = new Timer.Timer();
 
-        self.settings = Storage.getValue("settings") as Dictionary;
-        var defaults = WatchUi.loadResource(Rez.JsonData.DefaultSettings) as Dictionary;
+        var settings = Storage.getValue("settings") as Dictionary<String, Object>?;
+        var defaults = WatchUi.loadResource(Rez.JsonData.DefaultSettings) as Dictionary<String, Object>;
         var version = defaults.get("version") as Number;
-        
-        if (settings == null or settings.get("version")==null) {
+
+        if (settings == null or settings.get("version") == null) {
             Storage.clearValues();
             settings = defaults;
         } else if (settings.get("version") as Number < version) {
@@ -39,20 +39,20 @@ class RoundnetApp extends Application.AppBase {
             settings = defaults;
             settings.put("version", version);
         }
+
+        self.settings = settings;
     }
 
     // onStart() is called on application start up
     function onStart(state as Dictionary?) as Void {
-        ICM.loadFonts();
         Position.enableLocationEvents(getLocationSetting(), null);
     }
 
     // onStop() is called when your application is exiting
     function onStop(state as Dictionary?) as Void {
         timer.stopAll();
-        ICM.unloadFonts();
         Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
-        Storage.setValue("settings", settings);
+        Storage.setValue("settings", settings as PropertyValueType);
     }
 
     // Return the initial view of your application here
