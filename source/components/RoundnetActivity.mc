@@ -146,7 +146,7 @@ class RoundnetActivity {
     private function createSession() as Void {
         var sensors = [Sensor.SENSOR_HEARTRATE] as Array<Sensor.SensorType>;
         if (tempField != null) { sensors.add(Sensor.SENSOR_TEMPERATURE); }
-        Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE, Sensor.SENSOR_TEMPERATURE]);
+        Sensor.setEnabledSensors(sensors);
 
         self.session = ActivityRecording.createSession({
             :name=>"Roundnet",

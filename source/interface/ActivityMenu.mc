@@ -35,6 +35,7 @@ class ActivityMenuDelegate extends WatchUi.Menu2InputDelegate {
         }
     }
 
+    (:keep)
     public function onTimers(selected as Boolean) as Void {
         menu = new Rez.Menus.TimersMenu();
         switchToView(menu, self, SLIDE_IMMEDIATE);
@@ -81,21 +82,25 @@ class ActivityMenuDelegate extends WatchUi.Menu2InputDelegate {
         }
     }
 
+    (:keep)
     public function onSettings(selected as Boolean) as Void {
         var nmenu = new Rez.Menus.SettingsMenu();
         pushView(nmenu, new SettingsDelegate(nmenu, null, null), SLIDE_LEFT);
     }
 
+    (:keep)
     public function onTimeout(selected as Boolean) as Void {
         var dlgt = new TimerDelegate(activity, getApp().timer, 60);
         switchToView(new TimerView(dlgt, :TimerLayout, Rez.Drawables.Timeout, null), dlgt, SLIDE_IMMEDIATE); 
     }
 
+    (:keep)
     public function onSet(selected as Boolean) as Void {
         var dlgt = new TimerDelegate(activity, getApp().timer, 180);
         switchToView(new TimerView(dlgt, :TimerLayout, Rez.Drawables.Bottle, null), dlgt, SLIDE_IMMEDIATE); 
     }
 
+    (:keep)
     public function onInjury(selected as Boolean) as Void {
         var dlgt = new TimerDelegate(activity, getApp().timer, 300);
         switchToView(new TimerView(dlgt, :TimerLayout, Rez.Drawables.Injury, null), dlgt, SLIDE_IMMEDIATE); 

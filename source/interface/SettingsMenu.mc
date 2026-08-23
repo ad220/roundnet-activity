@@ -76,21 +76,25 @@ class SettingsDelegate extends WatchUi.Menu2InputDelegate {
         popView(SLIDE_RIGHT);
     }
 
+    (:keep)
     public function createSensorsMenu(item as MenuItem) as Void {
         var menu = new Rez.Menus.SensorsMenu();
         pushView(menu, new SettingsDelegate(menu, null, null), SLIDE_LEFT);
     }
 
+    (:keep)
     public function createDatafieldMenu(item as MenuItem) as Void {
         var menu = new Rez.Menus.DatafieldMenu();
         pushView(menu, new SettingsDelegate(menu, null, null), SLIDE_LEFT);
     }
 
+    (:keep)
     public function createGameMenu(item as MenuItem) as Void {
         var menu = new Rez.Menus.GameMenu();
         pushView(menu, new SettingsDelegate(menu, null, null), SLIDE_LEFT);
     }
 
+    (:keep)
     public function createSpeedMenu(item as MenuItem) as Void {
         var menu = new Rez.Menus.SpeedMenu();
         var callback = item.method(:setSubLabel);
@@ -101,24 +105,29 @@ class SettingsDelegate extends WatchUi.Menu2InputDelegate {
         pushView(menu, delegate, SLIDE_LEFT);
     }
 
+    (:keep)
     public function createFieldsMenu(item as MenuItem) as Void {
         var menu = new Rez.Menus.FieldsMenu();
         pushView(menu, new SettingsDelegate(menu, null, null), SLIDE_LEFT);
     }
 
+    (:keep)
     public function createScrollingMenu(item as MenuItem) as Void {
         var menu = new Rez.Menus.ScrollingMenu();
         pushView(menu, new SettingsDelegate(menu, null, null), SLIDE_LEFT);
     }
 
+    (:keep)
     public function createWinPointsMenu(item as MenuItem) as Void {
         createPointsMenu(item, "game_win_points", 5, 51);
     }
 
+    (:keep)
     public function createSwitchPointsMenu(item as MenuItem) as Void {
         createPointsMenu(item, "game_switch_points", 3, 10);
     }
 
+    (:keep)
     private function createPointsMenu(item as MenuItem, key as String, min as Number, max as Number) as Void {
         var menu = new Menu2(null);
         var callback = item.method(:setSubLabel);
