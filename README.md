@@ -14,9 +14,6 @@ Roundnet activity tracker for Garmin smartwatches. Allows you to keep score so t
 
 Check the [settings](#settings) and [activity](#activity) section below to learn how to use the app
 
-## Planned features
-- custom activity summary
-
 ## Screenshots
 ![](doc/start_menu.png)
 ![](doc/activity_view.png)
@@ -78,6 +75,10 @@ When observer mode is enabled, pressing the lap button once will silently start 
 You can start break timers and change settings from the activity by pressing the menu button on your watch.
 
 ## Changelog
+
+### v1.0
+The app is stable enough now and has been in "beta" for too long now. I also don't have any new feature planned except maybe activity summary or match history, but it won't be there in the foreseeable future.
+- add fenix9 support
 
 ### v0.14
 - add warmup view

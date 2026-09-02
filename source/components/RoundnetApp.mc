@@ -9,7 +9,7 @@ using InterfaceComponentsManager as ICM;
 
 class RoundnetApp extends Application.AppBase {
 
-    public const version = "v0.14";
+    public const version = "v1.0";
 
     public var timer as TimerController;
     public var preciseTimer as Timer.Timer;
