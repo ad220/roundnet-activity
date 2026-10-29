@@ -77,12 +77,12 @@ You can start break timers and change settings from the activity by pressing the
 ## Changelog
 
 ### v1.0
-The app is stable enough now and has been in "beta" for too long now. I also don't have any new feature planned except maybe activity summary or match history, but it won't be there in the foreseeable future.
+The app is stable enough and has been in "beta" for too long now. I also don't have any new feature planned except maybe activity summary or match history, but it won't be there in the foreseeable future.
 - add fenix9 support
 
 ### v0.14
 - add warmup view
-- service helper on lap cancel and on two point diff win condition.
+- fix service helper on lap cancel and on two point diff win condition.
 
 ### v0.13
 - add timers for timeouts, breaks and injuries

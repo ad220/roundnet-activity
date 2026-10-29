@@ -9,7 +9,7 @@ using InterfaceComponentsManager as ICM;
 
 class RoundnetApp extends Application.AppBase {
 
-    public const version = "v1.0";
+    public const version = "v1.0.1";
 
     public var timer as TimerController;
     public var preciseTimer as Timer.Timer;
@@ -52,7 +52,7 @@ class RoundnetApp extends Application.AppBase {
     function onStop(state as Dictionary?) as Void {
         timer.stopAll();
         Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
-        Storage.setValue("settings", settings as PropertyValueType);
+        Storage.setValue("settings", settings as Storage.ValueType);
     }
 
     // Return the initial view of your application here
